@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samir Magdy - Interactive CV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --gradient: linear-gradient(135deg, #3498db, #2c3e50);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .floating-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            background: radial-gradient(circle at 20% 80%, rgba(52, 152, 219, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(231, 76, 60, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(46, 204, 113, 0.2) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+
+        header:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            object-fit: cover;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-img::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.3), rgba(46, 204, 113, 0.3));
+            border-radius: 50%;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05) rotate(5deg);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .profile-img:hover::after {
+            opacity: 1;
+        }
+
+        .profile-info h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-info .title {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        /* Language Toggle */
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            transition: var(--transition);
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Contact Styles */
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 20px;
+            border-radius: 50px;
+            transition: var(--transition);
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-item i {
+            font-size: 1.3rem;
+            transition: var(--transition);
+        }
+
+        .contact-item:hover i {
+            transform: scale(1.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 968px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-info h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient);
+            transition: var(--transition);
+        }
+
+        .section:hover::before {
+            width: 8px;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        .section:hover .section-title::after {
+            width: 100px;
+        }
+
+        .section-title i {
+            color: var(--secondary);
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .section:hover .section-title i {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        /* Education & Experience Styles */
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--gradient);
+            border-radius: 10px;
+        }
+
+        .timeline-item {
+            margin-bottom: 30px;
+            padding-left: 50px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--secondary);
+            border: 4px solid white;
+            box-shadow: 0 0 0 3px var(--secondary);
+            transition: var(--transition);
+            z-index: 1;
+        }
+
+        .timeline-item:hover::before {
+            transform: scale(1.3);
+            background: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent);
+        }
+
+        .timeline-item h3 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+        }
+
+        .timeline-item .date {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .timeline-item:hover .date {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--accent);
+        }
+
+        .timeline-item p,
+        .timeline-item ul {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .timeline-item ul {
+            padding-left: 20px;
+        }
+
+        .timeline-item li {
+            margin-bottom: 8px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .timeline-item li:hover {
+            transform: translateX(5px);
+            color: var(--primary);
+        }
+
+        .timeline-item li::before {
+            content: '▸';
+            position: absolute;
+            left: -15px;
+            color: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .timeline-item li:hover::before {
+            color: var(--accent);
+            transform: scale(1.5);
+        }
+
+        /* Skills Styles */
+        .skills-list {
+            list-style: none;
+        }
+
+        .skills-list li {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .skill-name {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .skills-list li:hover .skill-name {
+            transform: translateX(10px);
+            color: var(--secondary);
+        }
+
+        .skill-bar {
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill-level {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 10px;
+            width: 0;
+            transition: width 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-level::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Floating elements */
+        .floating-element {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+            width: 40px;
+            height: 40px;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 60%;
+            left: 10%;
+            animation-delay: 1s;
+            width: 60px;
+            height: 60px;
+        }
+
+        .floating-element:nth-child(3) {
+            top: 30%;
+            right: 5%;
+            animation-delay: 2s;
+            width: 30px;
+            height: 30px;
+        }
+
+        .floating-element:nth-child(4) {
+            top: 70%;
+            right: 10%;
+            animation-delay: 3s;
+            width: 45px;
+            height: 45px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+
+            100% {
+                transform: translateY(0) rotate(360deg);
+            }
+        }
+
+        /* Particles */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            color: var(--dark);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 10px;
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        /* Loading animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .spinner {
+            width: 70px;
+            height: 70px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="floating-bg"></div>
+    <div id="particles-js"></div>
+
+    <!-- Floating elements -->
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+
+    <!-- Loading screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Scroll to top button -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="language-toggle">
+                <button class="lang-btn" id="langToggle">
+                    <i class="fas fa-language"></i>
+                    <span>العربية</span>
+                </button>
+            </div>
+
+            <div class="profile-container">
+                <!-- Profile image placeholder -->
+                <div class="profile-img"
+                    style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #3498db, #2c3e50); color: white; font-size: 4rem;">
+                    <img src="profile.jpg" alt="Samir Magdi Photo" class="profile-img">
+                </div>
+                <div class="profile-info">
+                    <h1>Samir Magdy Yacoub</h1>
+                    <div class="title">Quality Control Specialist - Food Industries</div>
+                    <div class="contact-info">
+                        <div class="contact-item" onclick="contactAction('tel:+201129724884')">
+                            <i class="fas fa-phone"></i>
+                            <span>+201129724884</span>
+                        </div>
+                        <div class="contact-item" onclick="contactAction('mailto:samirmagdy9955@gmail.com')">
+                            <i class="fas fa-envelope"></i>
+                            <span>samirmagdy9955@gmail.com</span>
+                        </div>
+                        <div class="contact-item"
+                            onclick="contactAction('https://www.linkedin.com/in/samir-magdy-101a48241?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app')">
+                            <i class="fab fa-linkedin"></i>
+                            <span>LinkedIn</span>
+                        </div>
+                        <div class="contact-item" onclick="contactAction('https://wa.me/201129724884')">
+                            <i class="fab fa-whatsapp"></i>
+                            <span>WhatsApp</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="left-column">
+                <section class="section" id="summary">
+                    <h2 class="section-title"><i class="fas fa-user-tie"></i> <span class="text-summary">Professional
+                            Summary</span></h2>
+                    <p class="text-summary-content">Graduate from Faculty of Agriculture, Minia University (GPA 3.2),
+                        specializing in Food Industries and Dairy. I have hands-on experience in food safety systems
+                        (GMP, GHP, HACCP, ISO 22000:2018) through intensive training programs and practical work in
+                        leading food industries. Skilled in quality control, auditing, and compliance with international
+                        standards. Motivated to apply my expertise to ensure product quality, enhance efficiency, and
+                        support continuous improvement in food production.</p>
+                </section>
+
+                <section class="section" id="education">
+                    <h2 class="section-title"><i class="fas fa-graduation-cap"></i> <span
+                            class="text-education">Education</span></h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h3 class="text-education-title">Bachelor of Agriculture, Food Industries and Dairy</h3>
+                            <div class="date text-education-location">Minia University, Egypt | GPA: 3.2 | Graduation
+                                Year: 2023</div>
+                            <p class="text-education-project">Graduation Project: Integrated Quality and Food Safety
+                                Management System Using HACCP and ISO 9001</p>
+                            <p class="text-education-courses">Relevant Courses: Dairy Technology, Food Safety, Quality
+                                Management.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="experience">
+                    <h2 class="section-title"><i class="fas fa-briefcase"></i> <span
+                            class="text-experience">Experience</span></h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h3 class="text-exp1-title">Quality Control Specialist – Imtenan for Food Industries, Obour
+                                City</h3>
+                            <div class="date text-exp1-date">2025 – Present</div>
+                            <ul>
+                                <li class="text-exp1-item1">Monitoring production processes and ensuring compliance with
+                                    food safety and quality standards.</li>
+                                <li class="text-exp1-item2">Conducting inspections, auditing, and verifying product
+                                    conformity with ISO 22000 and HACCP.</li>
+                                <li class="text-exp1-item3">Performing lab tests and coordinating corrective actions to
+                                    maintain product safety and consistency.</li>
+                            </ul>
+                        </div>
+
+                        <div class="timeline-item">
+                            <h3 class="text-exp2-title">Quality Control Specialist – Smiley's for Food Industries, Obour
+                                City</h3>
+                            <div class="date text-exp2-date">2024 – 2025</div>
+                            <ul>
+                                <li class="text-exp2-item1">Oversaw quality control of meat products and refrigerated
+                                    vegetables.</li>
+                                <li class="text-exp2-item2">Implemented quality assurance procedures and verified
+                                    compliance with GMP and ISO standards.</li>
+                                <li class="text-exp2-item3">Ensured cold chain integrity and adherence to hygiene and
+                                    safety protocols.</li>
+                            </ul>
+                        </div>
+
+                        <div class="timeline-item">
+                            <h3 class="text-exp3-title">Quality Control Training – El-Salah for Food Industries (Juices
+                                & Beverages – Tetra Pak)</h3>
+                            <div class="date text-exp3-date">2023 – 2024</div>
+                            <ul>
+                                <li class="text-exp3-item1">Assisted in monitoring production lines and maintaining
+                                    hygiene and safety controls.</li>
+                                <li class="text-exp3-item2">Conducted sampling and testing for product quality and
+                                    shelf-life stability.</li>
+                                <li class="text-exp3-item3">Documented findings and supported implementation of HACCP
+                                    system.</li>
+                            </ul>
+                        </div>
+
+                        <div class="timeline-item">
+                            <h3 class="text-exp4-title">Quality Control | Production Training – Al-Fakhama Dairy
+                                Products</h3>
+                            <div class="date text-exp4-date">2022</div>
+                            <ul>
+                                <li class="text-exp4-item1">Monitored production processes and ensured compliance with
+                                    food safety standards.</li>
+                                <li class="text-exp4-item2">Operated food production equipment and performed lab testing
+                                    on product samples.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="right-column">
+                <section class="section" id="certifications">
+                    <h2 class="section-title"><i class="fas fa-certificate"></i> <span
+                            class="text-certifications">Certifications & Professional Training</span></h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h3 class="text-cert1-title">Diploma in Food Safety</h3>
+                            <div class="date text-cert1-date">Alison Platform | 2022</div>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-cert2-title">Food Safety Training Program</h3>
+                            <div class="date text-cert2-location">Center of Excellence for Food Research and Analysis,
+                                Zewail City University (collaborating with Medix)</div>
+                            <div class="date text-cert2-date">30 Hours | 2021</div>
+                            <p class="text-cert2-achievement">Achievements: Conducted food safety analysis on real
+                                samples using advanced analytical tools.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h3 class="text-cert3-title">Advanced Training in GMP, GHP, HACCP, ISO 22000:2018, ISO
+                                9001:2015</h3>
+                            <div class="date text-cert3-date">Egyptian Organization for Standardization and Quality |
+                                2023</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="skills">
+                    <h2 class="section-title"><i class="fas fa-tools"></i> <span class="text-skills">Skills</span></h2>
+                    <ul class="skills-list">
+                        <li>
+                            <span class="skill-name text-skill1">Food Safety Systems: GMP, GHP, HACCP, ISO
+                                22000:2018</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-level="95"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="skill-name text-skill2">Quality Management: ISO 9001:2015</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-level="90"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="skill-name text-skill3">Quality Control & Auditing</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-level="92"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="skill-name text-skill4">Food Production Processes</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-level="88"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="skill-name text-skill5">Languages: Arabic (Native), English (Good)</span>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-level="85"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+
+        <footer>
+            <p class="text-footer">© 2025 Samir Magdy Yacoub - All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // بيانات الترجمة
+        const translations = {
+            en: {
+                // Header
+                name: "Samir Magdy Yacoub",
+                title: "Quality Control Specialist - Food Industries",
+
+                // Language Toggle
+                langToggle: "العربية",
+
+                // Sections
+                summary: "Professional Summary",
+                education: "Education",
+                experience: "Experience",
+                certifications: "Certifications & Professional Training",
+                skills: "Skills",
+                footer: "© 2025 Samir Magdy Yacoub - All Rights Reserved",
+
+                // Contact
+                whatsapp: "WhatsApp",
+
+                // Summary Content
+                summaryContent: "Graduate from Faculty of Agriculture, Minia University (GPA 3.2), specializing in Food Industries and Dairy. I have hands-on experience in food safety systems (GMP, GHP, HACCP, ISO 22000:2018) through intensive training programs and practical work in leading food industries. Skilled in quality control, auditing, and compliance with international standards. Motivated to apply my expertise to ensure product quality, enhance efficiency, and support continuous improvement in food production.",
+
+                // Education
+                educationTitle: "Bachelor of Agriculture, Food Industries and Dairy",
+                educationLocation: "Minia University, Egypt | GPA: 3.2 | Graduation Year: 2023",
+                educationProject: "Graduation Project: Integrated Quality and Food Safety Management System Using HACCP and ISO 9001",
+                educationCourses: "Relevant Courses: Dairy Technology, Food Safety, Quality Management.",
+
+                // Experience
+                exp1Title: "Quality Control Specialist – Imtenan for Food Industries, Obour City",
+                exp1Date: "2025 – Present",
+                exp1Item1: "Monitoring production processes and ensuring compliance with food safety and quality standards.",
+                exp1Item2: "Conducting inspections, auditing, and verifying product conformity with ISO 22000 and HACCP.",
+                exp1Item3: "Performing lab tests and coordinating corrective actions to maintain product safety and consistency.",
+
+                exp2Title: "Quality Control Specialist – Smiley's for Food Industries, Obour City",
+                exp2Date: "2024 – 2025",
+                exp2Item1: "Oversaw quality control of meat products and refrigerated vegetables.",
+                exp2Item2: "Implemented quality assurance procedures and verified compliance with GMP and ISO standards.",
+                exp2Item3: "Ensured cold chain integrity and adherence to hygiene and safety protocols.",
+
+                exp3Title: "Quality Control Training – El-Salah for Food Industries (Juices & Beverages – Tetra Pak)",
+                exp3Date: "2023 – 2024",
+                exp3Item1: "Assisted in monitoring production lines and maintaining hygiene and safety controls.",
+                exp3Item2: "Conducted sampling and testing for product quality and shelf-life stability.",
+                exp3Item3: "Documented findings and supported implementation of HACCP system.",
+
+                exp4Title: "Quality Control | Production Training – Al-Fakhama Dairy Products",
+                exp4Date: "2022",
+                exp4Item1: "Monitored production processes and ensured compliance with food safety standards.",
+                exp4Item2: "Operated food production equipment and performed lab testing on product samples.",
+
+                // Certifications
+                cert1Title: "Diploma in Food Safety",
+                cert1Date: "Alison Platform | 2022",
+
+                cert2Title: "Food Safety Training Program",
+                cert2Location: "Center of Excellence for Food Research and Analysis, Zewail City University (collaborating with Medix)",
+                cert2Date: "30 Hours | 2021",
+                cert2Achievement: "Achievements: Conducted food safety analysis on real samples using advanced analytical tools.",
+
+                cert3Title: "Advanced Training in GMP, GHP, HACCP, ISO 22000:2018, ISO 9001:2015",
+                cert3Date: "Egyptian Organization for Standardization and Quality | 2023",
+
+                // Skills
+                skill1: "Food Safety Systems: GMP, GHP, HACCP, ISO 22000:2018",
+                skill2: "Quality Management: ISO 9001:2015",
+                skill3: "Quality Control & Auditing",
+                skill4: "Food Production Processes",
+                skill5: "Languages: Arabic (Native), English (Good)"
+            },
+            ar: {
+                // Header
+                name: "سمير مجدي يعقوب",
+                title: "أخصائي مراقبة الجودة - الصناعات الغذائية",
+
+                // Language Toggle
+                langToggle: "English",
+
+                // Sections
+                summary: "ملخص مهني",
+                education: "التعليم",
+                experience: "الخبرات",
+                certifications: "الشهادات والتدريب المهني",
+                skills: "المهارات",
+                footer: "© 2025 سمير مجدي يعقوب - جميع الحقوق محفوظة",
+
+                // Contact
+                whatsapp: "واتساب",
+
+                // Summary Content
+                summaryContent: "خريج كلية الزراعة، جامعة المنيا (المعدل التراكمي 3.2)، متخصص في الصناعات الغذائية والألبان. لدي خبرة عملية في أنظمة سلامة الغذاء (GMP, GHP, HACCP, ISO 22000:2018) من خلال برامج تدريبية مكثفة والعمل العملي في شركات صناعات غذائية رائدة. ماهر في مراقبة الجودة والتدقيق والامتثال للمعايير الدولية. متحمس لتطبيق خبراتي لضمان جودة المنتج، وتعزيز الكفاءة، ودعم التحسين المستمر في إنتاج الغذاء.",
+
+                // Education
+                educationTitle: "بكالوريوس الزراعة، الصناعات الغذائية والألبان",
+                educationLocation: "جامعة المنيا، مصر | المعدل التراكمي: 3.2 | سنة التخرج: 2023",
+                educationProject: "مشروع التخرج: نظام إدارة الجودة وسلامة الغذاء المتكامل باستخدام HACCP و ISO 9001",
+                educationCourses: "المقررات الدراسية ذات الصلة: تكنولوجيا الألبان، سلامة الغذاء، إدارة الجودة.",
+
+                // Experience
+                exp1Title: "أخصائي مراقبة الجودة – امتنان للصناعات الغذائية، مدينة العبور",
+                exp1Date: "2025 – حتى الآن",
+                exp1Item1: "مراقبة عمليات الإنتاج وضمان الامتثال لمعايير سلامة وجودة الغذاء.",
+                exp1Item2: "إجراء عمليات التفتيش والتدقيق والتحقق من مطابقة المنتج لمعايير ISO 22000 و HACCP.",
+                exp1Item3: "إجراء الاختبارات المعملية وتنسيق الإجراءات التصحيحية للحفاظ على سلامة المنتج واتساقه.",
+
+                exp2Title: "أخصائي مراقبة الجودة – سمايليز للصناعات الغذائية، مدينة العبور",
+                exp2Date: "2024 – 2025",
+                exp2Item1: "الإشراف على مراقبة جودة منتجات اللحوم والخضروات المبردة.",
+                exp2Item2: "تنفيذ إجراءات ضمان الجودة والتحقق من الامتثال لمعايير GMP و ISO.",
+                exp2Item3: "ضمان سلامة سلسلة التبريد والالتزام ببروتوكولات النظافة والسلامة.",
+
+                exp3Title: "تدريب مراقبة الجودة – الصلاح للصناعات الغذائية (عصائر ومشروبات – تتراباك)",
+                exp3Date: "2023 – 2024",
+                exp3Item1: "المساعدة في مراقبة خطوط الإنتاج والحفاظ على ضوابط النظافة والسلامة.",
+                exp3Item2: "إجراء أخذ العينات والاختبارات لجودة المنتج واستقرار فترة الصلاحية.",
+                exp3Item3: "توثيق النتائج ودعم تنفيذ نظام HACCP.",
+
+                exp4Title: "تدريب مراقبة الجودة والإنتاج – الفخامة لمنتجات الألبان",
+                exp4Date: "2022",
+                exp4Item1: "مراقبة عمليات الإنتاج وضمان الامتثال لمعايير سلامة الغذاء.",
+                exp4Item2: "تشغيل معدات إنتاج الغذاء وإجراء الاختبارات المعملية على عينات المنتج.",
+
+                // Certifications
+                cert1Title: "دبلوم سلامة الغذاء",
+                cert1Date: "منصة أليسون | 2022",
+
+                cert2Title: "برنامج تدريبي في سلامة الغذاء",
+                cert2Location: "مركز التميز لأبحاث وتحليل الغذاء، جامعة زويل (بالتعاون مع ميديكس)",
+                cert2Date: "30 ساعة | 2021",
+                cert2Achievement: "الإنجازات: إجراء تحليل سلامة الغذاء على عينات حقيقية باستخدام أدوات تحليلية متقدمة.",
+
+                cert3Title: "تدريب متقدم في GMP, GHP, HACCP, ISO 22000:2018, ISO 9001:2015",
+                cert3Date: "الهيئة المصرية العامة للمواصفات والجودة | 2023",
+
+                // Skills
+                skill1: "أنظمة سلامة الغذاء: GMP, GHP, HACCP, ISO 22000:2018",
+                skill2: "إدارة الجودة: ISO 9001:2015",
+                skill3: "مراقبة الجودة والتدقيق",
+                skill4: "عمليات إنتاج الغذاء",
+                skill5: "اللغات: العربية (اللغة الأم)، الإنجليزية (جيدة)"
+            }
+        };
+
+        // حالة اللغة الحالية
+        let currentLang = 'en';
+
+        // وظيفة للتفاعل مع بيانات الاتصال
+        function contactAction(value) {
+            if (value.startsWith('tel:')) {
+                window.open(value, '_self');
+            } else if (value.startsWith('mailto:')) {
+                window.open(value, '_self');
+            } else {
+                window.open(value, '_blank');
+            }
+        }
+
+        // وظيفة لتبديل اللغة
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            applyLanguage(currentLang);
+
+            // تغيير اتجاه النص
+            document.body.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+            // تحديث نص زر تبديل اللغة
+            document.getElementById('langToggle').innerHTML =
+                `<i class="fas fa-language"></i><span>${translations[currentLang].langToggle}</span>`;
+        }
+
+        // تطبيق اللغة المحددة
+        function applyLanguage(lang) {
+            const t = translations[lang];
+
+            // تحديث الترويسة
+            document.querySelector('.profile-info h1').textContent = t.name;
+            document.querySelector('.profile-info .title').textContent = t.title;
+
+            // تحديث عناوين الأقسام
+            document.querySelector('.text-summary').textContent = t.summary;
+            document.querySelector('.text-education').textContent = t.education;
+            document.querySelector('.text-experience').textContent = t.experience;
+            document.querySelector('.text-certifications').textContent = t.certifications;
+            document.querySelector('.text-skills').textContent = t.skills;
+
+            // تحديث الفوتر
+            document.querySelector('.text-footer').textContent = t.footer;
+
+            // تحديث واتساب
+            document.querySelector('.contact-item:last-child span').textContent = t.whatsapp;
+
+            // تحديث المحتوى
+            document.querySelector('.text-summary-content').textContent = t.summaryContent;
+
+            // تحديث التعليم
+            document.querySelector('.text-education-title').textContent = t.educationTitle;
+            document.querySelector('.text-education-location').textContent = t.educationLocation;
+            document.querySelector('.text-education-project').textContent = t.educationProject;
+            document.querySelector('.text-education-courses').textContent = t.educationCourses;
+
+            // تحديث الخبرات
+            document.querySelector('.text-exp1-title').textContent = t.exp1Title;
+            document.querySelector('.text-exp1-date').textContent = t.exp1Date;
+            document.querySelector('.text-exp1-item1').textContent = t.exp1Item1;
+            document.querySelector('.text-exp1-item2').textContent = t.exp1Item2;
+            document.querySelector('.text-exp1-item3').textContent = t.exp1Item3;
+
+            document.querySelector('.text-exp2-title').textContent = t.exp2Title;
+            document.querySelector('.text-exp2-date').textContent = t.exp2Date;
+            document.querySelector('.text-exp2-item1').textContent = t.exp2Item1;
+            document.querySelector('.text-exp2-item2').textContent = t.exp2Item2;
+            document.querySelector('.text-exp2-item3').textContent = t.exp2Item3;
+
+            document.querySelector('.text-exp3-title').textContent = t.exp3Title;
+            document.querySelector('.text-exp3-date').textContent = t.exp3Date;
+            document.querySelector('.text-exp3-item1').textContent = t.exp3Item1;
+            document.querySelector('.text-exp3-item2').textContent = t.exp3Item2;
+            document.querySelector('.text-exp3-item3').textContent = t.exp3Item3;
+
+            document.querySelector('.text-exp4-title').textContent = t.exp4Title;
+            document.querySelector('.text-exp4-date').textContent = t.exp4Date;
+            document.querySelector('.text-exp4-item1').textContent = t.exp4Item1;
+            document.querySelector('.text-exp4-item2').textContent = t.exp4Item2;
+
+            // تحديث الشهادات
+            document.querySelector('.text-cert1-title').textContent = t.cert1Title;
+            document.querySelector('.text-cert1-date').textContent = t.cert1Date;
+
+            document.querySelector('.text-cert2-title').textContent = t.cert2Title;
+            document.querySelector('.text-cert2-location').textContent = t.cert2Location;
+            document.querySelector('.text-cert2-date').textContent = t.cert2Date;
+            document.querySelector('.text-cert2-achievement').textContent = t.cert2Achievement;
+
+            document.querySelector('.text-cert3-title').textContent = t.cert3Title;
+            document.querySelector('.text-cert3-date').textContent = t.cert3Date;
+
+            // تحديث المهارات
+            document.querySelector('.text-skill1').textContent = t.skill1;
+            document.querySelector('.text-skill2').textContent = t.skill2;
+            document.querySelector('.text-skill3').textContent = t.skill3;
+            document.querySelector('.text-skill4').textContent = t.skill4;
+            document.querySelector('.text-skill5').textContent = t.skill5;
+
+            // إعادة تفعيل أشرطة المهارات
+            setTimeout(() => {
+                const skillBars = document.querySelectorAll('.skill-level');
+                skillBars.forEach(bar => {
+                    const level = bar.getAttribute('data-level');
+                    bar.style.width = level + '%';
+                });
+            }, 300);
+        }
+
+        // تهيئة جسيمات الخلفية
+        document.addEventListener('DOMContentLoaded', function () {
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#3498db" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#3498db",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" },
+                        resize: true
+                    }
+                },
+                retina_detect: true
+            });
+
+            // إضافة مستمع الحدث لزر تبديل اللغة
+            document.getElementById('langToggle').addEventListener('click', toggleLanguage);
+
+            // إخفاء شاشة التحميل بعد تأخير بسيط
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+            }, 1500);
+
+            // تأثيرات الظهور عند التمرير
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+
+                        // تفعيل أشرطة المهارات
+                        if (entry.target.id === 'skills') {
+                            const skillBars = entry.target.querySelectorAll('.skill-level');
+                            skillBars.forEach(bar => {
+                                const level = bar.getAttribute('data-level');
+                                setTimeout(() => {
+                                    bar.style.width = level + '%';
+                                }, 300);
+                            });
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // زر العودة للأعلى
+            const scrollTopBtn = document.getElementById('scrollTop');
+
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('active');
+                } else {
+                    scrollTopBtn.classList.remove('active');
+                }
+            });
+
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // تأثيرات إضافية عند التمرير
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled * -0.5;
+
+                document.querySelector('.floating-bg').style.transform = `translateY(${rate}px)`;
+
+                const header = document.querySelector('header');
+                if (scrolled > 50) {
+                    header.style.transform = `translateY(${scrolled * 0.1}px)`;
+                }
+            });
+
+            // تأثيرات عند تحميل الصفحة
+            window.addEventListener('load', () => {
+                document.body.classList.add('loaded');
+
+                // إضافة تأثيرات للعناصر العائمة
+                const floatingElements = document.querySelectorAll('.floating-element');
+                floatingElements.forEach((el, index) => {
+                    el.style.animationDelay = `${index * 2}s`;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
