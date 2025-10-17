@@ -18,6 +18,7 @@
             --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             --gradient: linear-gradient(135deg, #3498db, #2c3e50);
+            --food-gradient: linear-gradient(135deg, #27ae60, #2ecc71, #3498db);
         }
 
         * {
@@ -46,6 +47,34 @@
             background: radial-gradient(circle at 20% 80%, rgba(52, 152, 219, 0.3) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(231, 76, 60, 0.3) 0%, transparent 50%),
                 radial-gradient(circle at 40% 40%, rgba(46, 204, 113, 0.2) 0%, transparent 50%);
+        }
+
+        .food-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.05;
+            background-image:
+                radial-gradient(circle at 25% 25%, #e74c3c 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, #3498db 2px, transparent 2px),
+                radial-gradient(circle at 50% 50%, #2ecc71 2px, transparent 2px),
+                radial-gradient(circle at 10% 90%, #f39c12 2px, transparent 2px),
+                radial-gradient(circle at 90% 10%, #9b59b6 2px, transparent 2px);
+            background-size: 150px 150px, 200px 200px, 180px 180px, 220px 220px, 170px 170px;
+            animation: floatPattern 30s infinite linear;
+        }
+
+        @keyframes floatPattern {
+            0% {
+                background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
+            }
+
+            100% {
+                background-position: 150px 150px, 200px 200px, 180px 180px, 220px 220px, 170px 170px;
+            }
         }
 
         .container {
@@ -138,15 +167,18 @@
             font-weight: 400;
         }
 
-        /* Language Toggle */
-        .language-toggle {
+        /* Header Buttons */
+        .header-buttons {
             position: absolute;
             top: 20px;
             right: 20px;
             z-index: 10;
+            display: flex;
+            gap: 10px;
         }
 
-        .lang-btn {
+        .lang-btn,
+        .certificates-btn {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
@@ -161,7 +193,8 @@
             transition: var(--transition);
         }
 
-        .lang-btn:hover {
+        .lang-btn:hover,
+        .certificates-btn:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: scale(1.05);
         }
@@ -209,6 +242,7 @@
             gap: 30px;
         }
 
+        /* تحسينات للشاشات المتوسطة */
         @media (max-width: 968px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -221,6 +255,101 @@
 
             .profile-info h1 {
                 font-size: 2.2rem;
+            }
+
+            .header-buttons {
+                position: relative;
+                top: 0;
+                right: 0;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+        }
+
+        /* تحسينات للشاشات الصغيرة - معلومات الاتصال */
+        @media (max-width: 768px) {
+            .contact-info {
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .contact-item {
+                width: 50px;
+                height: 50px;
+                padding: 0;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+            }
+
+            .contact-item span {
+                display: none;
+            }
+
+            .contact-item i {
+                font-size: 1.5rem;
+                margin: 0;
+            }
+
+            .contact-item:hover::after {
+                content: attr(data-tooltip);
+                position: absolute;
+                bottom: -40px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-size: 0.8rem;
+                white-space: nowrap;
+                z-index: 100;
+            }
+
+            .contact-item:hover::before {
+                content: '';
+                position: absolute;
+                bottom: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent transparent rgba(0, 0, 0, 0.8) transparent;
+                z-index: 100;
+            }
+
+            header {
+                padding: 30px 20px;
+            }
+        }
+
+        /* تحسينات إضافية للشاشات الصغيرة جدًا */
+        @media (max-width: 480px) {
+            .contact-item {
+                width: 45px;
+                height: 45px;
+            }
+
+            .contact-item i {
+                font-size: 1.3rem;
+            }
+
+            header {
+                padding: 25px 15px;
+            }
+
+            .profile-info h1 {
+                font-size: 1.8rem;
+            }
+
+            .profile-info .title {
+                font-size: 1.1rem;
+            }
+
+            .container {
+                padding: 10px;
             }
         }
 
@@ -614,12 +743,366 @@
                 transform: rotate(360deg);
             }
         }
+
+        /* Certificates Page Styles */
+        .certificates-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .certificates-page.active {
+            display: flex;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .certificates-container {
+            background: white;
+            border-radius: 20px;
+            max-width: 1000px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .certificates-page.active .certificates-container {
+            transform: scale(1);
+        }
+
+        .certificates-header {
+            background: var(--food-gradient);
+            color: white;
+            padding: 30px;
+            border-radius: 20px 20px 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .certificates-header h2 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .certificates-header p {
+            opacity: 0.9;
+        }
+
+        .close-certificates {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-certificates:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .certificate-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .certificate-item:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .certificate-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .certificate-item:hover .certificate-img {
+            transform: scale(1.1);
+        }
+
+        .certificate-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .certificate-item:hover .certificate-overlay {
+            opacity: 1;
+        }
+
+        .view-certificate {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            transform: translateY(20px);
+        }
+
+        .certificate-item:hover .view-certificate {
+            transform: translateY(0);
+        }
+
+        .view-certificate:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .certificate-info {
+            padding: 20px;
+        }
+
+        .certificate-info h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .certificate-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Certificate Modal */
+        .certificate-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .certificate-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .certificate-modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-certificate-img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            background: #c0392b;
+            transform: rotate(90deg);
+        }
+
+        /* Food industry specific animations */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse-animation {
+            animation: pulse 3s infinite;
+        }
+
+        /* Glowing effect for certificates button */
+        .certificates-btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .certificates-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .certificates-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Food-themed floating icons */
+        .food-icon {
+            position: fixed;
+            font-size: 2rem;
+            opacity: 0.1;
+            z-index: -1;
+            animation: floatFood 15s infinite linear;
+        }
+
+        .food-icon:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            color: #e74c3c;
+            animation-delay: 0s;
+        }
+
+        .food-icon:nth-child(2) {
+            top: 20%;
+            right: 10%;
+            color: #3498db;
+            animation-delay: 2s;
+        }
+
+        .food-icon:nth-child(3) {
+            bottom: 15%;
+            left: 15%;
+            color: #2ecc71;
+            animation-delay: 4s;
+        }
+
+        .food-icon:nth-child(4) {
+            bottom: 25%;
+            right: 5%;
+            color: #f39c12;
+            animation-delay: 6s;
+        }
+
+        .food-icon:nth-child(5) {
+            top: 50%;
+            left: 10%;
+            color: #9b59b6;
+            animation-delay: 8s;
+        }
+
+        @keyframes floatFood {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            25% {
+                transform: translateY(-20px) rotate(90deg);
+            }
+
+            50% {
+                transform: translateY(0) rotate(180deg);
+            }
+
+            75% {
+                transform: translateY(20px) rotate(270deg);
+            }
+
+            100% {
+                transform: translateY(0) rotate(360deg);
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="floating-bg"></div>
+    <div class="food-pattern"></div>
     <div id="particles-js"></div>
+
+    <!-- Food-themed floating icons -->
+    <i class="fas fa-apple-alt food-icon"></i>
+    <i class="fas fa-carrot food-icon"></i>
+    <i class="fas fa-cheese food-icon"></i>
+    <i class="fas fa-wine-bottle food-icon"></i>
+    <i class="fas fa-seedling food-icon"></i>
 
     <!-- Floating elements -->
     <div class="floating-element"></div>
@@ -632,6 +1115,194 @@
         <div class="spinner"></div>
     </div>
 
+    <!-- Certificates Page -->
+    <div class="certificates-page" id="certificatesPage">
+        <div class="certificates-container">
+            <div class="certificates-header">
+                <h2><i class="fas fa-certificate"></i> <span class="text-certificates-title">My Certificates</span></h2>
+                <p class="text-certificates-subtitle">Professional certifications and training achievements</p>
+                <button class="close-certificates" id="closeCertificates">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="certificates-grid">
+
+                <!-- Certificate 1 -->
+                <div class="certificate-item">
+                    <img src="شهاده التخرج.jpg" alt="Food Safety Training" class="certificate-img">
+                    <div class="certificate-overlay">
+                        <button class="view-certificate text-view-cert" data-img="شهاده التخرج.jpg">View
+                            Certificate</button>
+                    </div>
+                    <div class="certificate-info">
+                        <h3 class="text-cert2-title">شهادة التخرج </h3>
+                        <p class="text-cert2-org">جامعه المنيا | كليه الزراعه (الصناعات الغذائيةوالالبان)</p>
+                        <p class="text-cert2-date">2023</p>
+                    </div>
+                </div>
+
+
+                <!-- Certificate 2 -->
+                <div class="certificate-item">
+                    <img src="دبلومه اليسون.jpg" alt="Food Safety Diploma" class="certificate-img">
+                    <div class="certificate-overlay">
+                        <button class="view-certificate text-view-cert" data-img="دبلومه اليسون.jpg">View
+                            Certificate</button>
+                    </div>
+                    <div class="certificate-info">
+                        <h3 class="text-cert1-title">Diploma in Food Safety</h3>
+                        <p class="text-cert1-org">Alison Platform</p>
+                        <p class="text-cert1-date">2022</p>
+                    </div>
+                </div>
+
+
+                <!-- Certificate 2+ -->
+                <div class="certificate-item">
+                    <img src="شهاده اليسون.jpg" alt="Quality Control" class="certificate-img">
+                    <div class="certificate-overlay">
+                        <button class="view-certificate text-view-cert" data-img="شهاده اليسون.jpg">View
+                            Certificate</button>
+                    </div>
+                    <div class="certificate-info">
+                        <h3 class="text-cert1-title">Diploma in Food Safety</h3>
+                        <p class="text-cert1-org">Alison Platform</p>
+                        <p class="text-cert1-date">2022</p>
+                    </div>
+                </div>
+
+                <!-- Certificate 3 -->
+                <div class="certificate-item">
+                    <img src="زويل.jpg" alt="Advanced Training" class="certificate-img">
+                    <div class="certificate-overlay">
+                        <button class="view-certificate text-view-cert" data-img="زويل.jpg">View
+                            Certificate</button>
+                    </div>
+
+
+                    <div class="certificate-info">
+                        <h3 class="text-cert2-title">Food Safety Training Program</h3>
+                        <p class="text-cert2-org">Zewail City University</p>
+                        <p class="text-cert2-date">30 Hours | 2021</p>
+                    </div>
+
+                </div>
+
+                <!-- Certificate 4 -->
+                <div class="certificate-item">
+                    <img src="haccp.jpg" alt="Quality Control" class="certificate-img">
+                    <div class="certificate-overlay">
+                        <button class="view-certificate text-view-cert" data-img="haccp.jpg">View
+                            Certificate</button>
+                    </div>
+
+                    <div class="certificate-info">
+                        <h3 class="text-cert3-title">Advanced Training in HACCP
+                        </h3>
+                        <p class="text-cert3-org">Egyptian Organization for Standardization and Quality</p>
+                        <p class="text-cert3-date">2023</p>
+                    </div>
+
+
+                </div>
+
+                <!-- Certificate 5 -->
+                <div class="certificate-item">
+                    <img src="22000.jpg" alt="Quality Control" class="certificate-img">
+                    <div class="certificate-overlay">
+                        <button class="view-certificate text-view-cert" data-img="22000.jpg">View
+                            Certificate</button>
+                    </div>
+                    <div class="certificate-info">
+                        <h3 class="text-cert3-title">Advanced Training in ISO 22000:2018
+                        </h3>
+                        <p class="text-cert3-org">Egyptian Organization for Standardization and Quality</p>
+                        <p class="text-cert3-date">2023</p>
+                    </div>
+                </div>
+
+
+                <!-- Certificate 6 -->
+                <div class="certificate-item">
+                    <img src="gmp.jpg" alt="Quality Control" class="certificate-img">
+                    <div class="certificate-overlay">
+                        <button class="view-certificate text-view-cert" data-img="gmp.jpg">View
+                            Certificate</button>
+                    </div>
+                    <div class="certificate-info">
+                        <h3 class="text-cert4-title">Advanced Training in ISO GMP</h3>
+                        <p class="text-cert4-org">Egyptian Organization for Standardization and Quality</p>
+                        <p class="text-cert4-date">2023 </p>
+                    </div>
+                </div>
+
+
+                <!-- Certificate 7 -->
+                <div class="certificate-item">
+                    <img src="ghp.jpg" alt="Quality Control" class="certificate-img">
+                    <div class="certificate-overlay">
+                        <button class="view-certificate text-view-cert" data-img="ghp.jpg">View
+                            Certificate</button>
+                    </div>
+                    <div class="certificate-info">
+                        <h3 class="text-cert4-title">Advanced Training in ISO GHP</h3>
+                        <p class="text-cert4-org">Egyptian Organization for Standardization and Quality</p>
+                        <p class="text-cert4-date">2023 </p>
+                    </div>
+                </div>
+
+
+
+
+
+                <!-- Certificate 9 -->
+                <div class="certificate-item">
+                    <img src="الفخامه.jpg" alt="Quality Control" class="certificate-img">
+                    <div class="certificate-overlay">
+                        <button class="view-certificate text-view-cert" data-img="الفخامة.jpg">View
+                            Certificate</button>
+                    </div>
+                    <div class="certificate-info">
+                        <h3 class="text-cert4-title">Quality Control & Production Training </h3>
+                        <p class="text-cert4-org">– Al-Fakhama Dairy Products</p>
+                        <p class="text-cert4-date">2022</p>
+                    </div>
+                </div>
+
+
+
+
+
+                <!-- Certificate 10-->
+                <div class="certificate-item">
+                    <img src="اكسيل.jpg" alt="Quality Control" class="certificate-img">
+                    <div class="certificate-overlay">
+                        <button class="view-certificate text-view-cert" data-img="اكسيل.jpg">View
+                            Certificate</button>
+                    </div>
+                    <div class="certificate-info">
+                        <h3 class="text-cert4-title">ICDL Course</h3>
+                        <p class="text-cert4-org">Udemy</p>
+                        <p class="text-cert4-date">2020</p>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Certificate Modal -->
+    <div class="certificate-modal" id="certificateModal">
+        <div class="modal-content">
+            <img src="" alt="Certificate" class="modal-certificate-img" id="modalCertificateImg">
+            <button class="close-modal" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Scroll to top button -->
     <div class="scroll-top" id="scrollTop">
         <i class="fas fa-chevron-up"></i>
@@ -639,7 +1310,11 @@
 
     <div class="container">
         <header>
-            <div class="language-toggle">
+            <div class="header-buttons">
+                <button class="certificates-btn" id="certificatesBtn">
+                    <i class="fas fa-certificate"></i>
+                    <span class="text-certificates-btn">My Certificates</span>
+                </button>
                 <button class="lang-btn" id="langToggle">
                     <i class="fas fa-language"></i>
                     <span>العربية</span>
@@ -656,20 +1331,24 @@
                     <h1>Samir Magdy Yacoub</h1>
                     <div class="title">Quality Control Specialist - Food Industries</div>
                     <div class="contact-info">
-                        <div class="contact-item" onclick="contactAction('tel:+201129724884')">
+                        <div class="contact-item" onclick="contactAction('tel:+201129724884')"
+                            data-tooltip="+201129724884">
                             <i class="fas fa-phone"></i>
                             <span>+201129724884</span>
                         </div>
-                        <div class="contact-item" onclick="contactAction('mailto:samirmagdy9955@gmail.com')">
+                        <div class="contact-item" onclick="contactAction('mailto:samirmagdy9955@gmail.com')"
+                            data-tooltip="samirmagdy9955@gmail.com">
                             <i class="fas fa-envelope"></i>
                             <span>samirmagdy9955@gmail.com</span>
                         </div>
                         <div class="contact-item"
-                            onclick="contactAction('https://www.linkedin.com/in/samir-magdy-101a48241?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app')">
+                            onclick="contactAction('https://www.linkedin.com/in/samir-magdy-101a48241?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app')"
+                            data-tooltip="LinkedIn">
                             <i class="fab fa-linkedin"></i>
                             <span>LinkedIn</span>
                         </div>
-                        <div class="contact-item" onclick="contactAction('https://wa.me/201129724884')">
+                        <div class="contact-item" onclick="contactAction('https://wa.me/201129724884')"
+                            data-tooltip="WhatsApp">
                             <i class="fab fa-whatsapp"></i>
                             <span>WhatsApp</span>
                         </div>
@@ -850,6 +1529,9 @@
                 // Language Toggle
                 langToggle: "العربية",
 
+                // Certificates Button
+                certificatesBtn: "My Certificates",
+
                 // Sections
                 summary: "Professional Summary",
                 education: "Education",
@@ -911,7 +1593,15 @@
                 skill2: "Quality Management: ISO 9001:2015",
                 skill3: "Quality Control & Auditing",
                 skill4: "Food Production Processes",
-                skill5: "Languages: Arabic (Native), English (Good)"
+                skill5: "Languages: Arabic (Native), English (Good)",
+
+                // Certificates Page
+                certificatesTitle: "My Certificates",
+                certificatesSubtitle: "Professional certifications and training achievements",
+                viewCert: "View Certificate",
+                cert4Title: "Quality Control Specialist Certification",
+                cert4Org: "Food Industries Association",
+                cert4Date: "2024"
             },
             ar: {
                 // Header
@@ -920,6 +1610,9 @@
 
                 // Language Toggle
                 langToggle: "English",
+
+                // Certificates Button
+                certificatesBtn: "شهاداتي",
 
                 // Sections
                 summary: "ملخص مهني",
@@ -982,7 +1675,15 @@
                 skill2: "إدارة الجودة: ISO 9001:2015",
                 skill3: "مراقبة الجودة والتدقيق",
                 skill4: "عمليات إنتاج الغذاء",
-                skill5: "اللغات: العربية (اللغة الأم)، الإنجليزية (جيدة)"
+                skill5: "اللغات: العربية (اللغة الأم)، الإنجليزية (جيدة)",
+
+                // Certificates Page
+                certificatesTitle: "شهاداتي",
+                certificatesSubtitle: "الشهادات المهنية والإنجازات التدريبية",
+                viewCert: "عرض الشهادة",
+                cert4Title: "شهادة أخصائي مراقبة الجودة",
+                cert4Org: "جمعية الصناعات الغذائية",
+                cert4Date: "2024"
             }
         };
 
@@ -1020,6 +1721,9 @@
             // تحديث الترويسة
             document.querySelector('.profile-info h1').textContent = t.name;
             document.querySelector('.profile-info .title').textContent = t.title;
+
+            // تحديث زر الشهادات
+            document.querySelector('.text-certificates-btn').textContent = t.certificatesBtn;
 
             // تحديث عناوين الأقسام
             document.querySelector('.text-summary').textContent = t.summary;
@@ -1086,6 +1790,16 @@
             document.querySelector('.text-skill4').textContent = t.skill4;
             document.querySelector('.text-skill5').textContent = t.skill5;
 
+            // تحديث صفحة الشهادات
+            document.querySelector('.text-certificates-title').textContent = t.certificatesTitle;
+            document.querySelector('.text-certificates-subtitle').textContent = t.certificatesSubtitle;
+            document.querySelectorAll('.text-view-cert').forEach(el => {
+                el.textContent = t.viewCert;
+            });
+            document.querySelector('.text-cert4-title').textContent = t.cert4Title;
+            document.querySelector('.text-cert4-org').textContent = t.cert4Org;
+            document.querySelector('.text-cert4-date').textContent = t.cert4Date;
+
             // إعادة تفعيل أشرطة المهارات
             setTimeout(() => {
                 const skillBars = document.querySelectorAll('.skill-level');
@@ -1094,6 +1808,26 @@
                     bar.style.width = level + '%';
                 });
             }, 300);
+        }
+
+        // وظائف صفحة الشهادات
+        function openCertificatesPage() {
+            document.getElementById('certificatesPage').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCertificatesPage() {
+            document.getElementById('certificatesPage').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function openCertificateModal(imgSrc) {
+            document.getElementById('modalCertificateImg').src = imgSrc;
+            document.getElementById('certificateModal').classList.add('active');
+        }
+
+        function closeCertificateModal() {
+            document.getElementById('certificateModal').classList.remove('active');
         }
 
         // تهيئة جسيمات الخلفية
@@ -1135,6 +1869,37 @@
 
             // إضافة مستمع الحدث لزر تبديل اللغة
             document.getElementById('langToggle').addEventListener('click', toggleLanguage);
+
+            // إضافة مستمع الحدث لزر الشهادات
+            document.getElementById('certificatesBtn').addEventListener('click', openCertificatesPage);
+
+            // إضافة مستمع الحدث لإغلاق صفحة الشهادات
+            document.getElementById('closeCertificates').addEventListener('click', closeCertificatesPage);
+
+            // إضافة مستمع الحدث لإغلاق نافذة الشهادة
+            document.getElementById('closeModal').addEventListener('click', closeCertificateModal);
+
+            // إضافة مستمع الحدث لأزرار عرض الشهادة
+            document.querySelectorAll('.view-certificate').forEach(button => {
+                button.addEventListener('click', function () {
+                    const imgSrc = this.getAttribute('data-img');
+                    openCertificateModal(imgSrc);
+                });
+            });
+
+            // إغلاق نافذة الشهادة بالنقر خارجها
+            document.getElementById('certificateModal').addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeCertificateModal();
+                }
+            });
+
+            // إغلاق صفحة الشهادات بالنقر خارجها
+            document.getElementById('certificatesPage').addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeCertificatesPage();
+                }
+            });
 
             // إخفاء شاشة التحميل بعد تأخير بسيط
             setTimeout(() => {
