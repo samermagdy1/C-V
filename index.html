@@ -191,12 +191,32 @@
             font-weight: 600;
             backdrop-filter: blur(5px);
             transition: var(--transition);
+            position: relative;
         }
 
         .lang-btn:hover,
         .certificates-btn:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: scale(1.05);
+        }
+
+        /* تأثير النبض للأزرار */
+        .certificates-btn.pulse {
+            animation: gentlePulse 2s infinite;
+        }
+
+        @keyframes gentlePulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
         }
 
         /* Contact Styles */
@@ -844,6 +864,7 @@
             font-weight: 600;
             backdrop-filter: blur(5px);
             transition: var(--transition);
+            position: relative;
         }
 
         .download-pdf-btn:hover,
@@ -855,6 +876,11 @@
         .download-pdf-btn i,
         .close-certificates i {
             font-size: 1.2rem;
+        }
+
+        /* تأثير النبض لزر تنزيل PDF */
+        .download-pdf-btn.pulse {
+            animation: gentlePulse 2s infinite;
         }
 
         .certificates-grid {
@@ -972,6 +998,7 @@
             cursor: pointer;
             transition: var(--transition);
             transform: translateY(20px);
+            position: relative;
         }
 
         .certificate-item:hover .view-certificate {
@@ -981,6 +1008,11 @@
         .view-certificate:hover {
             background: #c0392b;
             transform: scale(1.05);
+        }
+
+        /* تأثير النبض لأزرار عرض الشهادات */
+        .view-certificate.pulse {
+            animation: gentlePulse 2s infinite;
         }
 
         .certificate-info {
@@ -1264,7 +1296,7 @@
                     <p class="text-certificates-subtitle">Professional certifications and training achievements</p>
                 </div>
                 <div class="certificates-actions">
-                    <button class="download-pdf-btn" id="downloadPdf">
+                    <button class="download-pdf-btn pulse" id="downloadPdf">
                         <i class="fas fa-file-pdf"></i>
                         <span class="text-download-btn">Download CV PDF</span>
                     </button>
@@ -1280,7 +1312,7 @@
                     <div class="certificate-img-container">
                         <img src="شهاده التخرج.jpg" alt="Food Safety Training" class="certificate-img">
                         <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert" data-img="شهاده التخرج.jpg">View
+                            <button class="view-certificate text-view-cert pulse" data-img="شهاده التخرج.jpg">View
                                 Certificate</button>
                         </div>
                     </div>
@@ -1296,7 +1328,7 @@
                     <div class="certificate-img-container">
                         <img src="دبلومه اليسون.jpg" alt="Food Safety Diploma" class="certificate-img">
                         <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert" data-img="دبلومه اليسون.jpg">View
+                            <button class="view-certificate text-view-cert pulse" data-img="دبلومه اليسون.jpg">View
                                 Certificate</button>
                         </div>
                     </div>
@@ -1312,7 +1344,7 @@
                     <div class="certificate-img-container">
                         <img src="شهاده اليسون.jpg" alt="Quality Control" class="certificate-img">
                         <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert" data-img="شهاده اليسون.jpg">View
+                            <button class="view-certificate text-view-cert pulse" data-img="شهاده اليسون.jpg">View
                                 Certificate</button>
                         </div>
                     </div>
@@ -1328,7 +1360,7 @@
                     <div class="certificate-img-container">
                         <img src="زويل.jpg" alt="Advanced Training" class="certificate-img">
                         <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert" data-img="زويل.jpg">View
+                            <button class="view-certificate text-view-cert pulse" data-img="زويل.jpg">View
                                 Certificate</button>
                         </div>
                     </div>
@@ -1344,7 +1376,7 @@
                     <div class="certificate-img-container">
                         <img src="haccp.jpg" alt="Quality Control" class="certificate-img">
                         <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert" data-img="haccp.jpg">View
+                            <button class="view-certificate text-view-cert pulse" data-img="haccp.jpg">View
                                 Certificate</button>
                         </div>
                     </div>
@@ -1361,7 +1393,7 @@
                     <div class="certificate-img-container">
                         <img src="22000.jpg" alt="Quality Control" class="certificate-img">
                         <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert" data-img="22000.jpg">View
+                            <button class="view-certificate text-view-cert pulse" data-img="22000.jpg">View
                                 Certificate</button>
                         </div>
                     </div>
@@ -1378,7 +1410,8 @@
                     <div class="certificate-img-container">
                         <img src="gmp.jpg" alt="Quality Control" class="certificate-img">
                         <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert" data-img="gmp.jpg">View Certificate</button>
+                            <button class="view-certificate text-view-cert pulse" data-img="gmp.jpg">View
+                                Certificate</button>
                         </div>
                     </div>
                     <div class="certificate-info">
@@ -1393,7 +1426,8 @@
                     <div class="certificate-img-container">
                         <img src="ghp.jpg" alt="Quality Control" class="certificate-img">
                         <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert" data-img="ghp.jpg">View Certificate</button>
+                            <button class="view-certificate text-view-cert pulse" data-img="ghp.jpg">View
+                                Certificate</button>
                         </div>
                     </div>
                     <div class="certificate-info">
@@ -1408,7 +1442,7 @@
                     <div class="certificate-img-container">
                         <img src="الفخامه.jpg" alt="Quality Control" class="certificate-img">
                         <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert" data-img="الفخامه.jpg">View
+                            <button class="view-certificate text-view-cert pulse" data-img="الفخامه.jpg">View
                                 Certificate</button>
                         </div>
                     </div>
@@ -1424,7 +1458,7 @@
                     <div class="certificate-img-container">
                         <img src="اكسيل.jpg" alt="Quality Control" class="certificate-img">
                         <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert" data-img="اكسيل.jpg">View
+                            <button class="view-certificate text-view-cert pulse" data-img="اكسيل.jpg">View
                                 Certificate</button>
                         </div>
                     </div>
@@ -1468,7 +1502,7 @@
     <div class="container">
         <header>
             <div class="header-buttons">
-                <button class="certificates-btn" id="certificatesBtn">
+                <button class="certificates-btn pulse" id="certificatesBtn">
                     <i class="fas fa-certificate"></i>
                     <span class="text-certificates-btn">My Certificates</span>
                 </button>
@@ -1672,7 +1706,7 @@
         </div>
 
         <footer>
-            <p class="text-footer">© 2025 Samir Magdy Yacoub - All Rights Reserved</p>
+            <p class="text-footer">© 2025 Samir Magdy Yacoub </p>
         </footer>
     </div>
 
@@ -1721,19 +1755,19 @@
                 exp1Item3: "Performing lab tests and coordinating corrective actions to maintain product safety and consistency.",
 
                 exp2Title: "Quality Control Specialist – Smiley's for Food Industries, Obour City",
-                // exp2Date: "2024 – 2025",
+                exp2Date: "2024 – 2025",
                 exp2Item1: "Oversaw quality control of meat products and refrigerated vegetables.",
                 exp2Item2: "Implemented quality assurance procedures and verified compliance with GMP and ISO standards.",
                 exp2Item3: "Ensured cold chain integrity and adherence to hygiene and safety protocols.",
 
                 exp3Title: "Quality Control Training – El-Salah for Food Industries (Juices & Beverages – Tetra Pak)",
-                // exp3Date: "2023 – 2024",
+                exp3Date: "2023 – 2024",
                 exp3Item1: "Assisted in monitoring production lines and maintaining hygiene and safety controls.",
                 exp3Item2: "Conducted sampling and testing for product quality and shelf-life stability.",
                 exp3Item3: "Documented findings and supported implementation of HACCP system.",
 
                 exp4Title: "Quality Control | Production Training – Al-Fakhama Dairy Products",
-                // exp4Date: "2022",
+                exp4Date: "2022",
                 exp4Item1: "Monitored production processes and ensured compliance with food safety standards.",
                 exp4Item2: "Operated food production equipment and performed lab testing on product samples.",
 
@@ -2038,7 +2072,7 @@
         // وظيفة تنزيل PDF المباشر
         function downloadDirectPDF() {
             // رابط التحميل المباشر
-            const directDownloadUrl = 'https://www.mediafire.com/file/amle1exvxk6w9ru/cv+samir+magdy+E+%282%29.pdf?dkey=sxgphy632qw&r=588';
+            const directDownloadUrl ='https://www.mediafire.com/file/amle1exvxk6w9ru/cv+samir+magdy+E+%282%29.pdf?dkey=sxgphy632qw&r=588';
 
             // إنشاء عنصر رابط مؤقت
             const link = document.createElement('a');
