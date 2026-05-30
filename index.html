@@ -1476,24 +1476,21 @@ body.ar-mode .mol-badge { right: auto; left: 18px; }
   </div>
 
   <!-- ===== OHS ACCENT STRIP ===== -->
-  <div class="ohs-strip" id="ohsStrip" data-obs>
+  <!-- <div class="ohs-strip" id="ohsStrip" data-obs>
     <div class="ohs-icon-group">
       <div class="ohs-icon-wrap"><i class="fas fa-hard-hat"></i></div>
       <div class="ohs-icon-wrap"><i class="fas fa-shield-halved"></i></div>
     </div>
     <div class="ohs-text">
       <strong data-key="ohsTitle">Occupational Health & Safety Specialist</strong>
-      <span data-key="ohsSub">Certified in workplace hazard management, risk assessment, and safety compliance</span>
     </div>
     <div class="ohs-badges">
       <span class="ohs-badge">ISO 45001</span>
       <span class="ohs-badge">Risk Assessment</span>
       <span class="ohs-badge">OSHA</span>
       <span class="ohs-badge">PPE</span>
-      <span class="ohs-badge">Workplace Safety</span>
-      <span class="ohs-badge">Emergency Response</span>
     </div>
-  </div>
+  </div> -->
 
   <!-- ===== PROFESSIONAL SUMMARY (2nd card) ===== -->
   <div class="card summary-card stagger-1" data-obs>
@@ -2285,6 +2282,21 @@ async function downloadPDF() {
   sectionTitle('Professional Summary');
 
   // OHS sub-header inside summary
+
+ doc.setFillColor(15, 23, 42);
+  doc.roundedRect(mar + 2, y, W - mar * 2 - 4, 12, 2, 2, 'F');
+  doc.setFillColor(...C.goldLight);
+  doc.rect(mar + 2, y, 3, 12, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.setTextColor(...C.goldLight);
+  doc.text('Quality & Food Safety Specialist ', mar + 8, y + 4.8);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7.5);
+  doc.setTextColor(200, 210, 200);
+  doc.text('Quality & Food Safety Specialist  |Food Safety Systems: GMP, GHP, HACCP, ISO 22000:2018  •  Quality Management: ISO 9001:2015 •  Food Production Processes  ', mar + 8, y + 9.5);
+  y += 17;
+ 
   doc.setFillColor(15, 23, 42);
   doc.roundedRect(mar + 2, y, W - mar * 2 - 4, 12, 2, 2, 'F');
   doc.setFillColor(...C.goldLight);
@@ -2292,11 +2304,11 @@ async function downloadPDF() {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9);
   doc.setTextColor(...C.goldLight);
-  doc.text('Occupational Health & Safety Specialist – Basic Certified', mar + 8, y + 4.8);
+  doc.text('Occupational Health & Safety Specialist – Basic ', mar + 8, y + 4.8);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.setTextColor(200, 210, 200);
-  doc.text('Center for Occupational Health & Safety Studies  |  ISO 45001  •  Risk Assessment  •  OSHA  •  PPE  •  Workplace Safety', mar + 8, y + 9.5);
+  doc.text('Center for Occupational Health & Safety  |  ISO 45001  •  Risk Assessment  •  OSHA  •  PPE  ', mar + 8, y + 9.5);
   y += 17;
 
   // Main summary paragraph
