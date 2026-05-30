@@ -1,2248 +1,1614 @@
 <!DOCTYPE html>
-<html lang="ar" dir="ltr">
-
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samir Magdy - Interactive CV</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            --gradient: linear-gradient(135deg, #3498db, #2c3e50);
-            --food-gradient: linear-gradient(135deg, #27ae60, #2ecc71, #3498db);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
-            color: #333;
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        .floating-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.1;
-            background: radial-gradient(circle at 20% 80%, rgba(52, 152, 219, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(231, 76, 60, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(46, 204, 113, 0.2) 0%, transparent 50%);
-        }
-
-        .food-pattern {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            opacity: 0.05;
-            background-image:
-                radial-gradient(circle at 25% 25%, #e74c3c 2px, transparent 2px),
-                radial-gradient(circle at 75% 75%, #3498db 2px, transparent 2px),
-                radial-gradient(circle at 50% 50%, #2ecc71 2px, transparent 2px),
-                radial-gradient(circle at 10% 90%, #f39c12 2px, transparent 2px),
-                radial-gradient(circle at 90% 10%, #9b59b6 2px, transparent 2px);
-            background-size: 150px 150px, 200px 200px, 180px 180px, 220px 220px, 170px 170px;
-            animation: floatPattern 30s infinite linear;
-        }
-
-        @keyframes floatPattern {
-            0% {
-                background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
-            }
-
-            100% {
-                background-position: 150px 150px, 200px 200px, 180px 180px, 220px 220px, 170px 170px;
-            }
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Header Styles */
-        header {
-            background: var(--gradient);
-            color: white;
-            padding: 40px 30px;
-            border-radius: 20px;
-            margin-bottom: 40px;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
-            background-size: cover;
-        }
-
-        header:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .profile-container {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .profile-img {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            object-fit: cover;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .profile-img::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.3), rgba(46, 204, 113, 0.3));
-            border-radius: 50%;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .profile-img:hover {
-            transform: scale(1.05) rotate(5deg);
-            border-color: rgba(255, 255, 255, 0.6);
-        }
-
-        .profile-img:hover::after {
-            opacity: 1;
-        }
-
-        .profile-info h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .profile-info .title {
-            font-size: 1.4rem;
-            opacity: 0.9;
-            margin-bottom: 20px;
-            font-weight: 400;
-        }
-
-        /* Header Buttons */
-        .header-buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 10;
-            display: flex;
-            gap: 10px;
-        }
-
-        .lang-btn,
-        .certificates-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            backdrop-filter: blur(5px);
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .lang-btn:hover,
-        .certificates-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
-        }
-
-        /* تأثير النبض للأزرار */
-        .certificates-btn.pulse {
-            animation: gentlePulse 2s infinite;
-        }
-
-        @keyframes gentlePulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
-            }
-
-            70% {
-                box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-            }
-        }
-
-        /* Contact Styles */
-        .contact-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 12px 20px;
-            border-radius: 50px;
-            transition: var(--transition);
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .contact-item:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .contact-item i {
-            font-size: 1.3rem;
-            transition: var(--transition);
-        }
-
-        .contact-item:hover i {
-            transform: scale(1.2);
-        }
-
-        /* Main Content */
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        /* تحسينات للشاشات المتوسطة */
-        @media (max-width: 968px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-
-            .profile-container {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .profile-info h1 {
-                font-size: 2.2rem;
-            }
-
-            .header-buttons {
-                position: relative;
-                top: 0;
-                right: 0;
-                justify-content: center;
-                margin-bottom: 20px;
-            }
-        }
-
-        /* تحسينات للشاشات الصغيرة - معلومات الاتصال */
-        @media (max-width: 768px) {
-            .contact-info {
-                justify-content: center;
-                gap: 10px;
-            }
-
-            .contact-item {
-                width: 50px;
-                height: 50px;
-                padding: 0;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: relative;
-            }
-
-            .contact-item span {
-                display: none;
-            }
-
-            .contact-item i {
-                font-size: 1.5rem;
-                margin: 0;
-            }
-
-            .contact-item:hover::after {
-                content: attr(data-tooltip);
-                position: absolute;
-                bottom: -40px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(0, 0, 0, 0.8);
-                color: white;
-                padding: 5px 10px;
-                border-radius: 5px;
-                font-size: 0.8rem;
-                white-space: nowrap;
-                z-index: 100;
-            }
-
-            .contact-item:hover::before {
-                content: '';
-                position: absolute;
-                bottom: -10px;
-                left: 50%;
-                transform: translateX(-50%);
-                border-width: 5px;
-                border-style: solid;
-                border-color: transparent transparent rgba(0, 0, 0, 0.8) transparent;
-                z-index: 100;
-            }
-
-            header {
-                padding: 30px 20px;
-            }
-        }
-
-        /* تحسينات إضافية للشاشات الصغيرة جدًا */
-        @media (max-width: 480px) {
-            .contact-item {
-                width: 45px;
-                height: 45px;
-            }
-
-            .contact-item i {
-                font-size: 1.3rem;
-            }
-
-            header {
-                padding: 25px 15px;
-            }
-
-            .profile-info h1 {
-                font-size: 1.8rem;
-            }
-
-            .profile-info .title {
-                font-size: 1.1rem;
-            }
-
-            .container {
-                padding: 10px;
-            }
-        }
-
-        .section {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: var(--gradient);
-            transition: var(--transition);
-        }
-
-        .section:hover::before {
-            width: 8px;
-        }
-
-        .section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section-title {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--secondary);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 50px;
-            height: 2px;
-            background: var(--accent);
-            transition: var(--transition);
-        }
-
-        .section:hover .section-title::after {
-            width: 100px;
-        }
-
-        .section-title i {
-            color: var(--secondary);
-            font-size: 1.5rem;
-            transition: var(--transition);
-        }
-
-        .section:hover .section-title i {
-            transform: scale(1.2) rotate(10deg);
-        }
-
-        /* Education & Experience Styles */
-        .timeline {
-            position: relative;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 20px;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: var(--gradient);
-            border-radius: 10px;
-        }
-
-        .timeline-item {
-            margin-bottom: 30px;
-            padding-left: 50px;
-            position: relative;
-            transition: var(--transition);
-        }
-
-        .timeline-item:hover {
-            transform: translateX(10px);
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: 12px;
-            top: 5px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--secondary);
-            border: 4px solid white;
-            box-shadow: 0 0 0 3px var(--secondary);
-            transition: var(--transition);
-            z-index: 1;
-        }
-
-        .timeline-item:hover::before {
-            transform: scale(1.3);
-            background: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent);
-        }
-
-        .timeline-item h3 {
-            color: var(--primary);
-            margin-bottom: 8px;
-            font-size: 1.3rem;
-        }
-
-        .timeline-item .date {
-            color: var(--secondary);
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: inline-block;
-            padding: 5px 15px;
-            background: rgba(52, 152, 219, 0.1);
-            border-radius: 20px;
-            font-size: 0.9rem;
-            transition: var(--transition);
-        }
-
-        .timeline-item:hover .date {
-            background: rgba(231, 76, 60, 0.1);
-            color: var(--accent);
-        }
-
-        .timeline-item p,
-        .timeline-item ul {
-            margin-bottom: 10px;
-            color: #555;
-        }
-
-        .timeline-item ul {
-            padding-left: 20px;
-        }
-
-        .timeline-item li {
-            margin-bottom: 8px;
-            position: relative;
-            transition: var(--transition);
-        }
-
-        .timeline-item li:hover {
-            transform: translateX(5px);
-            color: var(--primary);
-        }
-
-        .timeline-item li::before {
-            content: '▸';
-            position: absolute;
-            left: -15px;
-            color: var(--secondary);
-            transition: var(--transition);
-        }
-
-        .timeline-item li:hover::before {
-            color: var(--accent);
-            transform: scale(1.5);
-        }
-
-        /* Skills Styles */
-        .skills-list {
-            list-style: none;
-        }
-
-        .skills-list li {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .skill-name {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: var(--primary);
-            transition: var(--transition);
-        }
-
-        .skills-list li:hover .skill-name {
-            transform: translateX(10px);
-            color: var(--secondary);
-        }
-
-        .skill-bar {
-            height: 12px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .skill-level {
-            height: 100%;
-            background: var(--gradient);
-            border-radius: 10px;
-            width: 0;
-            transition: width 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .skill-level::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% {
-                transform: translateX(-100%);
-            }
-
-            100% {
-                transform: translateX(100%);
-            }
-        }
-
-        /* Floating elements */
-        .floating-element {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-            z-index: -1;
-        }
-
-        .floating-element:nth-child(1) {
-            top: 10%;
-            left: 5%;
-            animation-delay: 0s;
-            width: 40px;
-            height: 40px;
-        }
-
-        .floating-element:nth-child(2) {
-            top: 60%;
-            left: 10%;
-            animation-delay: 1s;
-            width: 60px;
-            height: 60px;
-        }
-
-        .floating-element:nth-child(3) {
-            top: 30%;
-            right: 5%;
-            animation-delay: 2s;
-            width: 30px;
-            height: 30px;
-        }
-
-        .floating-element:nth-child(4) {
-            top: 70%;
-            right: 10%;
-            animation-delay: 3s;
-            width: 45px;
-            height: 45px;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0) rotate(0deg);
-            }
-
-            50% {
-                transform: translateY(-20px) rotate(180deg);
-            }
-
-            100% {
-                transform: translateY(0) rotate(360deg);
-            }
-        }
-
-        /* Particles */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 30px;
-            margin-top: 50px;
-            color: var(--dark);
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: var(--gradient);
-            border-radius: 10px;
-        }
-
-        /* Scroll to top button */
-        .scroll-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--gradient);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-        }
-
-        .scroll-top.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .scroll-top:hover {
-            transform: translateY(-5px) scale(1.1);
-        }
-
-        /* Loading animation */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-
-        .loading.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .spinner {
-            width: 70px;
-            height: 70px;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Certificates Page Styles - UPDATED */
-        .certificates-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 10000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .certificates-page.active {
-            display: flex;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        .certificates-container {
-            background: white;
-            border-radius: 20px;
-            max-width: 95%;
-            width: 95%;
-            max-height: 95vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
-            transform: scale(0.9);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .certificates-page.active .certificates-container {
-            transform: scale(1);
-        }
-
-        .certificates-header {
-            background: var(--food-gradient);
-            color: white;
-            padding: 25px 30px;
-            border-radius: 20px 20px 0 0;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .certificates-header-content {
-            flex: 1;
-        }
-
-        .certificates-header h2 {
-            font-size: 2.2rem;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .certificates-header p {
-            opacity: 0.9;
-            font-size: 1.1rem;
-        }
-
-        .certificates-actions {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .download-pdf-btn,
-        .close-certificates {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            backdrop-filter: blur(5px);
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .download-pdf-btn:hover,
-        .close-certificates:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
-        }
-
-        .download-pdf-btn i,
-        .close-certificates i {
-            font-size: 1.2rem;
-        }
-
-        /* تأثير النبض لزر تنزيل PDF */
-        .download-pdf-btn.pulse {
-            animation: gentlePulse 2s infinite;
-        }
-
-        .certificates-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            padding: 30px;
-        }
-
-        @media (max-width: 768px) {
-            .certificates-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 20px;
-                padding: 20px;
-            }
-
-            .certificates-header {
-                padding: 20px;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .certificates-actions {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .certificates-header h2 {
-                font-size: 1.8rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .certificates-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-                padding: 15px;
-            }
-
-            .certificates-container {
-                max-width: 100%;
-                width: 100%;
-                border-radius: 10px;
-            }
-
-            .certificates-header {
-                padding: 15px;
-            }
-
-            .certificates-header h2 {
-                font-size: 1.5rem;
-            }
-        }
-
-        .certificate-item {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            position: relative;
-            cursor: pointer;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .certificate-item:hover {
-            transform: translateY(-10px) scale(1.03);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .certificate-img-container {
-            height: 200px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .certificate-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .certificate-item:hover .certificate-img {
-            transform: scale(1.1);
-        }
-
-        .certificate-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .certificate-item:hover .certificate-overlay {
-            opacity: 1;
-        }
-
-        .view-certificate {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            transform: translateY(20px);
-            position: relative;
-        }
-
-        .certificate-item:hover .view-certificate {
-            transform: translateY(0);
-        }
-
-        .view-certificate:hover {
-            background: #c0392b;
-            transform: scale(1.05);
-        }
-
-        /* تأثير النبض لأزرار عرض الشهادات */
-        .view-certificate.pulse {
-            animation: gentlePulse 2s infinite;
-        }
-
-        .certificate-info {
-            padding: 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .certificate-info h3 {
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-size: 1.3rem;
-            line-height: 1.3;
-        }
-
-        .certificate-info p {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-
-        /* Certificate Modal with Zoom */
-        .certificate-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.98);
-            z-index: 10001;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .certificate-modal.active {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-content {
-            max-width: 95%;
-            max-height: 95%;
-            position: relative;
-            transform: scale(0.8);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .certificate-modal.active .modal-content {
-            transform: scale(1);
-        }
-
-        .modal-certificate-img {
-            max-width: 100%;
-            max-height: 80vh;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            cursor: zoom-in;
-            transition: transform 0.3s ease;
-        }
-
-        .modal-certificate-img.zoomed {
-            cursor: grab;
-        }
-
-        .modal-certificate-img.zooming {
-            transition: transform 0.1s ease;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: -50px;
-            right: 0;
-            background: var(--accent);
-            color: white;
-            border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            z-index: 10;
-        }
-
-        .close-modal:hover {
-            background: #c0392b;
-            transform: rotate(90deg);
-        }
-
-        .zoom-controls {
-            position: absolute;
-            bottom: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px 20px;
-            border-radius: 30px;
-            backdrop-filter: blur(10px);
-        }
-
-        .zoom-btn {
-            background: var(--secondary);
-            color: white;
-            border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 1.2rem;
-        }
-
-        .zoom-btn:hover {
-            background: var(--primary);
-            transform: scale(1.1);
-        }
-
-        .zoom-level {
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 60px;
-            font-weight: 600;
-        }
-
-        /* Food industry specific animations */
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        .pulse-animation {
-            animation: pulse 3s infinite;
-        }
-
-        /* Glowing effect for certificates button */
-        .certificates-btn,
-        .download-pdf-btn {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .certificates-btn::before,
-        .download-pdf-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: 0.5s;
-        }
-
-        .certificates-btn:hover::before,
-        .download-pdf-btn:hover::before {
-            left: 100%;
-        }
-
-        /* Food-themed floating icons */
-        .food-icon {
-            position: fixed;
-            font-size: 2rem;
-            opacity: 0.1;
-            z-index: -1;
-            animation: floatFood 15s infinite linear;
-        }
-
-        .food-icon:nth-child(1) {
-            top: 10%;
-            left: 5%;
-            color: #e74c3c;
-            animation-delay: 0s;
-        }
-
-        .food-icon:nth-child(2) {
-            top: 20%;
-            right: 10%;
-            color: #3498db;
-            animation-delay: 2s;
-        }
-
-        .food-icon:nth-child(3) {
-            bottom: 15%;
-            left: 15%;
-            color: #2ecc71;
-            animation-delay: 4s;
-        }
-
-        .food-icon:nth-child(4) {
-            bottom: 25%;
-            right: 5%;
-            color: #f39c12;
-            animation-delay: 6s;
-        }
-
-        .food-icon:nth-child(5) {
-            top: 50%;
-            left: 10%;
-            color: #9b59b6;
-            animation-delay: 8s;
-        }
-
-        @keyframes floatFood {
-            0% {
-                transform: translateY(0) rotate(0deg);
-            }
-
-            25% {
-                transform: translateY(-20px) rotate(90deg);
-            }
-
-            50% {
-                transform: translateY(0) rotate(180deg);
-            }
-
-            75% {
-                transform: translateY(20px) rotate(270deg);
-            }
-
-            100% {
-                transform: translateY(0) rotate(360deg);
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samir Magdy Yacoub – Food Safety & Quality Specialist</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===================== CSS VARIABLES ===================== */
+:root {
+  --green-deep:   #0a5c36;
+  --green-mid:    #1a8c55;
+  --green-light:  #2ecc71;
+  --teal:         #17a589;
+  --blue-dark:    #1a2e4a;
+  --blue-mid:     #2c5282;
+  --gold:         #d4a017;
+  --cream:        #faf8f3;
+  --off-white:    #f0ede4;
+  --text-dark:    #1a1f2e;
+  --text-body:    #3d4a5a;
+  --text-muted:   #7a8b9a;
+  --shadow-sm:    0 2px 12px rgba(10,92,54,0.08);
+  --shadow-md:    0 8px 32px rgba(10,92,54,0.12);
+  --shadow-lg:    0 20px 60px rgba(10,92,54,0.15);
+  --grad-main:    linear-gradient(135deg, #0a5c36 0%, #1a8c55 50%, #17a589 100%);
+  --grad-hero:    linear-gradient(135deg, #0a3d22 0%, #0a5c36 40%, #1a8c55 70%, #17a589 100%);
+  --grad-card:    linear-gradient(145deg, #ffffff 0%, #f5fbf7 100%);
+  --radius-sm:    10px;
+  --radius-md:    18px;
+  --radius-lg:    28px;
+  --transition:   all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  --font-display: 'Playfair Display', serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-ar:      'Cairo', sans-serif;
+}
+
+/* ===================== RESET & BASE ===================== */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-dark);
+  background: var(--cream);
+  line-height: 1.7;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+body.ar-mode {
+  font-family: var(--font-ar);
+  direction: rtl;
+}
+
+/* ===================== BACKGROUND EFFECTS ===================== */
+.bg-canvas {
+  position: fixed; inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(10,92,54,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 90% 80%, rgba(23,165,137,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(212,160,23,0.03) 0%, transparent 70%);
+  background-color: var(--cream);
+}
+
+.bg-grid {
+  position: fixed; inset: 0; z-index: -1;
+  background-image:
+    linear-gradient(rgba(10,92,54,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,92,54,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 0%, transparent 100%);
+}
+
+/* Floating food icons */
+.floater { position: fixed; z-index: -1; opacity: 0.06; pointer-events: none; }
+.floater-1 { font-size: 4rem; top:8%; left:3%; color: var(--green-mid); animation: driftFloat 18s ease-in-out infinite; }
+.floater-2 { font-size: 3rem; top:25%; right:4%; color: var(--teal); animation: driftFloat 22s ease-in-out infinite 3s; }
+.floater-3 { font-size: 5rem; bottom:20%; left:6%; color: var(--green-light); animation: driftFloat 16s ease-in-out infinite 6s; }
+.floater-4 { font-size: 3.5rem; bottom:10%; right:5%; color: var(--gold); animation: driftFloat 20s ease-in-out infinite 9s; }
+.floater-5 { font-size: 2.5rem; top:55%; left:2%; color: var(--blue-mid); animation: driftFloat 25s ease-in-out infinite 12s; }
+.floater-6 { font-size: 4rem; top:70%; right:8%; color: var(--green-deep); animation: driftFloat 19s ease-in-out infinite 4s; }
+
+@keyframes driftFloat {
+  0%,100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-18px) rotate(6deg); }
+  50% { transform: translateY(-8px) rotate(-4deg); }
+  75% { transform: translateY(-24px) rotate(3deg); }
+}
+
+/* ===================== LOADING SCREEN ===================== */
+.loading-screen {
+  position: fixed; inset: 0; z-index: 99999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: var(--grad-hero);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.loading-screen.hidden { opacity:0; visibility:hidden; }
+.loading-logo {
+  font-family: var(--font-display);
+  font-size: 2.2rem; color: white;
+  margin-bottom: 30px;
+  opacity: 0; animation: fadeUp 0.8s ease 0.3s forwards;
+}
+.loading-ring {
+  width: 60px; height: 60px;
+  border: 3px solid rgba(255,255,255,0.2);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+.loading-dots {
+  display: flex; gap: 8px; margin-top: 20px;
+}
+.loading-dots span {
+  width: 8px; height: 8px; background: rgba(255,255,255,0.6); border-radius: 50%;
+  animation: dotPulse 1.4s ease infinite;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%,80%,100% { transform: scale(0.8); opacity: 0.5; }
+  40% { transform: scale(1.2); opacity: 1; }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+
+/* ===================== SCROLL TO TOP ===================== */
+.scroll-top {
+  position: fixed; bottom: 28px; right: 28px; z-index: 500;
+  width: 50px; height: 50px;
+  background: var(--grad-main);
+  color: white; border: none; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 1.1rem;
+  box-shadow: 0 6px 24px rgba(10,92,54,0.35);
+  opacity: 0; visibility: hidden;
+  transition: var(--transition);
+}
+.scroll-top.visible { opacity:1; visibility:visible; }
+.scroll-top:hover { transform: translateY(-4px) scale(1.08); }
+
+/* ===================== CONTAINER ===================== */
+.container { max-width: 1180px; margin: 0 auto; padding: 28px 20px; }
+
+/* ===================== HEADER ===================== */
+header {
+  position: relative;
+  background: var(--grad-hero);
+  border-radius: var(--radius-lg);
+  padding: 50px 44px 44px;
+  margin-bottom: 40px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  animation: headerReveal 0.9s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes headerReveal {
+  from { opacity:0; transform: translateY(-30px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+/* Decorative elements inside header */
+header::before {
+  content:'';
+  position: absolute; top: 0; right: 0;
+  width: 45%; height: 100%;
+  background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.04) 100%);
+  clip-path: polygon(30% 0, 100% 0, 100% 100%, 0% 100%);
+}
+header::after {
+  content:'';
+  position: absolute; bottom: -60px; left: -60px;
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+
+/* Header ornamental rings */
+.header-ornament {
+  position: absolute; top: -40px; right: -40px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.08);
+  animation: rotateSlow 30s linear infinite;
+}
+.header-ornament::after {
+  content:'';
+  position: absolute; inset: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+@keyframes rotateSlow { to { transform: rotate(360deg); } }
+
+/* Floating badge icons in header */
+.header-badge-icons {
+  position: absolute; top: 22px; left: 44px;
+  display: flex; gap: 10px;
+  opacity: 0.2;
+}
+.header-badge-icons i { font-size: 1rem; color: white; }
+
+/* TOP CONTROLS */
+.header-controls {
+  position: absolute; top: 22px; right: 28px;
+  display: flex; gap: 12px; z-index: 10;
+  flex-wrap: wrap; justify-content: flex-end;
+}
+.ctrl-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 18px; border-radius: 50px;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.1);
+  color: white; font-family: inherit; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; backdrop-filter: blur(8px);
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.ctrl-btn:hover { background: rgba(255,255,255,0.22); transform: translateY(-2px); border-color: rgba(255,255,255,0.5); }
+.ctrl-btn.certs-btn { background: rgba(212,160,23,0.3); border-color: rgba(212,160,23,0.6); }
+.ctrl-btn.certs-btn:hover { background: rgba(212,160,23,0.45); }
+.pulse-ring { animation: pulseRing 2.5s ease infinite; }
+@keyframes pulseRing {
+  0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.3); }
+  60% { box-shadow: 0 0 0 10px rgba(255,255,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+}
+
+/* PROFILE LAYOUT */
+.profile-wrap {
+  display: flex; align-items: center; gap: 36px;
+  position: relative; z-index: 1; margin-top: 30px;
+}
+
+/* Profile image with shield badge */
+.profile-img-wrap {
+  position: relative; flex-shrink: 0;
+}
+.profile-img-ring {
+  width: 168px; height: 168px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+  padding: 4px;
+  box-shadow: 0 0 0 6px rgba(255,255,255,0.1), 0 0 0 12px rgba(255,255,255,0.05);
+  animation: profilePulse 4s ease-in-out infinite;
+}
+@keyframes profilePulse {
+  0%,100% { box-shadow: 0 0 0 6px rgba(255,255,255,0.1), 0 0 0 12px rgba(255,255,255,0.05); }
+  50% { box-shadow: 0 0 0 8px rgba(255,255,255,0.15), 0 0 0 18px rgba(255,255,255,0.07); }
+}
+.profile-img-inner {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a8c55, #17a589);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3.5rem; color: white;
+}
+.profile-img-inner img { width:100%; height:100%; object-fit: cover; border-radius: 50%; }
+.profile-badge {
+  position: absolute; bottom: 5px; right: 0px;
+  width: 46px; height: 46px;
+  background: var(--gold);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(212,160,23,0.5);
+  border: 3px solid var(--grad-hero);
+  animation: badgeBounce 3s ease-in-out infinite;
+}
+.profile-badge i { color: white; font-size: 1rem; }
+@keyframes badgeBounce {
+  0%,100% { transform: scale(1) rotate(-5deg); }
+  50% { transform: scale(1.08) rotate(5deg); }
+}
+
+/* PROFILE TEXT */
+.profile-info { flex: 1; }
+.profile-name {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: white; line-height: 1.1;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.profile-title {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: rgba(255,255,255,0.85);
+  font-weight: 400; margin-bottom: 22px;
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+}
+.profile-title-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.12);
+  padding: 4px 12px; border-radius: 30px;
+  font-size: 0.82rem; font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* CONTACT CHIPS */
+.contact-chips {
+  display: flex; flex-wrap: wrap; gap: 10px;
+}
+.chip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 16px; border-radius: 50px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white; font-size: 0.83rem; font-weight: 500;
+  cursor: pointer; backdrop-filter: blur(8px);
+  transition: var(--transition);
+  text-decoration: none;
+}
+.chip:hover {
+  background: rgba(255,255,255,0.22);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.chip i { font-size: 0.95rem; opacity: 0.9; }
+.chip .chip-label { display: block; }
+
+/* ===================== MAIN GRID ===================== */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* ===================== SECTION CARD ===================== */
+.card {
+  background: var(--grad-card);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(10,92,54,0.07);
+  margin-bottom: 28px;
+  position: relative; overflow: hidden;
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease, box-shadow 0.3s ease;
+}
+.card::before {
+  content:'';
+  position: absolute; top:0; left:0;
+  width: 4px; height: 100%;
+  background: var(--grad-main);
+  border-radius: 4px 0 0 4px;
+}
+.card.visible { opacity:1; transform: translateY(0); }
+.card:hover { box-shadow: var(--shadow-md); }
+.card:hover::before { width: 6px; }
+
+/* Card decorative corner */
+.card::after {
+  content:'';
+  position: absolute; top:-40px; right:-40px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(10,92,54,0.06), transparent 70%);
+}
+
+/* SECTION TITLE */
+.sec-title {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 26px; padding-bottom: 16px;
+  border-bottom: 1px solid rgba(10,92,54,0.1);
+  position: relative;
+}
+.sec-title::after {
+  content:'';
+  position: absolute; bottom:-1px; left:0;
+  width: 48px; height: 2px;
+  background: var(--grad-main);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+.card:hover .sec-title::after { width: 80px; }
+.sec-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--grad-main);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 1.1rem;
+  box-shadow: 0 4px 14px rgba(10,92,54,0.3);
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+.card:hover .sec-icon { transform: rotate(8deg) scale(1.05); }
+.sec-title h2 {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  color: var(--green-deep);
+  font-weight: 600;
+}
+
+/* ===================== TIMELINE ===================== */
+.timeline { position: relative; padding-left: 26px; }
+.timeline::before {
+  content:'';
+  position: absolute; left: 7px; top: 8px; bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--green-mid), var(--teal), rgba(23,165,137,0.1));
+  border-radius: 2px;
+}
+.tl-item {
+  position: relative; margin-bottom: 28px;
+  transition: var(--transition);
+}
+.tl-item:last-child { margin-bottom: 0; }
+.tl-item::before {
+  content:'';
+  position: absolute; left: -22px; top: 6px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: white;
+  border: 2.5px solid var(--green-mid);
+  box-shadow: 0 0 0 3px rgba(26,140,85,0.15);
+  transition: var(--transition);
+  z-index: 1;
+}
+.tl-item:hover::before {
+  background: var(--green-mid);
+  box-shadow: 0 0 0 5px rgba(26,140,85,0.2);
+  transform: scale(1.15);
+}
+.tl-item:hover { transform: translateX(6px); }
+.tl-item h3 {
+  font-size: 1.05rem; font-weight: 600;
+  color: var(--text-dark); margin-bottom: 6px; line-height: 1.4;
+}
+.tl-date {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 12px; border-radius: 30px;
+  background: rgba(10,92,54,0.07);
+  color: var(--green-deep);
+  font-size: 0.8rem; font-weight: 600;
+  margin-bottom: 10px;
+  border: 1px solid rgba(10,92,54,0.12);
+  transition: var(--transition);
+}
+.tl-item:hover .tl-date { background: rgba(10,92,54,0.12); }
+.tl-item p, .tl-item ul { color: var(--text-body); font-size: 0.92rem; }
+.tl-item ul { padding-left: 18px; }
+.tl-item li {
+  margin-bottom: 6px;
+  position: relative; list-style: none;
+  padding-left: 16px; transition: var(--transition);
+}
+.tl-item li::before {
+  content:'▸';
+  position: absolute; left: 0;
+  color: var(--green-mid); font-size: 0.75rem;
+  transition: var(--transition);
+}
+.tl-item li:hover { color: var(--text-dark); transform: translateX(4px); }
+.tl-item li:hover::before { color: var(--teal); }
+
+/* ===================== SUMMARY ===================== */
+.summary-text {
+  color: var(--text-body);
+  font-size: 0.95rem; line-height: 1.85;
+  position: relative;
+}
+.summary-text::before {
+  content: '"';
+  position: absolute; top: -18px; left: -8px;
+  font-size: 5rem; color: rgba(10,92,54,0.08);
+  font-family: var(--font-display);
+  line-height: 1;
+}
+
+/* ===================== SKILLS ===================== */
+.skills-list { list-style: none; }
+.skill-item { margin-bottom: 20px; }
+.skill-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.skill-label {
+  font-size: 0.92rem; font-weight: 600;
+  color: var(--text-dark);
+  transition: var(--transition);
+}
+.skill-item:hover .skill-label { color: var(--green-deep); }
+.skill-pct {
+  font-size: 0.78rem; font-weight: 700;
+  color: var(--green-mid);
+}
+.skill-track {
+  height: 8px; border-radius: 8px;
+  background: rgba(10,92,54,0.08);
+  overflow: hidden;
+  position: relative;
+}
+.skill-fill {
+  height: 100%; width: 0;
+  border-radius: 8px;
+  background: var(--grad-main);
+  transition: width 1.6s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative; overflow: hidden;
+}
+.skill-fill::after {
+  content:'';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+  animation: shimmer 2.5s ease infinite;
+}
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+/* ===================== CERTIFICATION BADGES ===================== */
+.cert-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.cert-tag {
+  padding: 5px 12px; border-radius: 30px;
+  font-size: 0.78rem; font-weight: 600;
+  background: rgba(10,92,54,0.07);
+  color: var(--green-deep);
+  border: 1px solid rgba(10,92,54,0.15);
+  transition: var(--transition);
+}
+.cert-tag:hover { background: var(--green-deep); color: white; transform: translateY(-2px); }
+
+/* ===================== CERTIFICATES OVERLAY ===================== */
+.certs-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(10,20,15,0.92);
+  display: none; align-items: center; justify-content: center;
+  padding: 20px; overflow-y: auto;
+  backdrop-filter: blur(8px);
+}
+.certs-overlay.open { display: flex; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+.certs-panel {
+  background: var(--cream);
+  border-radius: var(--radius-lg);
+  width: 100%; max-width: 1050px;
+  max-height: 92vh; overflow-y: auto;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  transform: scale(0.94);
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.certs-overlay.open .certs-panel { transform: scale(1); }
+
+.certs-panel-header {
+  background: var(--grad-hero);
+  padding: 28px 36px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+  position: sticky; top: 0; z-index: 5;
+}
+.certs-panel-title { color: white; }
+.certs-panel-title h2 {
+  font-family: var(--font-display);
+  font-size: 1.8rem; margin-bottom: 4px;
+  display: flex; align-items: center; gap: 12px;
+}
+.certs-panel-title p { font-size: 0.9rem; opacity: 0.8; }
+.certs-panel-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.panel-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 20px; border-radius: 50px;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.12);
+  color: white; font-family: inherit; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; backdrop-filter: blur(8px);
+  transition: var(--transition);
+}
+.panel-btn:hover { background: rgba(255,255,255,0.22); transform: translateY(-2px); }
+.panel-btn.dl-btn { background: rgba(212,160,23,0.35); border-color: rgba(212,160,23,0.6); }
+
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 22px; padding: 28px;
+}
+
+.cert-card {
+  background: white;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(10,92,54,0.07);
+  transition: var(--transition);
+  display: flex; flex-direction: column;
+}
+.cert-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-md); }
+
+.cert-img-box {
+  height: 190px; overflow: hidden; position: relative;
+  background: linear-gradient(135deg, #d4eedd, #c8eee5);
+}
+.cert-img-box img {
+  width:100%; height:100%; object-fit:cover;
+  transition: transform 0.5s ease;
+}
+.cert-card:hover .cert-img-box img { transform: scale(1.08); }
+
+.cert-img-overlay {
+  position: absolute; inset: 0;
+  background: rgba(10,40,20,0.65);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: var(--transition);
+}
+.cert-card:hover .cert-img-overlay { opacity: 1; }
+.cert-view-btn {
+  padding: 10px 22px; border-radius: 50px;
+  background: var(--grad-main);
+  color: white; border: none;
+  font-family: inherit; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transform: translateY(14px);
+  transition: var(--transition);
+}
+.cert-card:hover .cert-view-btn { transform: translateY(0); }
+
+.cert-info { padding: 18px 20px; flex: 1; }
+.cert-info h3 { font-size: 1rem; color: var(--text-dark); margin-bottom: 6px; line-height: 1.35; }
+.cert-info p { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 3px; }
+.cert-info .cert-year {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin-top: 8px; padding: 3px 10px;
+  background: rgba(10,92,54,0.07); border-radius: 30px;
+  font-size: 0.78rem; font-weight: 700; color: var(--green-deep);
+}
+
+/* ===================== CERT ZOOM MODAL ===================== */
+.cert-zoom-modal {
+  position: fixed; inset: 0; z-index: 10001;
+  background: rgba(0,0,0,0.97);
+  display: none; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.cert-zoom-modal.open { display: flex; animation: fadeIn 0.25s ease; }
+.zoom-wrap {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center;
+  max-width: 95%; max-height: 95vh;
+}
+.zoom-img {
+  max-width: 100%; max-height: 78vh;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  transition: transform 0.25s ease;
+  cursor: zoom-in;
+}
+.zoom-img.grabbed { cursor: grab; }
+.zoom-close {
+  position: absolute; top: -52px; right: 0;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: #e74c3c; color: white; border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 1rem;
+  transition: var(--transition);
+}
+.zoom-close:hover { transform: rotate(90deg); background: #c0392b; }
+.zoom-bar {
+  display: flex; align-items: center; gap: 12px;
+  margin-top: 18px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(12px);
+  padding: 10px 22px; border-radius: 50px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.zoom-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  color: white; border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 0.9rem;
+  transition: var(--transition);
+}
+.zoom-btn:hover { background: rgba(255,255,255,0.28); }
+.zoom-pct { color: white; font-size: 0.85rem; font-weight: 700; min-width: 50px; text-align: center; }
+
+/* ===================== FOOTER ===================== */
+footer {
+  text-align: center; padding: 36px 20px;
+  color: var(--text-muted); font-size: 0.88rem;
+  border-top: 1px solid rgba(10,92,54,0.1);
+  margin-top: 16px; position: relative;
+}
+footer::before {
+  content:'';
+  position: absolute; top:0; left:50%;
+  transform: translateX(-50%);
+  width: 80px; height: 3px;
+  background: var(--grad-main); border-radius: 3px;
+}
+.footer-icons { display: flex; justify-content: center; gap: 16px; margin-top: 14px; }
+.footer-icon {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(10,92,54,0.07);
+  color: var(--green-mid); font-size: 0.9rem;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.footer-icon:hover { background: var(--green-mid); color: white; transform: translateY(-3px); }
+
+/* ===================== RTL OVERRIDES ===================== */
+body.ar-mode .timeline { padding-left: 0; padding-right: 26px; }
+body.ar-mode .timeline::before { left: auto; right: 7px; }
+body.ar-mode .tl-item::before { left: auto; right: -22px; }
+body.ar-mode .tl-item:hover { transform: translateX(-6px); }
+body.ar-mode .tl-item li { padding-left: 0; padding-right: 16px; }
+body.ar-mode .tl-item li::before { left: auto; right: 0; }
+body.ar-mode .tl-item li:hover { transform: translateX(-4px); }
+body.ar-mode .card::before { left: auto; right: 0; border-radius: 0 4px 4px 0; }
+body.ar-mode .sec-title::after { left: auto; right: 0; }
+body.ar-mode .skill-item:hover .skill-label { }
+body.ar-mode .summary-text::before { left: auto; right: -8px; }
+body.ar-mode .header-controls { right: auto; left: 28px; }
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 1024px) {
+  .main-grid { grid-template-columns: 1fr; }
+  header { padding: 44px 28px 36px; }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 16px; }
+  header { padding: 50px 20px 28px; border-radius: var(--radius-md); margin-bottom: 24px; }
+  .header-controls {
+    position: relative; top: auto; right: auto; left: auto;
+    justify-content: center;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .profile-wrap { flex-direction: column; text-align: center; gap: 22px; }
+  .profile-img-ring { width: 140px; height: 140px; }
+  .contact-chips { justify-content: center; }
+  .chip .chip-label { display: none; }
+  .chip { padding: 10px 12px; border-radius: 50%; width: 44px; height: 44px; justify-content: center; }
+  .chip i { font-size: 1.1rem; }
+  .certs-panel-header { flex-direction: column; align-items: flex-start; }
+  .certs-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); padding: 18px; }
+  .card { padding: 22px 20px; }
+  .sec-title h2 { font-size: 1.25rem; }
+  .scroll-top { bottom: 18px; right: 18px; width: 44px; height: 44px; }
+}
+
+@media (max-width: 480px) {
+  header { padding: 52px 16px 24px; }
+  .profile-name { font-size: 1.75rem; }
+  .profile-img-ring { width: 120px; height: 120px; }
+  .ctrl-btn span { display: none; }
+  .ctrl-btn { padding: 9px 14px; }
+  .certs-grid { grid-template-columns: 1fr; padding: 14px; }
+  .main-grid { gap: 20px; }
+  .card { padding: 20px 16px; }
+}
+
+/* ===================== ANIMATIONS ===================== */
+.stagger-1 { transition-delay: 0.05s !important; }
+.stagger-2 { transition-delay: 0.12s !important; }
+.stagger-3 { transition-delay: 0.19s !important; }
+.stagger-4 { transition-delay: 0.26s !important; }
+.stagger-5 { transition-delay: 0.33s !important; }
+
+/* Health & Safety specific micro-animation */
+@keyframes checkmarkPop {
+  0% { transform: scale(0); opacity:0; }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity:1; }
+}
+.verified-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(46,204,113,0.12);
+  color: #1a8c55;
+  padding: 3px 10px; border-radius: 30px;
+  font-size: 0.78rem; font-weight: 700;
+  border: 1px solid rgba(26,140,85,0.2);
+  margin-left: 8px;
+}
+body.ar-mode .verified-badge { margin-left: 0; margin-right: 8px; }
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(10,92,54,0.25); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(10,92,54,0.4); }
+
+/* ===================== SAFETY HEALTH ACCENT SECTION ===================== */
+.ohs-strip {
+  background: linear-gradient(135deg, #1a2e4a, #2c5282);
+  border-radius: var(--radius-md);
+  padding: 22px 28px;
+  margin-bottom: 28px;
+  display: flex; align-items: center; gap: 18px;
+  flex-wrap: wrap;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.ohs-strip.visible { opacity:1; transform: translateY(0); }
+.ohs-icon-wrap {
+  width: 52px; height: 52px; flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; color: white;
+  animation: ohsPulse 3s ease-in-out infinite;
+}
+@keyframes ohsPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.15); }
+  50% { box-shadow: 0 0 0 10px rgba(255,255,255,0); }
+}
+.ohs-text { flex: 1; color: white; }
+.ohs-text strong { font-size: 1rem; display: block; margin-bottom: 2px; }
+.ohs-text span { font-size: 0.82rem; opacity: 0.78; }
+.ohs-badges { display: flex; flex-wrap: wrap; gap: 7px; }
+.ohs-badge {
+  padding: 4px 10px; border-radius: 30px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.9);
+  font-size: 0.75rem; font-weight: 600;
+  white-space: nowrap;
+}
+</style>
 </head>
 
 <body>
-    <div class="floating-bg"></div>
-    <div class="food-pattern"></div>
-    <div id="particles-js"></div>
+<!-- BACKGROUND LAYERS -->
+<div class="bg-canvas"></div>
+<div class="bg-grid"></div>
+<i class="fas fa-apple-alt floater floater-1"></i>
+<i class="fas fa-shield-halved floater floater-2"></i>
+<i class="fas fa-seedling floater floater-3"></i>
+<i class="fas fa-flask floater floater-4"></i>
+<i class="fas fa-microscope floater floater-5"></i>
+<i class="fas fa-leaf floater floater-6"></i>
 
-    <!-- Food-themed floating icons -->
-    <i class="fas fa-apple-alt food-icon"></i>
-    <i class="fas fa-carrot food-icon"></i>
-    <i class="fas fa-cheese food-icon"></i>
-    <i class="fas fa-wine-bottle food-icon"></i>
-    <i class="fas fa-seedling food-icon"></i>
+<!-- LOADING SCREEN -->
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-logo">Samir Magdy</div>
+  <div class="loading-ring"></div>
+  <div class="loading-dots"><span></span><span></span><span></span></div>
+</div>
 
-    <!-- Floating elements -->
-    <div class="floating-element"></div>
-    <div class="floating-element"></div>
-    <div class="floating-element"></div>
-    <div class="floating-element"></div>
+<!-- SCROLL TO TOP -->
+<button class="scroll-top" id="scrollTop" aria-label="Back to top">
+  <i class="fas fa-chevron-up"></i>
+</button>
 
-    <!-- Loading screen -->
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
+<!-- CERTIFICATES MODAL -->
+<div class="certs-overlay" id="certsOverlay">
+  <div class="certs-panel">
+    <div class="certs-panel-header">
+      <div class="certs-panel-title">
+        <h2><i class="fas fa-certificate"></i> <span data-key="certsTitle">My Certificates</span></h2>
+        <p data-key="certsSubtitle">Professional certifications and training achievements</p>
+      </div>
+      <div class="certs-panel-actions">
+        <button class="panel-btn dl-btn" id="dlPdfBtn">
+          <i class="fas fa-file-pdf"></i>
+          <span data-key="dlBtn">Download CV PDF</span>
+        </button>
+        <button class="panel-btn" id="closeCertsBtn">
+          <i class="fas fa-times"></i>
+          <span data-key="closeBtn">Close</span>
+        </button>
+      </div>
     </div>
+    <div class="certs-grid">
 
-    <!-- Certificates Page -->
-    <div class="certificates-page" id="certificatesPage">
-        <div class="certificates-container">
-            <div class="certificates-header">
-                <div class="certificates-header-content">
-                    <h2><i class="fas fa-certificate"></i> <span class="text-certificates-title">My Certificates</span>
-                    </h2>
-                    <p class="text-certificates-subtitle">Professional certifications and training achievements</p>
-                </div>
-                <div class="certificates-actions">
-                    <button class="download-pdf-btn pulse" id="downloadPdf">
-                        <i class="fas fa-file-pdf"></i>
-                        <span class="text-download-btn">Download CV PDF</span>
-                    </button>
-                    <button class="close-certificates" id="closeCertificates">
-                        <i class="fas fa-times"></i>
-                        <span class="text-close-btn">Close</span>
-                    </button>
-                </div>
-            </div>
-            <div class="certificates-grid">
-                <!-- Certificate 1 -->
-                <div class="certificate-item">
-                    <div class="certificate-img-container">
-                        <img src="شهاده التخرج.jpg" alt="Food Safety Training" class="certificate-img">
-                        <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert pulse" data-img="شهاده التخرج.jpg">View
-                                Certificate</button>
-                        </div>
-                    </div>
-                    <div class="certificate-info">
-                        <h3 class="text-cert2-title">شهادة التخرج </h3>
-                        <p class="text-cert2-org">جامعه المنيا | كليه الزراعه (الصناعات الغذائيةوالالبان)</p>
-                        <p class="text-cert2-date">2023</p>
-                    </div>
-                </div>
-
-                <!-- Certificate 2 -->
-                <div class="certificate-item">
-                    <div class="certificate-img-container">
-                        <img src="دبلومه اليسون.jpg" alt="Food Safety Diploma" class="certificate-img">
-                        <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert pulse" data-img="دبلومه اليسون.jpg">View
-                                Certificate</button>
-                        </div>
-                    </div>
-                    <div class="certificate-info">
-                        <h3 class="text-cert1-title">Diploma in Food Safety</h3>
-                        <p class="text-cert1-org">Alison Platform</p>
-                        <p class="text-cert1-date">2022</p>
-                    </div>
-                </div>
-
-                <!-- Certificate 2+ -->
-                <div class="certificate-item">
-                    <div class="certificate-img-container">
-                        <img src="شهاده اليسون.jpg" alt="Quality Control" class="certificate-img">
-                        <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert pulse" data-img="شهاده اليسون.jpg">View
-                                Certificate</button>
-                        </div>
-                    </div>
-                    <div class="certificate-info">
-                        <h3 class="text-cert1-title">Diploma in Food Safety</h3>
-                        <p class="text-cert1-org">Alison Platform</p>
-                        <p class="text-cert1-date">2022</p>
-                    </div>
-                </div>
-
-                <!-- Certificate 3 -->
-                <div class="certificate-item">
-                    <div class="certificate-img-container">
-                        <img src="زويل.jpg" alt="Advanced Training" class="certificate-img">
-                        <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert pulse" data-img="زويل.jpg">View
-                                Certificate</button>
-                        </div>
-                    </div>
-                    <div class="certificate-info">
-                        <h3 class="text-cert2-title">Food Safety Training Program</h3>
-                        <p class="text-cert2-org">Zewail City University</p>
-                        <p class="text-cert2-date">30 Hours | 2021</p>
-                    </div>
-                </div>
-
-                <!-- Certificate 4 -->
-                <div class="certificate-item">
-                    <div class="certificate-img-container">
-                        <img src="haccp.jpg" alt="Quality Control" class="certificate-img">
-                        <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert pulse" data-img="haccp.jpg">View
-                                Certificate</button>
-                        </div>
-                    </div>
-                    <div class="certificate-info">
-                        <h3 class="text-cert3-title">Advanced Training in HACCP
-                        </h3>
-                        <p class="text-cert3-org">Egyptian Organization for Standardization and Quality</p>
-                        <p class="text-cert3-date">2023</p>
-                    </div>
-                </div>
-
-                <!-- Certificate 5 -->
-                <div class="certificate-item">
-                    <div class="certificate-img-container">
-                        <img src="22000.jpg" alt="Quality Control" class="certificate-img">
-                        <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert pulse" data-img="22000.jpg">View
-                                Certificate</button>
-                        </div>
-                    </div>
-                    <div class="certificate-info">
-                        <h3 class="text-cert3-title">Advanced Training in ISO 22000:2018
-                        </h3>
-                        <p class="text-cert3-org">Egyptian Organization for Standardization and Quality</p>
-                        <p class="text-cert3-date">2023</p>
-                    </div>
-                </div>
-
-                <!-- Certificate 6 -->
-                <div class="certificate-item">
-                    <div class="certificate-img-container">
-                        <img src="gmp.jpg" alt="Quality Control" class="certificate-img">
-                        <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert pulse" data-img="gmp.jpg">View
-                                Certificate</button>
-                        </div>
-                    </div>
-                    <div class="certificate-info">
-                        <h3 class="text-cert4-title">Advanced Training in ISO GMP</h3>
-                        <p class="text-cert4-org">Egyptian Organization for Standardization and Quality</p>
-                        <p class="text-cert4-date">2023 </p>
-                    </div>
-                </div>
-
-                <!-- Certificate 7 -->
-                <div class="certificate-item">
-                    <div class="certificate-img-container">
-                        <img src="ghp.jpg" alt="Quality Control" class="certificate-img">
-                        <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert pulse" data-img="ghp.jpg">View
-                                Certificate</button>
-                        </div>
-                    </div>
-                    <div class="certificate-info">
-                        <h3 class="text-cert4-title">Advanced Training in ISO GHP</h3>
-                        <p class="text-cert4-org">Egyptian Organization for Standardization and Quality</p>
-                        <p class="text-cert4-date">2023 </p>
-                    </div>
-                </div>
-
-                <!-- Certificate 9 -->
-                <div class="certificate-item">
-                    <div class="certificate-img-container">
-                        <img src="الفخامه.jpg" alt="Quality Control" class="certificate-img">
-                        <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert pulse" data-img="الفخامه.jpg">View
-                                Certificate</button>
-                        </div>
-                    </div>
-                    <div class="certificate-info">
-                        <h3 class="text-cert4-title">Quality Control & Production Training </h3>
-                        <p class="text-cert4-org">– Al-Fakhama Dairy Products</p>
-                        <p class="text-cert4-date">2022</p>
-                    </div>
-                </div>
-
-                <!-- Certificate 10-->
-                <div class="certificate-item">
-                    <div class="certificate-img-container">
-                        <img src="اكسيل.jpg" alt="Quality Control" class="certificate-img">
-                        <div class="certificate-overlay">
-                            <button class="view-certificate text-view-cert pulse" data-img="اكسيل.jpg">View
-                                Certificate</button>
-                        </div>
-                    </div>
-                    <div class="certificate-info">
-                        <h3 class="text-cert4-title">ICDL Course</h3>
-                        <p class="text-cert4-org">Udemy</p>
-                        <p class="text-cert4-date">2020</p>
-                    </div>
-                </div>
-            </div>
+      <div class="cert-card">
+        <div class="cert-img-box">
+          <img src="شهاده التخرج.jpg" alt="Graduation Certificate" loading="lazy">
+          <div class="cert-img-overlay">
+            <button class="cert-view-btn" data-img="شهاده التخرج.jpg" data-key-btn="viewCert">View Certificate</button>
+          </div>
         </div>
-    </div>
-
-    <!-- Certificate Modal with Zoom -->
-    <div class="certificate-modal" id="certificateModal">
-        <div class="modal-content">
-            <img src="" alt="Certificate" class="modal-certificate-img" id="modalCertificateImg">
-            <button class="close-modal" id="closeModal">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="zoom-controls">
-                <button class="zoom-btn" id="zoomOut">
-                    <i class="fas fa-search-minus"></i>
-                </button>
-                <div class="zoom-level" id="zoomLevel">100%</div>
-                <button class="zoom-btn" id="zoomIn">
-                    <i class="fas fa-search-plus"></i>
-                </button>
-                <button class="zoom-btn" id="resetZoom">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
-            </div>
+        <div class="cert-info">
+          <h3 data-key="cert_grad_title">Graduation Certificate</h3>
+          <p data-key="cert_grad_org">Minia University – Faculty of Agriculture (Food Industries & Dairy)</p>
+          <span class="cert-year"><i class="fas fa-calendar-alt"></i> 2023</span>
         </div>
-    </div>
+      </div>
 
-    <!-- Scroll to top button -->
-    <div class="scroll-top" id="scrollTop">
-        <i class="fas fa-chevron-up"></i>
-    </div>
-
-    <div class="container">
-        <header>
-            <div class="header-buttons">
-                <button class="certificates-btn pulse" id="certificatesBtn">
-                    <i class="fas fa-certificate"></i>
-                    <span class="text-certificates-btn">My Certificates</span>
-                </button>
-                <button class="lang-btn" id="langToggle">
-                    <i class="fas fa-language"></i>
-                    <span>العربية</span>
-                </button>
-            </div>
-
-            <div class="profile-container">
-                <!-- Profile image placeholder -->
-                <div class="profile-img"
-                    style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #3498db, #2c3e50); color: white; font-size: 4rem;">
-                    <img src="profile.jpg" alt="Samir Magdi Photo" class="profile-img">
-                </div>
-                <div class="profile-info">
-                    <h1>Samir Magdy Yacoub</h1>
-                    <div class="title">Quality Control Specialist - Food Industries</div>
-                    <div class="contact-info">
-                        <div class="contact-item" onclick="contactAction('tel:+201129724884')"
-                            data-tooltip="+201129724884">
-                            <i class="fas fa-phone"></i>
-                            <span>+201129724884</span>
-                        </div>
-                        <div class="contact-item" onclick="contactAction('mailto:samirmagdy9955@gmail.com')"
-                            data-tooltip="samirmagdy9955@gmail.com">
-                            <i class="fas fa-envelope"></i>
-                            <span>samirmagdy9955@gmail.com</span>
-                        </div>
-                        <div class="contact-item"
-                            onclick="contactAction('https://www.linkedin.com/in/samir-magdy-101a48241?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app')"
-                            data-tooltip="LinkedIn">
-                            <i class="fab fa-linkedin"></i>
-                            <span>LinkedIn</span>
-                        </div>
-                        <div class="contact-item" onclick="contactAction('https://wa.me/201129724884')"
-                            data-tooltip="WhatsApp">
-                            <i class="fab fa-whatsapp"></i>
-                            <span>WhatsApp</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <div class="main-content">
-            <div class="left-column">
-                <section class="section" id="summary">
-                    <h2 class="section-title"><i class="fas fa-user-tie"></i> <span class="text-summary">Professional
-                            Summary</span></h2>
-                    <p class="text-summary-content">Graduate from Faculty of Agriculture, Minia University (GPA 3.2),
-                        specializing in Food Industries and Dairy. I have hands-on experience in food safety systems
-                        (GMP, GHP, HACCP, ISO 22000:2018) through intensive training programs and practical work in
-                        leading food industries. Skilled in quality control, auditing, and compliance with international
-                        standards. Motivated to apply my expertise to ensure product quality, enhance efficiency, and
-                        support continuous improvement in food production.</p>
-                </section>
-
-                <section class="section" id="education">
-                    <h2 class="section-title"><i class="fas fa-graduation-cap"></i> <span
-                            class="text-education">Education</span></h2>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <h3 class="text-education-title">Bachelor of Agriculture, Food Industries and Dairy</h3>
-                            <div class="date text-education-location">Minia University, Egypt | GPA: 3.2 | Graduation
-                                Year: 2023</div>
-                            <p class="text-education-project">Graduation Project: Integrated Quality and Food Safety
-                                Management System Using HACCP and ISO 9001</p>
-                            <p class="text-education-courses">Relevant Courses: Dairy Technology, Food Safety, Quality
-                                Management.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="section" id="experience">
-                    <h2 class="section-title"><i class="fas fa-briefcase"></i> <span
-                            class="text-experience">Experience</span></h2>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <h3 class="text-exp1-title">Quality Control Specialist – Imtenan for Food Industries, Obour
-                                City</h3>
-                            <div class="date text-exp1-date">2025 – Present</div>
-                            <ul>
-                                <li class="text-exp1-item1">Monitoring production processes and ensuring compliance with
-                                    food safety and quality standards.</li>
-                                <li class="text-exp1-item2">Conducting inspections, auditing, and verifying product
-                                    conformity with ISO 22000 and HACCP.</li>
-
-                            </ul>
-                        </div>
-
-                        <div class="timeline-item">
-                            <h3 class="text-exp2-title">Quality Control Specialist – Smiley's for Food Industries, Obour
-                                City</h3>
-                            <!-- <div class="date text-exp2-date">2024 – 2025</div> -->
-                            <ul>
-                                <li class="text-exp2-item1">Oversaw quality control of meat products and refrigerated
-                                    vegetables.</li>
-                                <li class="text-exp2-item2">Implemented quality assurance procedures and verified
-                                    compliance with GMP and ISO standards.</li>
-                                <li class="text-exp2-item3">Ensured cold chain integrity and adherence to hygiene and
-                                    safety protocols.</li>
-                            </ul>
-                        </div>
-
-                        <div class="timeline-item">
-                            <h3 class="text-exp3-title">Quality Control Training – El-Salah for Food Industries (Juices
-                                & Beverages – Tetra Pak)</h3>
-                            <!-- <div class="date text-exp3-date">2023 – 2024</div> -->
-                            <ul>
-                                <li class="text-exp3-item1">Assisted in monitoring production lines and maintaining
-                                    hygiene and safety controls.</li>
-                                <li class="text-exp3-item2">Conducted sampling and testing for product quality and
-                                    shelf-life stability.</li>
-                                <li class="text-exp3-item3">Documented findings and supported implementation of HACCP
-                                    system.</li>
-
-                                <li class="text-exp1-item3">Performing lab tests and coordinating corrective actions to
-                                    maintain product safety and consistency.</li>
-                            </ul>
-                        </div>
-
-                        <div class="timeline-item">
-                            <h3 class="text-exp4-title">Quality Control | Production Training – Al-Fakhama Dairy
-                                Products</h3>
-                            <!-- <div class="date text-exp4-date">2022</div> -->
-                            <ul>
-                                <li class="text-exp4-item1">Monitored production processes and ensured compliance with
-                                    food safety standards.</li>
-                                <li class="text-exp4-item2">Operated food production equipment and performed lab testing
-                                    on product samples.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="right-column">
-                <section class="section" id="certifications">
-                    <h2 class="section-title"><i class="fas fa-certificate"></i> <span
-                            class="text-certifications">Certifications & Professional Training</span></h2>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <h3 class="text-cert1-title">Diploma in Food Safety</h3>
-                            <div class="date text-cert1-date">Alison Platform | 2022</div>
-                        </div>
-                        <div class="timeline-item">
-                            <h3 class="text-cert2-title">Food Safety Training Program</h3>
-                            <div class="date text-cert2-location">Center of Excellence for Food Research and Analysis,
-                                Zewail City University (collaborating with Medix)</div>
-                            <div class="date text-cert2-date">30 Hours | 2021</div>
-                            <p class="text-cert2-achievement">Achievements: Conducted food safety analysis on real
-                                samples using advanced analytical tools.</p>
-                        </div>
-                        <div class="timeline-item">
-                            <h3 class="text-cert3-title">Advanced Training in GMP, GHP, HACCP, ISO 22000:2018, ISO
-                                9001:2015</h3>
-                            <div class="date text-cert3-date">Egyptian Organization for Standardization and Quality |
-                                2023</div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="section" id="skills">
-                    <h2 class="section-title"><i class="fas fa-tools"></i> <span class="text-skills">Skills</span></h2>
-                    <ul class="skills-list">
-                        <li>
-                            <span class="skill-name text-skill1">Food Safety Systems: GMP, GHP, HACCP, ISO
-                                22000:2018</span>
-                            <div class="skill-bar">
-                                <div class="skill-level" data-level="95"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="skill-name text-skill2">Quality Management: ISO 9001:2015</span>
-                            <div class="skill-bar">
-                                <div class="skill-level" data-level="90"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="skill-name text-skill3">Quality Control & Auditing</span>
-                            <div class="skill-bar">
-                                <div class="skill-level" data-level="92"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="skill-name text-skill4">Food Production Processes</span>
-                            <div class="skill-bar">
-                                <div class="skill-level" data-level="88"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="skill-name text-skill5">Languages: Arabic (Native), English (Good)</span>
-                            <div class="skill-bar">
-                                <div class="skill-level" data-level="85"></div>
-                            </div>
-                        </li>
-                    </ul>
-                </section>
-            </div>
+      <div class="cert-card">
+        <div class="cert-img-box">
+          <img src="دبلومه اليسون.jpg" alt="Food Safety Diploma" loading="lazy">
+          <div class="cert-img-overlay">
+            <button class="cert-view-btn" data-img="دبلومه اليسون.jpg" data-key-btn="viewCert">View Certificate</button>
+          </div>
         </div>
+        <div class="cert-info">
+          <h3 data-key="cert_alison_dip_title">Diploma in Food Safety</h3>
+          <p data-key="cert_alison_org">Alison Platform</p>
+          <span class="cert-year"><i class="fas fa-calendar-alt"></i> 2022</span>
+        </div>
+      </div>
 
-        <footer>
-            <p class="text-footer">© 2025 Samir Magdy Yacoub </p>
-        </footer>
+      <div class="cert-card">
+        <div class="cert-img-box">
+          <img src="شهاده اليسون.jpg" alt="Alison Certificate" loading="lazy">
+          <div class="cert-img-overlay">
+            <button class="cert-view-btn" data-img="شهاده اليسون.jpg" data-key-btn="viewCert">View Certificate</button>
+          </div>
+        </div>
+        <div class="cert-info">
+          <h3 data-key="cert_alison_cert_title">Food Safety Certificate</h3>
+          <p data-key="cert_alison_cert_org">Alison Platform</p>
+          <span class="cert-year"><i class="fas fa-calendar-alt"></i> 2022</span>
+        </div>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-img-box">
+          <img src="زويل.jpg" alt="Zewail City Training" loading="lazy">
+          <div class="cert-img-overlay">
+            <button class="cert-view-btn" data-img="زويل.jpg" data-key-btn="viewCert">View Certificate</button>
+          </div>
+        </div>
+        <div class="cert-info">
+          <h3 data-key="cert_zewail_title">Food Safety Training Program</h3>
+          <p data-key="cert_zewail_org">Zewail City University</p>
+          <span class="cert-year"><i class="fas fa-calendar-alt"></i> 30 hrs | 2021</span>
+        </div>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-img-box">
+          <img src="haccp.jpg" alt="HACCP Training" loading="lazy">
+          <div class="cert-img-overlay">
+            <button class="cert-view-btn" data-img="haccp.jpg" data-key-btn="viewCert">View Certificate</button>
+          </div>
+        </div>
+        <div class="cert-info">
+          <h3 data-key="cert_haccp_title">Advanced Training in HACCP</h3>
+          <p data-key="cert_haccp_org">Egyptian Organization for Standardization & Quality</p>
+          <span class="cert-year"><i class="fas fa-calendar-alt"></i> 2023</span>
+        </div>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-img-box">
+          <img src="22000.jpg" alt="ISO 22000" loading="lazy">
+          <div class="cert-img-overlay">
+            <button class="cert-view-btn" data-img="22000.jpg" data-key-btn="viewCert">View Certificate</button>
+          </div>
+        </div>
+        <div class="cert-info">
+          <h3 data-key="cert_iso22000_title">Advanced Training in ISO 22000:2018</h3>
+          <p data-key="cert_iso22000_org">Egyptian Organization for Standardization & Quality</p>
+          <span class="cert-year"><i class="fas fa-calendar-alt"></i> 2023</span>
+        </div>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-img-box">
+          <img src="gmp.jpg" alt="GMP Training" loading="lazy">
+          <div class="cert-img-overlay">
+            <button class="cert-view-btn" data-img="gmp.jpg" data-key-btn="viewCert">View Certificate</button>
+          </div>
+        </div>
+        <div class="cert-info">
+          <h3 data-key="cert_gmp_title">Advanced Training in GMP</h3>
+          <p data-key="cert_gmp_org">Egyptian Organization for Standardization & Quality</p>
+          <span class="cert-year"><i class="fas fa-calendar-alt"></i> 2023</span>
+        </div>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-img-box">
+          <img src="ghp.jpg" alt="GHP Training" loading="lazy">
+          <div class="cert-img-overlay">
+            <button class="cert-view-btn" data-img="ghp.jpg" data-key-btn="viewCert">View Certificate</button>
+          </div>
+        </div>
+        <div class="cert-info">
+          <h3 data-key="cert_ghp_title">Advanced Training in GHP</h3>
+          <p data-key="cert_ghp_org">Egyptian Organization for Standardization & Quality</p>
+          <span class="cert-year"><i class="fas fa-calendar-alt"></i> 2023</span>
+        </div>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-img-box">
+          <img src="الفخامه.jpg" alt="Al-Fakhama Training" loading="lazy">
+          <div class="cert-img-overlay">
+            <button class="cert-view-btn" data-img="الفخامه.jpg" data-key-btn="viewCert">View Certificate</button>
+          </div>
+        </div>
+        <div class="cert-info">
+          <h3 data-key="cert_fakhama_title">Quality Control & Production Training</h3>
+          <p data-key="cert_fakhama_org">Al-Fakhama Dairy Products</p>
+          <span class="cert-year"><i class="fas fa-calendar-alt"></i> 2022</span>
+        </div>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-img-box">
+          <img src="اكسيل.jpg" alt="ICDL Certificate" loading="lazy">
+          <div class="cert-img-overlay">
+            <button class="cert-view-btn" data-img="اكسيل.jpg" data-key-btn="viewCert">View Certificate</button>
+          </div>
+        </div>
+        <div class="cert-info">
+          <h3 data-key="cert_icdl_title">ICDL Course</h3>
+          <p data-key="cert_icdl_org">Udemy</p>
+          <span class="cert-year"><i class="fas fa-calendar-alt"></i> 2020</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ZOOM MODAL -->
+<div class="cert-zoom-modal" id="zoomModal">
+  <div class="zoom-wrap">
+    <button class="zoom-close" id="zoomClose"><i class="fas fa-times"></i></button>
+    <img src="" class="zoom-img" id="zoomImg" alt="Certificate">
+    <div class="zoom-bar">
+      <button class="zoom-btn" id="zoomOut"><i class="fas fa-search-minus"></i></button>
+      <div class="zoom-pct" id="zoomPct">100%</div>
+      <button class="zoom-btn" id="zoomIn"><i class="fas fa-search-plus"></i></button>
+      <button class="zoom-btn" id="zoomReset"><i class="fas fa-sync-alt"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-ornament"></div>
+    <div class="header-badge-icons">
+      <i class="fas fa-shield-halved"></i>
+      <i class="fas fa-leaf"></i>
+      <i class="fas fa-microscope"></i>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script>
-        // بيانات الترجمة
-        const translations = {
-            en: {
-                // Header
-                name: "Samir Magdy Yacoub",
-                title: "Quality Control Specialist - Food Industries",
-
-                // Language Toggle
-                langToggle: "العربية",
-
-                // Certificates Button
-                certificatesBtn: "My Certificates",
-                downloadBtn: "Download CV PDF",
-                closeBtn: "Close",
-
-                // Sections
-                summary: "Professional Summary",
-                education: "Education",
-                experience: "Experience",
-                certifications: "Certifications & Professional Training",
-                skills: "Skills",
-                footer: "© 2025 Samir Magdy Yacoub - All Rights Reserved",
-
-                // Contact
-                whatsapp: "WhatsApp",
-
-                // Summary Content
-                summaryContent: "Graduate from Faculty of Agriculture, Minia University (GPA 3.2), specializing in Food Industries and Dairy. I have hands-on experience in food safety systems (GMP, GHP, HACCP, ISO 22000:2018) through intensive training programs and practical work in leading food industries. Skilled in quality control, auditing, and compliance with international standards. Motivated to apply my expertise to ensure product quality, enhance efficiency, and support continuous improvement in food production.",
-
-                // Education
-                educationTitle: "Bachelor of Agriculture, Food Industries and Dairy",
-                educationLocation: "Minia University, Egypt | GPA: 3.2 | Graduation Year: 2023",
-                educationProject: "Graduation Project: Integrated Quality and Food Safety Management System Using HACCP and ISO 9001",
-                educationCourses: "Relevant Courses: Dairy Technology, Food Safety, Quality Management.",
-
-                // Experience
-                exp1Title: "Quality Control Specialist – Imtenan for Food Industries, Obour City",
-                exp1Date: "2025 – Present",
-                exp1Item1: "Monitoring production processes and ensuring compliance with food safety and quality standards.",
-                exp1Item2: "Conducting inspections, auditing, and verifying product conformity with ISO 22000 and HACCP.",
-                exp1Item3: "Performing lab tests and coordinating corrective actions to maintain product safety and consistency.",
-
-                exp2Title: "Quality Control Specialist – Smiley's for Food Industries, Obour City",
-                exp2Date: "2024 – 2025",
-                exp2Item1: "Oversaw quality control of meat products and refrigerated vegetables.",
-                exp2Item2: "Implemented quality assurance procedures and verified compliance with GMP and ISO standards.",
-                exp2Item3: "Ensured cold chain integrity and adherence to hygiene and safety protocols.",
-
-                exp3Title: "Quality Control Training – El-Salah for Food Industries (Juices & Beverages – Tetra Pak)",
-                exp3Date: "2023 – 2024",
-                exp3Item1: "Assisted in monitoring production lines and maintaining hygiene and safety controls.",
-                exp3Item2: "Conducted sampling and testing for product quality and shelf-life stability.",
-                exp3Item3: "Documented findings and supported implementation of HACCP system.",
-
-                exp4Title: "Quality Control | Production Training – Al-Fakhama Dairy Products",
-                exp4Date: "2022",
-                exp4Item1: "Monitored production processes and ensured compliance with food safety standards.",
-                exp4Item2: "Operated food production equipment and performed lab testing on product samples.",
-
-                // Certifications
-                cert1Title: "Diploma in Food Safety",
-                cert1Date: "Alison Platform | 2022",
-
-                cert2Title: "Food Safety Training Program",
-                cert2Location: "Center of Excellence for Food Research and Analysis, Zewail City University (collaborating with Medix)",
-                cert2Date: "30 Hours | 2021",
-                cert2Achievement: "Achievements: Conducted food safety analysis on real samples using advanced analytical tools.",
-
-                cert3Title: "Advanced Training in GMP, GHP, HACCP, ISO 22000:2018, ISO 9001:2015",
-                cert3Date: "Egyptian Organization for Standardization and Quality | 2023",
-
-                // Skills
-                skill1: "Food Safety Systems: GMP, GHP, HACCP, ISO 22000:2018",
-                skill2: "Quality Management: ISO 9001:2015",
-                skill3: "Quality Control & Auditing",
-                skill4: "Food Production Processes",
-                skill5: "Languages: Arabic (Native), English (Good)",
-
-                // Certificates Page
-                certificatesTitle: "My Certificates",
-                certificatesSubtitle: "Professional certifications and training achievements",
-                viewCert: "View Certificate",
-                cert4Title: "Quality Control Specialist Certification",
-                cert4Org: "Food Industries Association",
-                cert4Date: "2024"
-            },
-            ar: {
-                // Header
-                name: "سمير مجدي يعقوب",
-                title: "أخصائي مراقبة الجودة - الصناعات الغذائية",
-
-                // Language Toggle
-                langToggle: "English",
-
-                // Certificates Button
-                certificatesBtn: "شهاداتي",
-                downloadBtn: "تحميل السيرة الذاتية PDF",
-                closeBtn: "إغلاق",
-
-                // Sections
-                summary: "ملخص مهني",
-                education: "التعليم",
-                experience: "الخبرات",
-                certifications: "الشهادات والتدريب المهني",
-                skills: "المهارات",
-                footer: "© 2025 سمير مجدي يعقوب - جميع الحقوق محفوظة",
-
-                // Contact
-                whatsapp: "واتساب",
-
-                // Summary Content
-                summaryContent: "خريج كلية الزراعة، جامعة المنيا (المعدل التراكمي 3.2)، متخصص في الصناعات الغذائية والألبان. لدي خبرة عملية في أنظمة سلامة الغذاء (GMP, GHP, HACCP, ISO 22000:2018) من خلال برامج تدريبية مكثفة والعمل العملي في شركات صناعات غذائية رائدة. ماهر في مراقبة الجودة والتدقيق والامتثال للمعايير الدولية. متحمس لتطبيق خبراتي لضمان جودة المنتج، وتعزيز الكفاءة، ودعم التحسين المستمر في إنتاج الغذاء.",
-
-                // Education
-                educationTitle: "بكالوريوس الزراعة، الصناعات الغذائية والألبان",
-                educationLocation: "جامعة المنيا، مصر | المعدل التراكمي: 3.2 | سنة التخرج: 2023",
-                educationProject: "مشروع التخرج: نظام إدارة الجودة وسلامة الغذاء المتكامل باستخدام HACCP و ISO 9001",
-                educationCourses: "المقررات الدراسية ذات الصلة: تكنولوجيا الألبان، سلامة الغذاء، إدارة الجودة.",
-
-                // Experience
-                exp1Title: "أخصائي مراقبة الجودة – امتنان للصناعات الغذائية، مدينة العبور",
-                exp1Date: "2025 – حتى الآن",
-                exp1Item1: "مراقبة عمليات الإنتاج وضمان الامتثال لمعايير سلامة وجودة الغذاء.",
-                exp1Item2: "إجراء عمليات التفتيش والتدقيق والتحقق من مطابقة المنتج لمعايير ISO 22000 و HACCP.",
-                exp1Item3: "إجراء الاختبارات المعملية وتنسيق الإجراءات التصحيحية للحفاظ على سلامة المنتج واتساقه.",
-
-                exp2Title: "أخصائي مراقبة الجودة – سمايليز للصناعات الغذائية، مدينة العبور",
-                exp2Date: "2024 – 2025",
-                exp2Item1: "الإشراف على مراقبة جودة منتجات اللحوم والخضروات المبردة.",
-                exp2Item2: "تنفيذ إجراءات ضمان الجودة والتحقق من الامتثال لمعايير GMP و ISO.",
-                exp2Item3: "ضمان سلامة سلسلة التبريد والالتزام ببروتوكولات النظافة والسلامة.",
-
-                exp3Title: "تدريب مراقبة الجودة – الصلاح للصناعات الغذائية (عصائر ومشروبات – تتراباك)",
-                exp3Date: "2023 – 2024",
-                exp3Item1: "المساعدة في مراقبة خطوط الإنتاج والحفاظ على ضوابط النظافة والسلامة.",
-                exp3Item2: "إجراء أخذ العينات والاختبارات لجودة المنتج واستقرار فترة الصلاحية.",
-                exp3Item3: "توثيق النتائج ودعم تنفيذ نظام HACCP.",
-
-                exp4Title: "تدريب مراقبة الجودة والإنتاج – الفخامة لمنتجات الألبان",
-                exp4Date: "2022",
-                exp4Item1: "مراقبة عمليات الإنتاج وضمان الامتثال لمعايير سلامة الغذاء.",
-                exp4Item2: "تشغيل معدات إنتاج الغذاء وإجراء الاختبارات المعملية على عينات المنتج.",
-
-                // Certifications
-                cert1Title: "دبلوم سلامة الغذاء",
-                cert1Date: "منصة أليسون | 2022",
-
-                cert2Title: "برنامج تدريبي في سلامة الغذاء",
-                cert2Location: "مركز التميز لأبحاث وتحليل الغذاء، جامعة زويل (بالتعاون مع ميديكس)",
-                cert2Date: "30 ساعة | 2021",
-                cert2Achievement: "الإنجازات: إجراء تحليل سلامة الغذاء على عينات حقيقية باستخدام أدوات تحليلية متقدمة.",
-
-                cert3Title: "تدريب متقدم في GMP, GHP, HACCP, ISO 22000:2018, ISO 9001:2015",
-                cert3Date: "الهيئة المصرية العامة للمواصفات والجودة | 2023",
-
-                // Skills
-                skill1: "أنظمة سلامة الغذاء: GMP, GHP, HACCP, ISO 22000:2018",
-                skill2: "إدارة الجودة: ISO 9001:2015",
-                skill3: "مراقبة الجودة والتدقيق",
-                skill4: "عمليات إنتاج الغذاء",
-                skill5: "اللغات: العربية (اللغة الأم)، الإنجليزية (جيدة)",
-
-                // Certificates Page
-                certificatesTitle: "شهاداتي",
-                certificatesSubtitle: "الشهادات المهنية والإنجازات التدريبية",
-                viewCert: "عرض الشهادة",
-                cert4Title: "شهادة أخصائي مراقبة الجودة",
-                cert4Org: "جمعية الصناعات الغذائية",
-                cert4Date: "2024"
-            }
-        };
-
-        // حالة اللغة الحالية
-        let currentLang = 'en';
-
-        // وظيفة للتفاعل مع بيانات الاتصال
-        function contactAction(value) {
-            if (value.startsWith('tel:')) {
-                window.open(value, '_self');
-            } else if (value.startsWith('mailto:')) {
-                window.open(value, '_self');
-            } else {
-                window.open(value, '_blank');
-            }
-        }
-
-        // وظيفة لتبديل اللغة
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'ar' : 'en';
-            applyLanguage(currentLang);
-
-            // تغيير اتجاه النص
-            document.body.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-
-            // تحديث نص زر تبديل اللغة
-            document.getElementById('langToggle').innerHTML =
-                `<i class="fas fa-language"></i><span>${translations[currentLang].langToggle}</span>`;
-        }
-
-        // تطبيق اللغة المحددة
-        function applyLanguage(lang) {
-            const t = translations[lang];
-
-            // تحديث الترويسة
-            document.querySelector('.profile-info h1').textContent = t.name;
-            document.querySelector('.profile-info .title').textContent = t.title;
-
-            // تحديث زر الشهادات
-            document.querySelector('.text-certificates-btn').textContent = t.certificatesBtn;
-            document.querySelector('.text-download-btn').textContent = t.downloadBtn;
-            document.querySelector('.text-close-btn').textContent = t.closeBtn;
-
-            // تحديث عناوين الأقسام
-            document.querySelector('.text-summary').textContent = t.summary;
-            document.querySelector('.text-education').textContent = t.education;
-            document.querySelector('.text-experience').textContent = t.experience;
-            document.querySelector('.text-certifications').textContent = t.certifications;
-            document.querySelector('.text-skills').textContent = t.skills;
-
-            // تحديث الفوتر
-            document.querySelector('.text-footer').textContent = t.footer;
-
-            // تحديث واتساب
-            document.querySelector('.contact-item:last-child span').textContent = t.whatsapp;
-
-            // تحديث المحتوى
-            document.querySelector('.text-summary-content').textContent = t.summaryContent;
-
-            // تحديث التعليم
-            document.querySelector('.text-education-title').textContent = t.educationTitle;
-            document.querySelector('.text-education-location').textContent = t.educationLocation;
-            document.querySelector('.text-education-project').textContent = t.educationProject;
-            document.querySelector('.text-education-courses').textContent = t.educationCourses;
-
-            // تحديث الخبرات
-            document.querySelector('.text-exp1-title').textContent = t.exp1Title;
-            document.querySelector('.text-exp1-date').textContent = t.exp1Date;
-            document.querySelector('.text-exp1-item1').textContent = t.exp1Item1;
-            document.querySelector('.text-exp1-item2').textContent = t.exp1Item2;
-            document.querySelector('.text-exp1-item3').textContent = t.exp1Item3;
-
-            document.querySelector('.text-exp2-title').textContent = t.exp2Title;
-            document.querySelector('.text-exp2-date').textContent = t.exp2Date;
-            document.querySelector('.text-exp2-item1').textContent = t.exp2Item1;
-            document.querySelector('.text-exp2-item2').textContent = t.exp2Item2;
-            document.querySelector('.text-exp2-item3').textContent = t.exp2Item3;
-
-            document.querySelector('.text-exp3-title').textContent = t.exp3Title;
-            document.querySelector('.text-exp3-date').textContent = t.exp3Date;
-            document.querySelector('.text-exp3-item1').textContent = t.exp3Item1;
-            document.querySelector('.text-exp3-item2').textContent = t.exp3Item2;
-            document.querySelector('.text-exp3-item3').textContent = t.exp3Item3;
-
-            document.querySelector('.text-exp4-title').textContent = t.exp4Title;
-            document.querySelector('.text-exp4-date').textContent = t.exp4Date;
-            document.querySelector('.text-exp4-item1').textContent = t.exp4Item1;
-            document.querySelector('.text-exp4-item2').textContent = t.exp4Item2;
-
-            // تحديث الشهادات
-            document.querySelector('.text-cert1-title').textContent = t.cert1Title;
-            document.querySelector('.text-cert1-date').textContent = t.cert1Date;
-
-            document.querySelector('.text-cert2-title').textContent = t.cert2Title;
-            document.querySelector('.text-cert2-location').textContent = t.cert2Location;
-            document.querySelector('.text-cert2-date').textContent = t.cert2Date;
-            document.querySelector('.text-cert2-achievement').textContent = t.cert2Achievement;
-
-            document.querySelector('.text-cert3-title').textContent = t.cert3Title;
-            document.querySelector('.text-cert3-date').textContent = t.cert3Date;
-
-            // تحديث المهارات
-            document.querySelector('.text-skill1').textContent = t.skill1;
-            document.querySelector('.text-skill2').textContent = t.skill2;
-            document.querySelector('.text-skill3').textContent = t.skill3;
-            document.querySelector('.text-skill4').textContent = t.skill4;
-            document.querySelector('.text-skill5').textContent = t.skill5;
-
-            // تحديث صفحة الشهادات
-            document.querySelector('.text-certificates-title').textContent = t.certificatesTitle;
-            document.querySelector('.text-certificates-subtitle').textContent = t.certificatesSubtitle;
-            document.querySelectorAll('.text-view-cert').forEach(el => {
-                el.textContent = t.viewCert;
-            });
-            document.querySelector('.text-cert4-title').textContent = t.cert4Title;
-            document.querySelector('.text-cert4-org').textContent = t.cert4Org;
-            document.querySelector('.text-cert4-date').textContent = t.cert4Date;
-
-            // إعادة تفعيل أشرطة المهارات
-            setTimeout(() => {
-                const skillBars = document.querySelectorAll('.skill-level');
-                skillBars.forEach(bar => {
-                    const level = bar.getAttribute('data-level');
-                    bar.style.width = level + '%';
-                });
-            }, 300);
-        }
-
-        // وظائف صفحة الشهادات
-        function openCertificatesPage() {
-            document.getElementById('certificatesPage').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeCertificatesPage() {
-            document.getElementById('certificatesPage').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        // وظائف التكبير والتصغير
-        let currentScale = 1;
-        const minScale = 0.5;
-        const maxScale = 3;
-        const scaleStep = 0.25;
-
-        function openCertificateModal(imgSrc) {
-            document.getElementById('modalCertificateImg').src = imgSrc;
-            document.getElementById('certificateModal').classList.add('active');
-            resetZoom();
-        }
-
-        function closeCertificateModal() {
-            document.getElementById('certificateModal').classList.remove('active');
-        }
-
-        function zoomIn() {
-            if (currentScale < maxScale) {
-                currentScale += scaleStep;
-                updateZoom();
-            }
-        }
-
-        function zoomOut() {
-            if (currentScale > minScale) {
-                currentScale -= scaleStep;
-                updateZoom();
-            }
-        }
-
-        function resetZoom() {
-            currentScale = 1;
-            updateZoom();
-        }
-
-        function updateZoom() {
-            const img = document.getElementById('modalCertificateImg');
-            const zoomLevel = document.getElementById('zoomLevel');
-
-            img.style.transform = `scale(${currentScale})`;
-            zoomLevel.textContent = `${Math.round(currentScale * 100)}%`;
-
-            if (currentScale > 1) {
-                img.classList.add('zoomed');
-            } else {
-                img.classList.remove('zoomed');
-            }
-        }
-
-        // وظيفة تنزيل PDF المباشر
-        function downloadDirectPDF() {
-            // رابط التحميل المباشر
-            const directDownloadUrl ='https://www.mediafire.com/file/amle1exvxk6w9ru/cv+samir+magdy+E+%282%29.pdf?dkey=sxgphy632qw&r=588';
-
-            // إنشاء عنصر رابط مؤقت
-            const link = document.createElement('a');
-            link.href = directDownloadUrl;
-            link.target = '_blank';
-            link.download = 'Samir_Magdy_CV.pdf';
-
-            // إضافة الرابط للصفحة والنقر عليه برمجياً
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        // تهيئة جسيمات الخلفية
-        document.addEventListener('DOMContentLoaded', function () {
-            particlesJS('particles-js', {
-                particles: {
-                    number: { value: 80, density: { enable: true, value_area: 800 } },
-                    color: { value: "#3498db" },
-                    shape: { type: "circle" },
-                    opacity: { value: 0.5, random: true },
-                    size: { value: 3, random: true },
-                    line_linked: {
-                        enable: true,
-                        distance: 150,
-                        color: "#3498db",
-                        opacity: 0.2,
-                        width: 1
-                    },
-                    move: {
-                        enable: true,
-                        speed: 2,
-                        direction: "none",
-                        random: true,
-                        straight: false,
-                        out_mode: "out",
-                        bounce: false
-                    }
-                },
-                interactivity: {
-                    detect_on: "canvas",
-                    events: {
-                        onhover: { enable: true, mode: "repulse" },
-                        onclick: { enable: true, mode: "push" },
-                        resize: true
-                    }
-                },
-                retina_detect: true
-            });
-
-            // إضافة مستمع الحدث لزر تبديل اللغة
-            document.getElementById('langToggle').addEventListener('click', toggleLanguage);
-
-            // إضافة مستمع الحدث لزر الشهادات
-            document.getElementById('certificatesBtn').addEventListener('click', openCertificatesPage);
-
-            // إضافة مستمع الحدث لزر تنزيل PDF المباشر
-            document.getElementById('downloadPdf').addEventListener('click', downloadDirectPDF);
-
-            // إضافة مستمع الحدث لإغلاق صفحة الشهادات
-            document.getElementById('closeCertificates').addEventListener('click', closeCertificatesPage);
-
-            // إضافة مستمع الحدث لإغلاق نافذة الشهادة
-            document.getElementById('closeModal').addEventListener('click', closeCertificateModal);
-
-            // إضافة مستمع الحدث لأزرار التكبير
-            document.getElementById('zoomIn').addEventListener('click', zoomIn);
-            document.getElementById('zoomOut').addEventListener('click', zoomOut);
-            document.getElementById('resetZoom').addEventListener('click', resetZoom);
-
-            // إضافة مستمع الحدث لأزرار عرض الشهادة
-            document.querySelectorAll('.view-certificate').forEach(button => {
-                button.addEventListener('click', function () {
-                    const imgSrc = this.getAttribute('data-img');
-                    openCertificateModal(imgSrc);
-                });
-            });
-
-            // إغلاق نافذة الشهادة بالنقر خارجها
-            document.getElementById('certificateModal').addEventListener('click', function (e) {
-                if (e.target === this) {
-                    closeCertificateModal();
-                }
-            });
-
-            // إغلاق صفحة الشهادات بالنقر خارجها
-            document.getElementById('certificatesPage').addEventListener('click', function (e) {
-                if (e.target === this) {
-                    closeCertificatesPage();
-                }
-            });
-
-            // إخفاء شاشة التحميل بعد تأخير بسيط
-            setTimeout(() => {
-                document.getElementById('loading').classList.add('hidden');
-            }, 1500);
-
-            // تأثيرات الظهور عند التمرير
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-
-                        // تفعيل أشرطة المهارات
-                        if (entry.target.id === 'skills') {
-                            const skillBars = entry.target.querySelectorAll('.skill-level');
-                            skillBars.forEach(bar => {
-                                const level = bar.getAttribute('data-level');
-                                setTimeout(() => {
-                                    bar.style.width = level + '%';
-                                }, 300);
-                            });
-                        }
-                    }
-                });
-            }, observerOptions);
-
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-
-            // زر العودة للأعلى
-            const scrollTopBtn = document.getElementById('scrollTop');
-
-            window.addEventListener('scroll', () => {
-                if (window.pageYOffset > 300) {
-                    scrollTopBtn.classList.add('active');
-                } else {
-                    scrollTopBtn.classList.remove('active');
-                }
-            });
-
-            scrollTopBtn.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-
-            // تأثيرات إضافية عند التمرير
-            window.addEventListener('scroll', () => {
-                const scrolled = window.pageYOffset;
-                const rate = scrolled * -0.5;
-
-                document.querySelector('.floating-bg').style.transform = `translateY(${rate}px)`;
-
-                const header = document.querySelector('header');
-                if (scrolled > 50) {
-                    header.style.transform = `translateY(${scrolled * 0.1}px)`;
-                }
-            });
-
-            // تأثيرات عند تحميل الصفحة
-            window.addEventListener('load', () => {
-                document.body.classList.add('loaded');
-
-                // إضافة تأثيرات للعناصر العائمة
-                const floatingElements = document.querySelectorAll('.floating-element');
-                floatingElements.forEach((el, index) => {
-                    el.style.animationDelay = `${index * 2}s`;
-                });
-            });
-        });
-    </script>
+    <div class="header-controls">
+      <button class="ctrl-btn certs-btn pulse-ring" id="openCertsBtn">
+        <i class="fas fa-certificate"></i>
+        <span data-key="certsBtn">My Certificates</span>
+      </button>
+      <button class="ctrl-btn" id="langBtn">
+        <i class="fas fa-language"></i>
+        <span id="langBtnText">العربية</span>
+      </button>
+    </div>
+
+    <div class="profile-wrap">
+      <div class="profile-img-wrap">
+        <div class="profile-img-ring">
+          <div class="profile-img-inner">
+            <img src="profile.jpg" alt="Samir Magdy" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-user-tie\'></i>'">
+          </div>
+        </div>
+        <div class="profile-badge"><i class="fas fa-shield-halved"></i></div>
+      </div>
+
+      <div class="profile-info">
+        <h1 class="profile-name" data-key="name">Samir Magdy Yacoub</h1>
+        <div class="profile-title">
+          <span class="profile-title-badge"><i class="fas fa-leaf"></i> <span data-key="title1">Food Safety Specialist</span></span>
+          <span class="profile-title-badge"><i class="fas fa-hard-hat"></i> <span data-key="title2">Occupational Health & Safety</span></span>
+        </div>
+        <div class="contact-chips">
+          <a class="chip" href="tel:+201129724884">
+            <i class="fas fa-phone"></i>
+            <span class="chip-label">+201129724884</span>
+          </a>
+          <a class="chip" href="mailto:samirmagdy9955@gmail.com">
+            <i class="fas fa-envelope"></i>
+            <span class="chip-label">samirmagdy9955@gmail.com</span>
+          </a>
+          <a class="chip" href="https://www.linkedin.com/in/samir-magdy-101a48241" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+            <span class="chip-label">LinkedIn</span>
+          </a>
+          <a class="chip" href="https://wa.me/201129724884" target="_blank" rel="noopener">
+            <i class="fab fa-whatsapp"></i>
+            <span class="chip-label" data-key="whatsapp">WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- OHS ACCENT STRIP -->
+  <div class="ohs-strip card" id="ohsStrip">
+    <div class="ohs-icon-wrap"><i class="fas fa-hard-hat"></i></div>
+    <div class="ohs-text">
+      <strong data-key="ohsTitle">Occupational Health & Safety Specialist</strong>
+      <span data-key="ohsSub">Certified in workplace hazard management, risk assessment, and safety compliance</span>
+    </div>
+    <div class="ohs-badges">
+      <span class="ohs-badge">ISO 45001</span>
+      <span class="ohs-badge">Risk Assessment</span>
+      <span class="ohs-badge">OSHA</span>
+      <span class="ohs-badge">PPE</span>
+      <span class="ohs-badge">HSE</span>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="main-grid">
+
+    <!-- LEFT COLUMN -->
+    <div>
+
+      <!-- SUMMARY -->
+      <div class="card stagger-1" data-obs>
+        <div class="sec-title">
+          <div class="sec-icon"><i class="fas fa-user-tie"></i></div>
+          <h2 data-key="secSummary">Professional Summary</h2>
+        </div>
+        <p class="summary-text" data-key="summary">
+          Graduate from Faculty of Agriculture, Minia University (GPA 3.2), specializing in Food Industries and Dairy. I have hands-on experience in food safety systems (GMP, GHP, HACCP, ISO 22000:2018) through intensive training programs and practical work in leading food industries. Skilled in quality control, auditing, and compliance with international standards. Motivated to apply my expertise to ensure product quality, enhance efficiency, and support continuous improvement in food production.
+        </p>
+      </div>
+
+      <!-- EDUCATION -->
+      <div class="card stagger-2" data-obs>
+        <div class="sec-title">
+          <div class="sec-icon"><i class="fas fa-graduation-cap"></i></div>
+          <h2 data-key="secEducation">Education</h2>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <h3 data-key="eduTitle">Bachelor of Agriculture, Food Industries and Dairy</h3>
+            <div class="tl-date"><i class="fas fa-map-marker-alt"></i> <span data-key="eduLoc">Minia University, Egypt | GPA: 3.2 | 2023</span></div>
+            <p data-key="eduProject">Graduation Project: Integrated Quality and Food Safety Management System Using HACCP and ISO 9001</p>
+            <div class="cert-tags" style="margin-top:10px;">
+              <span class="cert-tag">Dairy Technology</span>
+              <span class="cert-tag">Food Safety</span>
+              <span class="cert-tag">Quality Management</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPERIENCE -->
+      <div class="card stagger-3" data-obs>
+        <div class="sec-title">
+          <div class="sec-icon"><i class="fas fa-briefcase"></i></div>
+          <h2 data-key="secExperience">Experience</h2>
+        </div>
+        <div class="timeline">
+
+          <div class="tl-item">
+            <h3 data-key="exp1Title">Quality Control Specialist – Imtenan for Food Industries, Obour City</h3>
+            <div class="tl-date"><i class="fas fa-calendar"></i> <span data-key="exp1Date">2025 – Present</span></div>
+            <ul>
+              <li data-key="exp1i1">Monitoring production processes and ensuring compliance with food safety and quality standards.</li>
+              <li data-key="exp1i2">Conducting inspections, auditing, and verifying product conformity with ISO 22000 and HACCP.</li>
+              <li data-key="exp1i3">Performing lab tests and coordinating corrective actions to maintain product safety and consistency.</li>
+            </ul>
+          </div>
+
+          <div class="tl-item">
+            <h3 data-key="exp2Title">Quality Control Specialist – Smiley's for Food Industries, Obour City</h3>
+            <div class="tl-date"><i class="fas fa-calendar"></i> <span data-key="exp2Date">2024 – 2025</span></div>
+            <ul>
+              <li data-key="exp2i1">Oversaw quality control of meat products and refrigerated vegetables.</li>
+              <li data-key="exp2i2">Implemented quality assurance procedures and verified compliance with GMP and ISO standards.</li>
+              <li data-key="exp2i3">Ensured cold chain integrity and adherence to hygiene and safety protocols.</li>
+            </ul>
+          </div>
+
+          <div class="tl-item">
+            <h3 data-key="exp3Title">Quality Control Training – El-Salah for Food Industries (Juices & Beverages – Tetra Pak)</h3>
+            <div class="tl-date"><i class="fas fa-calendar"></i> <span data-key="exp3Date">2023 – 2024</span></div>
+            <ul>
+              <li data-key="exp3i1">Assisted in monitoring production lines and maintaining hygiene and safety controls.</li>
+              <li data-key="exp3i2">Conducted sampling and testing for product quality and shelf-life stability.</li>
+              <li data-key="exp3i3">Documented findings and supported implementation of HACCP system.</li>
+            </ul>
+          </div>
+
+          <div class="tl-item">
+            <h3 data-key="exp4Title">Quality Control | Production Training – Al-Fakhama Dairy Products</h3>
+            <div class="tl-date"><i class="fas fa-calendar"></i> <span data-key="exp4Date">2022</span></div>
+            <ul>
+              <li data-key="exp4i1">Monitored production processes and ensured compliance with food safety standards.</li>
+              <li data-key="exp4i2">Operated food production equipment and performed lab testing on product samples.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div>
+
+      <!-- CERTIFICATIONS -->
+      <div class="card stagger-1" data-obs>
+        <div class="sec-title">
+          <div class="sec-icon"><i class="fas fa-certificate"></i></div>
+          <h2 data-key="secCerts">Certifications & Training</h2>
+        </div>
+        <div class="timeline">
+
+          <div class="tl-item">
+            <h3 data-key="cert1Title">Diploma in Food Safety</h3>
+            <div class="tl-date"><i class="fas fa-award"></i> <span data-key="cert1Date">Alison Platform | 2022</span></div>
+          </div>
+
+          <div class="tl-item">
+            <h3 data-key="cert2Title">Food Safety Training Program</h3>
+            <div class="tl-date"><i class="fas fa-university"></i> <span data-key="cert2Loc">Center of Excellence, Zewail City University (Medix)</span></div>
+            <div class="tl-date"><i class="fas fa-clock"></i> <span data-key="cert2Date">30 Hours | 2021</span></div>
+            <p data-key="cert2Ach">Achievement: Conducted food safety analysis on real samples using advanced analytical tools.</p>
+          </div>
+
+          <div class="tl-item">
+            <h3 data-key="cert3Title">Advanced Training in GMP, GHP, HACCP, ISO 22000:2018, ISO 9001:2015</h3>
+            <div class="tl-date"><i class="fas fa-award"></i> <span data-key="cert3Date">Egyptian Org. for Standardization | 2023</span></div>
+            <div class="cert-tags">
+              <span class="cert-tag">GMP</span>
+              <span class="cert-tag">GHP</span>
+              <span class="cert-tag">HACCP</span>
+              <span class="cert-tag">ISO 22000</span>
+              <span class="cert-tag">ISO 9001</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SKILLS -->
+      <div class="card stagger-2" id="skillsCard" data-obs>
+        <div class="sec-title">
+          <div class="sec-icon"><i class="fas fa-chart-bar"></i></div>
+          <h2 data-key="secSkills">Skills</h2>
+        </div>
+        <ul class="skills-list">
+          <li class="skill-item">
+            <div class="skill-row">
+              <span class="skill-label" data-key="skill1">Food Safety Systems: GMP, GHP, HACCP, ISO 22000:2018</span>
+              <span class="skill-pct">95%</span>
+            </div>
+            <div class="skill-track"><div class="skill-fill" data-level="95"></div></div>
+          </li>
+          <li class="skill-item">
+            <div class="skill-row">
+              <span class="skill-label" data-key="skill2">Quality Management: ISO 9001:2015</span>
+              <span class="skill-pct">90%</span>
+            </div>
+            <div class="skill-track"><div class="skill-fill" data-level="90"></div></div>
+          </li>
+          <li class="skill-item">
+            <div class="skill-row">
+              <span class="skill-label" data-key="skill3">Quality Control & Auditing</span>
+              <span class="skill-pct">92%</span>
+            </div>
+            <div class="skill-track"><div class="skill-fill" data-level="92"></div></div>
+          </li>
+          <li class="skill-item">
+            <div class="skill-row">
+              <span class="skill-label" data-key="skill4">Food Production Processes</span>
+              <span class="skill-pct">88%</span>
+            </div>
+            <div class="skill-track"><div class="skill-fill" data-level="88"></div></div>
+          </li>
+          <li class="skill-item">
+            <div class="skill-row">
+              <span class="skill-label" data-key="skill5">Occupational Health & Safety</span>
+              <span class="skill-pct">85%</span>
+            </div>
+            <div class="skill-track"><div class="skill-fill" data-level="85"></div></div>
+          </li>
+          <li class="skill-item">
+            <div class="skill-row">
+              <span class="skill-label" data-key="skill6">Languages: Arabic (Native), English (Good)</span>
+              <span class="skill-pct">80%</span>
+            </div>
+            <div class="skill-track"><div class="skill-fill" data-level="80"></div></div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div><!-- /main-grid -->
+
+  <footer>
+    <p data-key="footer">© 2025 Samir Magdy Yacoub – All Rights Reserved</p>
+    <div class="footer-icons">
+      <div class="footer-icon" onclick="window.open('tel:+201129724884')"><i class="fas fa-phone"></i></div>
+      <div class="footer-icon" onclick="window.open('mailto:samirmagdy9955@gmail.com')"><i class="fas fa-envelope"></i></div>
+      <div class="footer-icon" onclick="window.open('https://www.linkedin.com/in/samir-magdy-101a48241','_blank')"><i class="fab fa-linkedin-in"></i></div>
+      <div class="footer-icon" onclick="window.open('https://wa.me/201129724884','_blank')"><i class="fab fa-whatsapp"></i></div>
+    </div>
+  </footer>
+
+</div><!-- /container -->
+
+<script>
+/* ===================== TRANSLATIONS ===================== */
+const T = {
+  en: {
+    name: "Samir Magdy Yacoub",
+    title1: "Food Safety Specialist",
+    title2: "Occupational Health & Safety",
+    whatsapp: "WhatsApp",
+    certsBtn: "My Certificates",
+    certsTitle: "My Certificates",
+    certsSubtitle: "Professional certifications and training achievements",
+    dlBtn: "Download CV PDF",
+    closeBtn: "Close",
+    viewCert: "View Certificate",
+    ohsTitle: "Occupational Health & Safety Specialist",
+    ohsSub: "Certified in workplace hazard management, risk assessment, and safety compliance",
+    secSummary: "Professional Summary",
+    secEducation: "Education",
+    secExperience: "Experience",
+    secCerts: "Certifications & Training",
+    secSkills: "Skills",
+    summary: "Graduate from Faculty of Agriculture, Minia University (GPA 3.2), specializing in Food Industries and Dairy. I have hands-on experience in food safety systems (GMP, GHP, HACCP, ISO 22000:2018) through intensive training programs and practical work in leading food industries. Skilled in quality control, auditing, and compliance with international standards. Motivated to apply my expertise to ensure product quality, enhance efficiency, and support continuous improvement in food production.",
+    eduTitle: "Bachelor of Agriculture, Food Industries and Dairy",
+    eduLoc: "Minia University, Egypt | GPA: 3.2 | 2023",
+    eduProject: "Graduation Project: Integrated Quality and Food Safety Management System Using HACCP and ISO 9001",
+    exp1Title: "Quality Control Specialist – Imtenan for Food Industries, Obour City",
+    exp1Date: "2025 – Present",
+    exp1i1: "Monitoring production processes and ensuring compliance with food safety and quality standards.",
+    exp1i2: "Conducting inspections, auditing, and verifying product conformity with ISO 22000 and HACCP.",
+    exp1i3: "Performing lab tests and coordinating corrective actions to maintain product safety and consistency.",
+    exp2Title: "Quality Control Specialist – Smiley's for Food Industries, Obour City",
+    exp2Date: "2024 – 2025",
+    exp2i1: "Oversaw quality control of meat products and refrigerated vegetables.",
+    exp2i2: "Implemented quality assurance procedures and verified compliance with GMP and ISO standards.",
+    exp2i3: "Ensured cold chain integrity and adherence to hygiene and safety protocols.",
+    exp3Title: "Quality Control Training – El-Salah for Food Industries (Juices & Beverages – Tetra Pak)",
+    exp3Date: "2023 – 2024",
+    exp3i1: "Assisted in monitoring production lines and maintaining hygiene and safety controls.",
+    exp3i2: "Conducted sampling and testing for product quality and shelf-life stability.",
+    exp3i3: "Documented findings and supported implementation of HACCP system.",
+    exp4Title: "Quality Control | Production Training – Al-Fakhama Dairy Products",
+    exp4Date: "2022",
+    exp4i1: "Monitored production processes and ensured compliance with food safety standards.",
+    exp4i2: "Operated food production equipment and performed lab testing on product samples.",
+    cert1Title: "Diploma in Food Safety",
+    cert1Date: "Alison Platform | 2022",
+    cert2Title: "Food Safety Training Program",
+    cert2Loc: "Center of Excellence, Zewail City University (Medix)",
+    cert2Date: "30 Hours | 2021",
+    cert2Ach: "Achievement: Conducted food safety analysis on real samples using advanced analytical tools.",
+    cert3Title: "Advanced Training in GMP, GHP, HACCP, ISO 22000:2018, ISO 9001:2015",
+    cert3Date: "Egyptian Org. for Standardization | 2023",
+    skill1: "Food Safety Systems: GMP, GHP, HACCP, ISO 22000:2018",
+    skill2: "Quality Management: ISO 9001:2015",
+    skill3: "Quality Control & Auditing",
+    skill4: "Food Production Processes",
+    skill5: "Occupational Health & Safety",
+    skill6: "Languages: Arabic (Native), English (Good)",
+    cert_grad_title: "Graduation Certificate",
+    cert_grad_org: "Minia University – Faculty of Agriculture (Food Industries & Dairy)",
+    cert_alison_dip_title: "Diploma in Food Safety",
+    cert_alison_org: "Alison Platform",
+    cert_alison_cert_title: "Food Safety Certificate",
+    cert_alison_cert_org: "Alison Platform",
+    cert_zewail_title: "Food Safety Training Program",
+    cert_zewail_org: "Zewail City University",
+    cert_haccp_title: "Advanced Training in HACCP",
+    cert_haccp_org: "Egyptian Organization for Standardization & Quality",
+    cert_iso22000_title: "Advanced Training in ISO 22000:2018",
+    cert_iso22000_org: "Egyptian Organization for Standardization & Quality",
+    cert_gmp_title: "Advanced Training in GMP",
+    cert_gmp_org: "Egyptian Organization for Standardization & Quality",
+    cert_ghp_title: "Advanced Training in GHP",
+    cert_ghp_org: "Egyptian Organization for Standardization & Quality",
+    cert_fakhama_title: "Quality Control & Production Training",
+    cert_fakhama_org: "Al-Fakhama Dairy Products",
+    cert_icdl_title: "ICDL Course",
+    cert_icdl_org: "Udemy",
+    footer: "© 2025 Samir Magdy Yacoub – All Rights Reserved"
+  },
+  ar: {
+    name: "سمير مجدي يعقوب",
+    title1: "أخصائي سلامة الغذاء",
+    title2: "أخصائي الصحة والسلامة المهنية",
+    whatsapp: "واتساب",
+    certsBtn: "شهاداتي",
+    certsTitle: "شهاداتي",
+    certsSubtitle: "الشهادات المهنية والإنجازات التدريبية",
+    dlBtn: "تحميل السيرة الذاتية PDF",
+    closeBtn: "إغلاق",
+    viewCert: "عرض الشهادة",
+    ohsTitle: "أخصائي الصحة والسلامة المهنية",
+    ohsSub: "معتمد في إدارة مخاطر بيئة العمل وتقييم المخاطر والامتثال للسلامة",
+    secSummary: "ملخص مهني",
+    secEducation: "التعليم",
+    secExperience: "الخبرات",
+    secCerts: "الشهادات والتدريب المهني",
+    secSkills: "المهارات",
+    summary: "خريج كلية الزراعة، جامعة المنيا (المعدل التراكمي 3.2)، متخصص في الصناعات الغذائية والألبان. لدي خبرة عملية في أنظمة سلامة الغذاء (GMP, GHP, HACCP, ISO 22000:2018) من خلال برامج تدريبية مكثفة والعمل العملي في شركات صناعات غذائية رائدة. ماهر في مراقبة الجودة والتدقيق والامتثال للمعايير الدولية. متحمس لتطبيق خبراتي لضمان جودة المنتج وتعزيز الكفاءة ودعم التحسين المستمر في إنتاج الغذاء.",
+    eduTitle: "بكالوريوس الزراعة، الصناعات الغذائية والألبان",
+    eduLoc: "جامعة المنيا، مصر | المعدل: 3.2 | سنة التخرج: 2023",
+    eduProject: "مشروع التخرج: نظام إدارة الجودة وسلامة الغذاء المتكامل باستخدام HACCP و ISO 9001",
+    exp1Title: "أخصائي مراقبة الجودة – امتنان للصناعات الغذائية، مدينة العبور",
+    exp1Date: "2025 – حتى الآن",
+    exp1i1: "مراقبة عمليات الإنتاج وضمان الامتثال لمعايير سلامة وجودة الغذاء.",
+    exp1i2: "إجراء عمليات التفتيش والتدقيق والتحقق من مطابقة المنتج لمعايير ISO 22000 وHACCP.",
+    exp1i3: "إجراء الاختبارات المعملية وتنسيق الإجراءات التصحيحية للحفاظ على سلامة المنتج.",
+    exp2Title: "أخصائي مراقبة الجودة – سمايليز للصناعات الغذائية، مدينة العبور",
+    exp2Date: "2024 – 2025",
+    exp2i1: "الإشراف على مراقبة جودة منتجات اللحوم والخضروات المبردة.",
+    exp2i2: "تنفيذ إجراءات ضمان الجودة والتحقق من الامتثال لمعايير GMP وISO.",
+    exp2i3: "ضمان سلامة سلسلة التبريد والالتزام ببروتوكولات النظافة والسلامة.",
+    exp3Title: "تدريب مراقبة الجودة – الصلاح للصناعات الغذائية (عصائر ومشروبات – تتراباك)",
+    exp3Date: "2023 – 2024",
+    exp3i1: "المساعدة في مراقبة خطوط الإنتاج والحفاظ على ضوابط النظافة والسلامة.",
+    exp3i2: "إجراء أخذ العينات والاختبارات لجودة المنتج واستقرار فترة الصلاحية.",
+    exp3i3: "توثيق النتائج ودعم تنفيذ نظام HACCP.",
+    exp4Title: "تدريب مراقبة الجودة والإنتاج – الفخامة لمنتجات الألبان",
+    exp4Date: "2022",
+    exp4i1: "مراقبة عمليات الإنتاج وضمان الامتثال لمعايير سلامة الغذاء.",
+    exp4i2: "تشغيل معدات إنتاج الغذاء وإجراء الاختبارات المعملية على عينات المنتج.",
+    cert1Title: "دبلوم سلامة الغذاء",
+    cert1Date: "منصة أليسون | 2022",
+    cert2Title: "برنامج تدريبي في سلامة الغذاء",
+    cert2Loc: "مركز التميز لأبحاث وتحليل الغذاء، جامعة زويل (بالتعاون مع ميديكس)",
+    cert2Date: "30 ساعة | 2021",
+    cert2Ach: "الإنجازات: إجراء تحليل سلامة الغذاء على عينات حقيقية باستخدام أدوات تحليلية متقدمة.",
+    cert3Title: "تدريب متقدم في GMP, GHP, HACCP, ISO 22000:2018, ISO 9001:2015",
+    cert3Date: "الهيئة المصرية العامة للمواصفات والجودة | 2023",
+    skill1: "أنظمة سلامة الغذاء: GMP, GHP, HACCP, ISO 22000:2018",
+    skill2: "إدارة الجودة: ISO 9001:2015",
+    skill3: "مراقبة الجودة والتدقيق",
+    skill4: "عمليات إنتاج الغذاء",
+    skill5: "الصحة والسلامة المهنية",
+    skill6: "اللغات: العربية (الأم)، الإنجليزية (جيدة)",
+    cert_grad_title: "شهادة التخرج",
+    cert_grad_org: "جامعة المنيا – كلية الزراعة (الصناعات الغذائية والألبان)",
+    cert_alison_dip_title: "دبلوم سلامة الغذاء",
+    cert_alison_org: "منصة أليسون",
+    cert_alison_cert_title: "شهادة سلامة الغذاء",
+    cert_alison_cert_org: "منصة أليسون",
+    cert_zewail_title: "برنامج تدريبي في سلامة الغذاء",
+    cert_zewail_org: "جامعة زويل",
+    cert_haccp_title: "تدريب متقدم في HACCP",
+    cert_haccp_org: "الهيئة المصرية العامة للمواصفات والجودة",
+    cert_iso22000_title: "تدريب متقدم في ISO 22000:2018",
+    cert_iso22000_org: "الهيئة المصرية العامة للمواصفات والجودة",
+    cert_gmp_title: "تدريب متقدم في GMP",
+    cert_gmp_org: "الهيئة المصرية العامة للمواصفات والجودة",
+    cert_ghp_title: "تدريب متقدم في GHP",
+    cert_ghp_org: "الهيئة المصرية العامة للمواصفات والجودة",
+    cert_fakhama_title: "تدريب مراقبة الجودة والإنتاج",
+    cert_fakhama_org: "الفخامة لمنتجات الألبان",
+    cert_icdl_title: "دورة ICDL",
+    cert_icdl_org: "يوديمي",
+    footer: "© 2025 سمير مجدي يعقوب – جميع الحقوق محفوظة"
+  }
+};
+
+/* ===================== STATE ===================== */
+let lang = 'en';
+let zoomScale = 1;
+const MIN_Z = 0.5, MAX_Z = 3, STEP_Z = 0.25;
+
+/* ===================== APPLY LANGUAGE ===================== */
+function applyLang(l) {
+  lang = l;
+  const t = T[l];
+  document.documentElement.lang = l;
+
+  if (l === 'ar') {
+    document.body.classList.add('ar-mode');
+    document.body.dir = 'rtl';
+    document.getElementById('langBtnText').textContent = 'English';
+  } else {
+    document.body.classList.remove('ar-mode');
+    document.body.dir = 'ltr';
+    document.getElementById('langBtnText').textContent = 'العربية';
+  }
+
+  // Update all data-key elements
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const key = el.getAttribute('data-key');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+
+  // Update cert view buttons
+  document.querySelectorAll('[data-key-btn]').forEach(el => {
+    const key = el.getAttribute('data-key-btn');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+
+  // Retrigger skill bars
+  triggerSkillBars();
+}
+
+/* ===================== SKILL BARS ===================== */
+function triggerSkillBars() {
+  setTimeout(() => {
+    document.querySelectorAll('.skill-fill').forEach(bar => {
+      const lvl = bar.getAttribute('data-level');
+      bar.style.width = lvl + '%';
+    });
+  }, 200);
+}
+
+/* ===================== INTERSECTION OBSERVER ===================== */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      if (e.target.id === 'skillsCard' || e.target.querySelector('.skill-fill')) {
+        triggerSkillBars();
+      }
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('[data-obs]').forEach(el => obs.observe(el));
+document.getElementById('ohsStrip') && obs.observe(document.getElementById('ohsStrip'));
+
+/* ===================== CERTIFICATES MODAL ===================== */
+function openCerts() {
+  document.getElementById('certsOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCerts() {
+  document.getElementById('certsOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ===================== ZOOM MODAL ===================== */
+function openZoom(src) {
+  document.getElementById('zoomImg').src = src;
+  document.getElementById('zoomModal').classList.add('open');
+  zoomScale = 1;
+  updateZoom();
+}
+function closeZoom() {
+  document.getElementById('zoomModal').classList.remove('open');
+}
+function updateZoom() {
+  const img = document.getElementById('zoomImg');
+  const pct = document.getElementById('zoomPct');
+  img.style.transform = `scale(${zoomScale})`;
+  img.classList.toggle('grabbed', zoomScale > 1);
+  pct.textContent = Math.round(zoomScale * 100) + '%';
+}
+
+/* ===================== DOWNLOAD PDF ===================== */
+function downloadPDF() {
+  const url = 'https://www.mediafire.com/file/amle1exvxk6w9ru/cv+samir+magdy+E+%282%29.pdf?dkey=sxgphy632qw&r=588';
+  window.open(url, '_blank');
+}
+
+/* ===================== SCROLL TOP ===================== */
+const scrollTopBtn = document.getElementById('scrollTop');
+window.addEventListener('scroll', () => {
+  scrollTopBtn.classList.toggle('visible', window.scrollY > 320);
+});
+scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+/* ===================== EVENTS ===================== */
+document.getElementById('langBtn').addEventListener('click', () => applyLang(lang === 'en' ? 'ar' : 'en'));
+document.getElementById('openCertsBtn').addEventListener('click', openCerts);
+document.getElementById('closeCertsBtn').addEventListener('click', closeCerts);
+document.getElementById('dlPdfBtn').addEventListener('click', downloadPDF);
+
+document.getElementById('certsOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('certsOverlay')) closeCerts();
+});
+
+document.querySelectorAll('.cert-view-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    openZoom(btn.getAttribute('data-img'));
+  });
+});
+
+document.getElementById('zoomClose').addEventListener('click', closeZoom);
+document.getElementById('zoomModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('zoomModal')) closeZoom();
+});
+document.getElementById('zoomIn').addEventListener('click', () => {
+  if (zoomScale < MAX_Z) { zoomScale = Math.min(MAX_Z, zoomScale + STEP_Z); updateZoom(); }
+});
+document.getElementById('zoomOut').addEventListener('click', () => {
+  if (zoomScale > MIN_Z) { zoomScale = Math.max(MIN_Z, zoomScale - STEP_Z); updateZoom(); }
+});
+document.getElementById('zoomReset').addEventListener('click', () => { zoomScale = 1; updateZoom(); });
+
+/* Keyboard close */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeZoom(); closeCerts(); }
+});
+
+/* ===================== LOADING SCREEN ===================== */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loadingScreen').classList.add('hidden');
+    // Trigger first visible cards
+    document.querySelectorAll('[data-obs]').forEach((el, i) => {
+      if (el.getBoundingClientRect().top < window.innerHeight) {
+        setTimeout(() => { el.classList.add('visible'); }, i * 80);
+      }
+    });
+    if (document.getElementById('ohsStrip')) {
+      document.getElementById('ohsStrip').classList.add('visible');
+    }
+    triggerSkillBars();
+  }, 1400);
+});
+</script>
 </body>
-
 </html>
