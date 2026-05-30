@@ -2256,12 +2256,12 @@ async function downloadPDF() {
   doc.text('Quality & Food Safety Specialist', mar + 2, 32);
   doc.setFontSize(9);
   doc.setTextColor(167, 243, 208);
-  doc.text('Occupational Health & Safety Specialist (OHS – Basic Certified)', mar + 2, 40);
+  doc.text('Occupational Health & Safety Specialist (OHS – Basic)', mar + 2, 40);
 
   // Contact row
   doc.setFontSize(7.5);
   doc.setTextColor(167, 243, 208);
-  doc.text('+20 112 972 4884   •   samirmagdy9955@gmail.com   •   linkedin.com/in/samir-magdy-101a48241', mar + 2, 49);
+  doc.text('+20 112 972 4884   •   samirmagdy9955@gmail.com ', mar + 2, 49);
 
   // Stats
   [['3+','Years Exp.'], ['11+','Certifications'], ['4','Companies']].forEach(([num, lbl], i) => {
@@ -2294,7 +2294,7 @@ async function downloadPDF() {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.setTextColor(200, 210, 200);
-  doc.text('Quality & Food Safety Specialist  |Food Safety Systems: GMP, GHP, HACCP, ISO 22000:2018  •  Quality Management: ISO 9001:2015 •  Food Production Processes  ', mar + 8, y + 9.5);
+  doc.text('Quality & Food Safety Specialist  |Food Safety Systems: GMP, GHP, HACCP, ISO 22000:2018  •  Quality Management: ISO 9001:2015 ', mar + 8, y + 9.5);
   y += 17;
  
   doc.setFillColor(15, 23, 42);
@@ -2324,25 +2324,25 @@ async function downloadPDF() {
   );
   y += 6;
 
-  // Competency tags row
-  const tags = ['HACCP', 'ISO 22000:2018', 'ISO 9001:2015', 'GMP / GHP', 'Quality Control', 'OHS – ISO 45001', 'Risk Assessment'];
-  let tx = mar + 3;
-  const tagH = 6, tagPad = 3, tagGap = 3;
-  doc.setFontSize(7.5);
-  tags.forEach(tag => {
-    const tw = doc.getTextWidth(tag) + tagPad * 2;
-    if (tx + tw > W - mar) { tx = mar + 3; y += tagH + 2; }
-    doc.setFillColor(224, 247, 240);
-    doc.roundedRect(tx, y, tw, tagH, 1.5, 1.5, 'F');
-    doc.setDrawColor(...C.midGreen);
-    doc.setLineWidth(0.25);
-    doc.roundedRect(tx, y, tw, tagH, 1.5, 1.5, 'S');
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...C.deepGreen);
-    doc.text(tag, tx + tagPad, y + 4.3);
-    tx += tw + tagGap;
-  });
-  y += tagH + 8;
+  // // Competency tags row
+  // const tags = ['HACCP', 'ISO 22000:2018', 'ISO 9001:2015', 'GMP / GHP', 'Quality Control', 'OHS – ISO 45001', 'Risk Assessment'];
+  // let tx = mar + 3;
+  // const tagH = 6, tagPad = 3, tagGap = 3;
+  // doc.setFontSize(7.5);
+  // tags.forEach(tag => {
+  //   const tw = doc.getTextWidth(tag) + tagPad * 2;
+  //   if (tx + tw > W - mar) { tx = mar + 3; y += tagH + 2; }
+  //   doc.setFillColor(224, 247, 240);
+  //   doc.roundedRect(tx, y, tw, tagH, 1.5, 1.5, 'F');
+  //   doc.setDrawColor(...C.midGreen);
+  //   doc.setLineWidth(0.25);
+  //   doc.roundedRect(tx, y, tw, tagH, 1.5, 1.5, 'S');
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.setTextColor(...C.deepGreen);
+  //   doc.text(tag, tx + tagPad, y + 4.3);
+  //   tx += tw + tagGap;
+  // });
+  // y += tagH + 8;
 
   // Education
   sectionTitle('Education');
