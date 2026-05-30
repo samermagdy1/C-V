@@ -1501,14 +1501,7 @@ body.ar-mode .mol-badge { right: auto; left: 18px; }
       <h2 data-key="secSummary">Professional Summary</h2>
     </div>
     <p class="summary-text" data-key="summary">
-Graduate from the Faculty of Agriculture, Minia University (GPA 3.2), specializing in Food Industries and Dairy. Holds a
-professional certification as an OHS Specialist (Basic) from the Center for Occupational Health & Safety Studies, with
-expertise in workplace hazard management, risk assessment, and occupational safety compliance. Additionally
-experienced in food safety systems (GMP, GHP, HACCP, ISO 22000:2018) through intensive training and practical work in
-leading food manufacturing companies. Skilled in quality control, auditing, laboratory testing, and compliance with
-international standards. Motivated to apply a dual expertise in food safety and occupational health to ensure product
-quality, protect workforce wellbeing, and support continuous improvement in food production environments.
-
+      Graduate from Faculty of Agriculture, Minia University (GPA 3.2), specializing in Food Industries and Dairy. I have hands-on experience in food safety systems (GMP, GHP, HACCP, ISO 22000:2018) through intensive training programs and practical work in leading food industries. Skilled in quality control, auditing, and compliance with international standards. Motivated to apply my expertise to ensure product quality, enhance efficiency, and support continuous improvement in food production.
     </p>
     <div class="summary-highlights">
       <span class="highlight-tag"><i class="fas fa-check-circle"></i> HACCP</span>
@@ -2263,7 +2256,7 @@ async function downloadPDF() {
   doc.text('Quality & Food Safety Specialist', mar + 2, 32);
   doc.setFontSize(9);
   doc.setTextColor(167, 243, 208);
-  doc.text('Occupational Health & Safety Specialist (OHS – Basic )', mar + 2, 40);
+  doc.text('Occupational Health & Safety Specialist (OHS – Basic Certified)', mar + 2, 40);
 
   // Contact row
   doc.setFontSize(7.5);
@@ -2445,81 +2438,113 @@ async function downloadPDF() {
 
   /* ════════════════════════════════════════════
      CERTIFICATE IMAGE PAGES
-     2 certificates per page, full-width
+     1 certificate per page – full A4, aspect-correct
   ════════════════════════════════════════════ */
-  const imgW = W - mar * 2;
-  const imgH = 115; // height per certificate image block
-  const imgPerPage = 2;
-
   for (let i = 0; i < certData.length; i++) {
-    const posOnPage = i % imgPerPage;
-
-    if (posOnPage === 0) {
-      // Start a new page for every pair
-      newPage();
-      // Page heading
-      doc.setFillColor(...C.deepGreen);
-      doc.rect(0, 0, W, 14, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(11);
-      doc.setTextColor(...C.white);
-      doc.text('Samir Magdy Yacoub — Certificate Images', mar, 9.5);
-      y = 18;
-    }
-
     const certImgData = loadedImgs[i];
     const c = certData[i];
 
-    // Label bar above image
-    checkPage(imgH + 18);
+    // Determine orientation based on image aspect ratio
+    // Portrait certificates (h > w) → portrait page; landscape (w > h) → landscape page
+    let pageOrientation = 'portrait';
+    if (certImgData && certImgData.w > certImgData.h) {
+      pageOrientation = 'landscape';
+    }
+
+    // Add a new page with the correct orientation for this certificate
+    doc.addPage(pageOrientation === 'landscape' ? [297, 210] : [210, 297]);
+    const PW = doc.internal.pageSize.getWidth();
+    const PH = doc.internal.pageSize.getHeight();
+
+    // Header bar
+    doc.setFillColor(...C.deepGreen);
+    doc.rect(0, 0, PW, 16, 'F');
     doc.setFillColor(...C.midGreen);
-    doc.roundedRect(mar, y, imgW, 9, 1.5, 1.5, 'F');
+    doc.rect(0, 0, 4, 16, 'F');
+
+    // Certificate title in header
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(...C.white);
+    const headerTitle = `${i + 1}. ${c.title}`;
+    doc.text(doc.splitTextToSize(headerTitle, PW - 60)[0], 10, 10.5);
+
+    // Year badge in header
+    doc.setFillColor(...C.goldLight);
+    doc.roundedRect(PW - 28, 4, 22, 8, 2, 2, 'F');
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
-    doc.setTextColor(...C.white);
-    const labelTxt = `${i + 1}. ${c.title}`;
-    doc.text(doc.splitTextToSize(labelTxt, imgW - 30)[0], mar + 4, y + 6);
-    // year badge
-    doc.setFillColor(...C.goldLight);
-    doc.roundedRect(W - mar - 18, y + 1.5, 15, 6, 2, 2, 'F');
     doc.setTextColor(...C.navy);
+    doc.text(String(c.year), PW - 17, 9.5, { align: 'center' });
+
+    // Org subtitle below header
+    doc.setFillColor(240, 253, 244);
+    doc.rect(0, 16, PW, 8, 'F');
+    doc.setFont('helvetica', 'italic');
     doc.setFontSize(8);
-    doc.text(String(c.year), W - mar - 10.5, y + 6, { align: 'center' });
-    y += 11;
+    doc.setTextColor(...C.textMuted);
+    doc.text(c.org, 10, 21.5);
+
+    // Available space for image
+    const topOffset = 28;
+    const bottomOffset = 12;
+    const sideMargin = 8;
+    const availW = PW - sideMargin * 2;
+    const availH = PH - topOffset - bottomOffset;
 
     if (certImgData) {
-      // Compute aspect-correct height
-      const aspect = certImgData.h / certImgData.w;
-      const drawH  = Math.min(imgH, imgW * aspect);
-      // Thin border frame
+      const imgAspect = certImgData.w / certImgData.h;
+      const availAspect = availW / availH;
+
+      let drawW, drawH;
+      if (imgAspect > availAspect) {
+        // Image wider than available area → fit to width
+        drawW = availW;
+        drawH = availW / imgAspect;
+      } else {
+        // Image taller than available area → fit to height
+        drawH = availH;
+        drawW = availH * imgAspect;
+      }
+
+      // Center the image in the available space
+      const imgX = sideMargin + (availW - drawW) / 2;
+      const imgY = topOffset + (availH - drawH) / 2;
+
+      // Border frame
       doc.setDrawColor(...C.border);
-      doc.setLineWidth(0.5);
-      doc.roundedRect(mar - 0.5, y - 0.5, imgW + 1, drawH + 1, 1, 1, 'S');
-      // Image
-      doc.addImage(certImgData.data, 'JPEG', mar, y, imgW, drawH);
-      y += drawH + 6;
+      doc.setLineWidth(0.8);
+      doc.roundedRect(imgX - 1, imgY - 1, drawW + 2, drawH + 2, 2, 2, 'S');
+
+      // Draw image at full available size
+      doc.addImage(certImgData.data, 'JPEG', imgX, imgY, drawW, drawH);
     } else {
       // Placeholder if image failed to load
       doc.setFillColor(...C.lightGray);
-      doc.roundedRect(mar, y, imgW, 50, 2, 2, 'F');
+      doc.roundedRect(sideMargin, topOffset, availW, availH, 3, 3, 'F');
       doc.setFont('helvetica', 'italic');
-      doc.setFontSize(9);
+      doc.setFontSize(10);
       doc.setTextColor(...C.textMuted);
-      doc.text('[ Image not available – place certificate files in the same folder as the HTML ]', mar + imgW / 2, y + 26, { align: 'center' });
-      y += 56;
+      doc.text(
+        '[ Image not available – place certificate files in the same folder as the HTML ]',
+        PW / 2, topOffset + availH / 2,
+        { align: 'center' }
+      );
     }
 
-    // Org note below image
-    doc.setFont('helvetica', 'italic');
-    doc.setFontSize(7.5);
-    doc.setTextColor(...C.textMuted);
-    doc.text(c.org, mar, y);
-    y += 8;
+    // Footer bar
+    doc.setFillColor(...C.deepGreen);
+    doc.rect(0, PH - 8, PW, 8, 'F');
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(167, 243, 208);
+    doc.text('Samir Magdy Yacoub  •  Quality & Food Safety Specialist  •  samirmagdy9955@gmail.com', 10, PH - 3);
   }
 
-  /* ─── Footer on every page ─── */
+  /* ─── Footer on main CV pages only (certificate pages have their own footers) ─── */
   const totalPages = doc.internal.getNumberOfPages();
-  for (let p = 1; p <= totalPages; p++) {
+  const cvPageCount = totalPages - certData.length;
+  for (let p = 1; p <= cvPageCount; p++) {
     doc.setPage(p);
     doc.setFillColor(...C.deepGreen);
     doc.rect(0, H - 9, W, 9, 'F');
