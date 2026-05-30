@@ -176,6 +176,118 @@ body.ar-mode {
   40%          { transform: scale(1.2); opacity: 1; }
 }
 
+/* ===================== CERTS NOTIFICATION TOAST ===================== */
+.certs-notif-toast {
+  position: fixed;
+  bottom: 90px;
+  right: 28px;
+  z-index: 9999;
+  max-width: 320px;
+  background: var(--grad-hero);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  box-shadow: 0 16px 48px rgba(6,78,59,0.4), 0 0 0 1px rgba(255,255,255,0.08);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(20px) scale(0.92);
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.23,1,0.32,1),
+              transform 0.4s cubic-bezier(0.23,1,0.32,1);
+}
+.certs-notif-toast.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+body.ar-mode .certs-notif-toast { right: auto; left: 28px; }
+
+.certs-notif-progress {
+  height: 3px;
+  background: rgba(255,255,255,0.15);
+  position: relative;
+  overflow: hidden;
+}
+.certs-notif-progress::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--green-light), var(--gold-light));
+  transform-origin: left;
+  animation: none;
+}
+.certs-notif-toast.show .certs-notif-progress::after {
+  animation: notifProgress 5s linear forwards;
+}
+@keyframes notifProgress {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+.certs-notif-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 18px 16px;
+}
+.certs-notif-icon {
+  width: 44px; height: 44px; flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(251,191,36,0.18);
+  border: 2px solid rgba(251,191,36,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; color: var(--gold-light);
+  animation: notifIconPulse 1.5s ease-in-out infinite;
+}
+@keyframes notifIconPulse {
+  0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(251,191,36,0.35); }
+  50%     { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(251,191,36,0); }
+}
+.certs-notif-content { flex: 1; }
+.certs-notif-content strong {
+  display: block;
+  font-size: 0.88rem; font-weight: 700;
+  color: white; margin-bottom: 4px;
+}
+.certs-notif-content span {
+  font-size: 0.78rem; color: rgba(255,255,255,0.7);
+  line-height: 1.45;
+}
+.certs-notif-dismiss {
+  width: 22px; height: 22px; flex-shrink: 0;
+  border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.6); font-size: 0.7rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: var(--transition);
+}
+.certs-notif-dismiss:hover { background: rgba(255,255,255,0.2); color: white; }
+
+.certs-notif-actions {
+  display: flex; gap: 10px;
+  padding: 0 18px 16px;
+}
+.notif-btn-open {
+  flex: 1;
+  background: var(--grad-gold);
+  color: white; border: none; border-radius: 50px;
+  padding: 9px 16px; font-size: 0.82rem; font-weight: 700;
+  cursor: pointer; transition: var(--transition);
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  box-shadow: 0 4px 14px rgba(180,83,9,0.35);
+}
+.notif-btn-open:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(180,83,9,0.5); }
+.notif-btn-later {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.7); border-radius: 50px;
+  padding: 9px 14px; font-size: 0.79rem; font-weight: 500;
+  cursor: pointer; transition: var(--transition);
+  font-family: inherit;
+}
+.notif-btn-later:hover { background: rgba(255,255,255,0.15); color: white; }
+
 /* ===================== SCROLL TO TOP ===================== */
 .scroll-top {
   position: fixed; bottom: 28px; right: 28px; z-index: 500;
@@ -1232,6 +1344,25 @@ body.ar-mode .mol-badge { right: auto; left: 18px; }
   </div>
 </div>
 
+<!-- CERTS NOTIFICATION TOAST -->
+<div class="certs-notif-toast" id="certsNotifToast">
+  <div class="certs-notif-progress"></div>
+  <div class="certs-notif-body">
+    <div class="certs-notif-icon"><i class="fas fa-certificate"></i></div>
+    <div class="certs-notif-content">
+      <strong id="notifTitle">🎓 My Certificates Are Here!</strong>
+      <span id="notifSub">Click to explore my professional certificates and training achievements. Auto-opening in 5 seconds...</span>
+    </div>
+    <button class="certs-notif-dismiss" onclick="dismissCertsNotif()" title="Dismiss"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="certs-notif-actions">
+    <button class="notif-btn-open" onclick="acceptCertsNotif()">
+      <i class="fas fa-award"></i> <span id="notifBtnOpen">Open Certificates</span>
+    </button>
+    <button class="notif-btn-later" onclick="dismissCertsNotif()" id="notifBtnLater">Later</button>
+  </div>
+</div>
+
 <!-- ZOOM MODAL -->
 <div class="cert-zoom-modal" id="zoomModal">
   <div class="zoom-wrap">
@@ -1789,6 +1920,23 @@ function applyLang(l) {
 
   // Retrigger skill bars after language switch
   triggerSkillBars();
+
+  // Update notification toast texts
+  const notifTitle   = document.getElementById('notifTitle');
+  const notifSub     = document.getElementById('notifSub');
+  const notifBtnOpen = document.getElementById('notifBtnOpen');
+  const notifBtnLater= document.getElementById('notifBtnLater');
+  if (notifTitle && l === 'ar') {
+    notifTitle.textContent   = '🎓 شهاداتي في انتظارك!';
+    notifSub.textContent     = 'اضغط لاستعراض شهاداتي المهنية وإنجازاتي التدريبية. سيتم الفتح تلقائياً خلال 5 ثوانٍ...';
+    notifBtnOpen.textContent = 'فتح الشهادات';
+    notifBtnLater.textContent= 'لاحقاً';
+  } else if (notifTitle) {
+    notifTitle.textContent   = '🎓 My Certificates Are Here!';
+    notifSub.textContent     = 'Click to explore my professional certificates and training achievements. Auto-opening in 5 seconds...';
+    notifBtnOpen.textContent = 'Open Certificates';
+    notifBtnLater.textContent= 'Later';
+  }
 }
 
 /* ===================================================
@@ -1859,11 +2007,400 @@ function updateZoom() {
 }
 
 /* ===================================================
-   DOWNLOAD PDF
+   CERTS NOTIFICATION TOAST
    =================================================== */
-function downloadPDF() {
-  const url = 'https://www.mediafire.com/file/amle1exvxk6w9ru/cv+samir+magdy+E+%282%29.pdf?dkey=sxgphy632qw&r=588';
-  window.open(url, '_blank');
+function showCertsNotification() {
+  // Don't show if overlay is already open
+  if (document.getElementById('certsOverlay').classList.contains('open')) return;
+
+  const toast = document.getElementById('certsNotifToast');
+  if (!toast) return;
+
+  // Show toast
+  toast.classList.add('show');
+
+  // Auto-open after 5 seconds if not dismissed
+  const autoTimer = setTimeout(() => {
+    if (toast.classList.contains('show')) {
+      toast.classList.remove('show');
+      openCerts();
+    }
+  }, 5000);
+
+  // Store timer so dismiss can clear it
+  toast._autoTimer = autoTimer;
+}
+
+function dismissCertsNotif() {
+  const toast = document.getElementById('certsNotifToast');
+  if (!toast) return;
+  clearTimeout(toast._autoTimer);
+  toast.classList.remove('show');
+}
+
+function acceptCertsNotif() {
+  dismissCertsNotif();
+  openCerts();
+}
+
+/* ===================================================
+   DOWNLOAD PDF — jsPDF-generated CV
+   =================================================== */
+async function downloadPDF() {
+  const btn = document.getElementById('dlPdfBtn');
+  const origHTML = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>جاري التحضير...</span>';
+  btn.disabled = true;
+
+  // Load jsPDF dynamically
+  if (!window.jspdf) {
+    await new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      s.onload = res; s.onerror = rej;
+      document.head.appendChild(s);
+    });
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+  const W = doc.internal.pageSize.getWidth();
+  const H = doc.internal.pageSize.getHeight();
+  const mar = 18; // margin
+  let y = 0;
+
+  // ─── Color helpers ───
+  const C = {
+    deepGreen: [6, 78, 59],
+    midGreen:  [5, 150, 105],
+    teal:      [13, 148, 136],
+    gold:      [180, 83, 9],
+    goldLight: [251, 191, 36],
+    navy:      [15, 23, 42],
+    white:     [255, 255, 255],
+    offwhite:  [240, 253, 244],
+    textBody:  [55, 65, 81],
+    textMuted: [107, 114, 128],
+    border:    [209, 250, 229],
+  };
+
+  function newPage() {
+    doc.addPage();
+    y = mar;
+    // Subtle left bar
+    doc.setFillColor(...C.midGreen);
+    doc.rect(0, 0, 3, H, 'F');
+    // Light bg strip at top
+    doc.setFillColor(...C.offwhite);
+    doc.rect(3, 0, W-3, 8, 'F');
+  }
+
+  function checkPage(needed) {
+    if (y + needed > H - mar) newPage();
+  }
+
+  function sectionTitle(title, icon) {
+    checkPage(16);
+    doc.setFillColor(...C.midGreen);
+    doc.roundedRect(mar, y, W - mar*2, 10, 2, 2, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(...C.white);
+    doc.text(title, mar + 5, y + 6.8);
+    y += 14;
+  }
+
+  function bodyText(txt, indent, maxW, lineH) {
+    indent = indent || mar;
+    maxW   = maxW   || W - mar - indent;
+    lineH  = lineH  || 5;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(...C.textBody);
+    const lines = doc.splitTextToSize(txt, maxW);
+    lines.forEach(line => {
+      checkPage(lineH + 1);
+      doc.text(line, indent, y);
+      y += lineH;
+    });
+  }
+
+  function bullet(txt, indent) {
+    indent = indent || mar + 4;
+    checkPage(5);
+    doc.setFillColor(...C.midGreen);
+    doc.circle(indent - 1.5, y - 1, 1, 'F');
+    bodyText(txt, indent + 2, W - mar - indent - 2);
+  }
+
+  function dateBadge(txt) {
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(8);
+    doc.setTextColor(...C.teal);
+    doc.text(txt, mar + 4, y);
+    y += 5;
+  }
+
+  function certListItem(title, org, year) {
+    checkPage(12);
+    doc.setFillColor(...C.offwhite);
+    doc.roundedRect(mar, y, W - mar*2, 10, 1.5, 1.5, 'F');
+    doc.setDrawColor(...C.border);
+    doc.setLineWidth(0.3);
+    doc.roundedRect(mar, y, W - mar*2, 10, 1.5, 1.5, 'S');
+    // colored left accent
+    doc.setFillColor(...C.midGreen);
+    doc.roundedRect(mar, y, 3, 10, 1, 1, 'F');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.setTextColor(...C.navy);
+    doc.text(title, mar + 6, y + 4);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(...C.textMuted);
+    doc.text(org, mar + 6, y + 8);
+    // year badge on right
+    doc.setFillColor(...C.midGreen);
+    doc.roundedRect(W - mar - 16, y + 2, 13, 6, 2, 2, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...C.white);
+    doc.text(String(year), W - mar - 9.5, y + 6.3, { align: 'center' });
+    y += 13;
+  }
+
+  function skillBar(label, pct) {
+    checkPage(11);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8.5);
+    doc.setTextColor(...C.textBody);
+    doc.text(label, mar + 2, y);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(...C.midGreen);
+    doc.text(pct + '%', W - mar - 2, y, { align: 'right' });
+    y += 3;
+    // track
+    doc.setFillColor(224, 247, 240);
+    doc.roundedRect(mar + 2, y, W - mar*2 - 4, 3.5, 1, 1, 'F');
+    // fill
+    const fillW = (W - mar*2 - 4) * (pct / 100);
+    doc.setFillColor(...C.midGreen);
+    doc.roundedRect(mar + 2, y, fillW, 3.5, 1, 1, 'F');
+    y += 7;
+  }
+
+  /* ─────────── PAGE 1: HEADER ─────────── */
+  // Gradient hero bg
+  doc.setFillColor(...C.deepGreen);
+  doc.rect(0, 0, W, 58, 'F');
+  doc.setFillColor(...C.midGreen);
+  doc.rect(0, 44, W, 14, 'F');
+
+  // Decorative circles
+  doc.setFillColor(255,255,255);
+  doc.setGState(new doc.GState({ opacity: 0.04 }));
+  doc.circle(W - 20, 10, 36, 'F');
+  doc.circle(10, 50, 22, 'F');
+  doc.setGState(new doc.GState({ opacity: 1 }));
+
+  // Name
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(22);
+  doc.setTextColor(...C.white);
+  doc.text('Samir Magdy Yacoub', mar, 20);
+
+  // Title badges
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9.5);
+  doc.setTextColor(209, 250, 229);
+  doc.text('Quality & Food Safety Specialist  |  Occupational Health & Safety', mar, 29);
+
+  // Contact line
+  doc.setFontSize(8);
+  doc.setTextColor(167, 243, 208);
+  doc.text('+20 112 972 4884   •   samirmagdy9955@gmail.com   •   linkedin.com/in/samir-magdy-101a48241', mar, 37);
+
+  // Stats row
+  const stats = [
+    { num: '3+', label: 'Years Experience' },
+    { num: '10+', label: 'Certifications' },
+    { num: '4', label: 'Companies' },
+  ];
+  const statsX = [mar, mar + 52, mar + 104];
+  stats.forEach((s, i) => {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(...C.goldLight);
+    doc.text(s.num, statsX[i], 52);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(209, 250, 229);
+    doc.text(s.label, statsX[i], 56.5);
+  });
+
+  // Left green accent bar
+  doc.setFillColor(...C.midGreen);
+  doc.rect(0, 0, 3.5, 58, 'F');
+
+  y = 66;
+
+  /* ─── OHS BANNER ─── */
+  doc.setFillColor(15, 23, 42);
+  doc.roundedRect(mar, y, W - mar*2, 12, 2, 2, 'F');
+  doc.setFillColor(...C.goldLight);
+  doc.rect(mar, y, 3, 12, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9.5);
+  doc.setTextColor(...C.goldLight);
+  doc.text('Occupational Health & Safety Specialist', mar + 6, y + 5.5);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7.5);
+  doc.setTextColor(156, 163, 175);
+  doc.text('ISO 45001  •  Risk Assessment  •  OSHA  •  PPE  •  HACCP', mar + 6, y + 10);
+  y += 16;
+
+  /* ─── SUMMARY ─── */
+  sectionTitle('Professional Summary');
+  bodyText(
+    'Graduate from Faculty of Agriculture, Minia University (GPA 3.2), specializing in Food Industries and Dairy. ' +
+    'Experienced in food safety systems (GMP, GHP, HACCP, ISO 22000:2018) through intensive training and practical work ' +
+    'in leading food industries. Skilled in quality control, auditing, and compliance with international standards.',
+    mar + 3, W - mar*2 - 6, 5
+  );
+  y += 4;
+
+  /* ─── EDUCATION ─── */
+  sectionTitle('Education');
+  checkPage(6);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.setTextColor(...C.navy);
+  doc.text('Bachelor of Agriculture – Food Industries and Dairy', mar + 3, y);
+  y += 5;
+  dateBadge('Minia University, Egypt  |  GPA: 3.2  |  2023');
+  bodyText('Graduation Project: Integrated Quality and Food Safety Management System Using HACCP and ISO 9001', mar + 4, W - mar*2 - 8);
+  y += 3;
+
+  /* ─── EXPERIENCE ─── */
+  sectionTitle('Experience');
+
+  const experiences = [
+    {
+      title: 'Quality Control Specialist – Imtenan for Food Industries, Obour City',
+      date: '2025 – Present',
+      items: [
+        'Monitoring production processes and ensuring compliance with food safety and quality standards.',
+        'Conducting inspections, auditing, and verifying product conformity with ISO 22000 and HACCP.',
+        'Performing lab tests and coordinating corrective actions to maintain product safety.',
+      ]
+    },
+    {
+      title: "Quality Control Specialist – Smiley's for Food Industries, Obour City",
+      date: '2024 – 2025',
+      items: [
+        'Oversaw quality control of meat products and refrigerated vegetables.',
+        'Implemented quality assurance procedures and verified compliance with GMP and ISO standards.',
+        'Ensured cold chain integrity and adherence to hygiene and safety protocols.',
+      ]
+    },
+    {
+      title: 'Quality Control Training – El-Salah for Food Industries (Juices & Beverages – Tetra Pak)',
+      date: '2023 – 2024',
+      items: [
+        'Assisted in monitoring production lines and maintaining hygiene and safety controls.',
+        'Conducted sampling and testing for product quality and shelf-life stability.',
+        'Documented findings and supported implementation of HACCP system.',
+      ]
+    },
+    {
+      title: 'Quality Control | Production Training – Al-Fakhama Dairy Products',
+      date: '2022',
+      items: [
+        'Monitored production processes and ensured compliance with food safety standards.',
+        'Operated food production equipment and performed lab testing on product samples.',
+      ]
+    },
+  ];
+
+  experiences.forEach(exp => {
+    checkPage(20);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9.5);
+    doc.setTextColor(...C.navy);
+    const titleLines = doc.splitTextToSize(exp.title, W - mar*2 - 6);
+    titleLines.forEach(line => { doc.text(line, mar + 3, y); y += 5; });
+    dateBadge(exp.date);
+    exp.items.forEach(item => bullet(item));
+    y += 3;
+  });
+
+  /* ─────────── PAGE 2: CERTIFICATIONS ─────────── */
+  newPage();
+
+  // Page 2 header stripe
+  doc.setFillColor(...C.deepGreen);
+  doc.rect(0, 0, W, 18, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(...C.white);
+  doc.text('Samir Magdy Yacoub — Certificates & Skills', mar, 12);
+  y = 24;
+
+  /* ─── CERTIFICATIONS & TRAINING ─── */
+  sectionTitle('Certifications & Training');
+
+  const certs = [
+    { title: 'Graduation Certificate', org: 'Minia University – Faculty of Agriculture (Food Industries & Dairy)', year: '2023' },
+    { title: 'Diploma in Food Safety', org: 'Alison Platform', year: '2022' },
+    { title: 'Food Safety Certificate', org: 'Alison Platform', year: '2022' },
+    { title: 'Food Safety Training Program', org: 'Center of Excellence, Zewail City University (Medix) – 30 Hours', year: '2021' },
+    { title: 'Advanced Training in HACCP', org: 'Egyptian Organization for Standardization & Quality', year: '2023' },
+    { title: 'Advanced Training in ISO 22000:2018', org: 'Egyptian Organization for Standardization & Quality', year: '2023' },
+    { title: 'Advanced Training in GMP', org: 'Egyptian Organization for Standardization & Quality', year: '2023' },
+    { title: 'Advanced Training in GHP', org: 'Egyptian Organization for Standardization & Quality', year: '2023' },
+    { title: 'Quality Control & Production Training', org: 'Al-Fakhama Dairy Products', year: '2022' },
+    { title: 'ICDL Course', org: 'Udemy', year: '2020' },
+  ];
+
+  certs.forEach(c => certListItem(c.title, c.org, c.year));
+
+  y += 4;
+
+  /* ─── SKILLS ─── */
+  sectionTitle('Skills');
+
+  const skills = [
+    { label: 'Food Safety Systems: GMP, GHP, HACCP, ISO 22000:2018', pct: 95 },
+    { label: 'Quality Management: ISO 9001:2015', pct: 90 },
+    { label: 'Quality Control & Auditing', pct: 92 },
+    { label: 'Food Production Processes', pct: 88 },
+    { label: 'Occupational Health & Safety', pct: 85 },
+    { label: 'Languages: Arabic (Native), English (Good)', pct: 80 },
+  ];
+
+  skills.forEach(s => skillBar(s.label, s.pct));
+
+  y += 4;
+
+  /* ─── FOOTER on every page ─── */
+  for (let p = 1; p <= doc.internal.getNumberOfPages(); p++) {
+    doc.setPage(p);
+    doc.setFillColor(...C.deepGreen);
+    doc.rect(0, H - 10, W, 10, 'F');
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.5);
+    doc.setTextColor(167, 243, 208);
+    doc.text('Samir Magdy Yacoub  •  Quality & Food Safety Specialist  •  samirmagdy9955@gmail.com  •  +20 112 972 4884', mar, H - 4);
+    doc.setTextColor(94, 234, 212);
+    doc.text(`Page ${p}`, W - mar, H - 4, { align: 'right' });
+  }
+
+  doc.save('Samir_Magdy_Yacoub_CV.pdf');
+
+  btn.innerHTML = origHTML;
+  btn.disabled = false;
 }
 
 /* ===================================================
@@ -2008,6 +2545,10 @@ window.addEventListener('load', () => {
     if (ohs) setTimeout(() => ohs.classList.add('visible'), 350);
 
     triggerSkillBars();
+
+    // ── Show certs notification after 10 seconds ──
+    setTimeout(showCertsNotification, 10000);
+
   }, 1500);
 });
 </script>
