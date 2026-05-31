@@ -1128,97 +1128,97 @@ body.ar-mode .mol-badge { right: auto; left: 18px; }
   .certs-grid { grid-template-columns: 1fr; }
 }
 
-/* ===================== DOWNLOAD COUNTDOWN MODAL ===================== */
-.dl-countdown-modal {
-  position: fixed; inset: 0; z-index: 99998;
+/* ===================== AUTO-DOWNLOAD STICKY BAR ===================== */
+.auto-dl-bar {
+  position: sticky;
+  bottom: 0; left: 0; right: 0;
+  z-index: 20;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(100%);
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.23,1,0.32,1),
+              transform 0.4s cubic-bezier(0.23,1,0.32,1);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+}
+.auto-dl-bar.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+/* CSS-driven countdown progress (10 s) — JS restarts animation via class toggle */
+.auto-dl-bar-track {
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  position: relative; overflow: hidden;
+}
+.auto-dl-bar-track::after {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--green-light), var(--teal-light), var(--gold-light));
+}
+.auto-dl-bar.show .auto-dl-bar-track::after {
+  animation: autoDlSweep 10s linear forwards;
+}
+@keyframes autoDlSweep {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+.auto-dl-bar-inner {
+  background: linear-gradient(135deg, #022c22 0%, #064e3b 60%, #0d9488 100%);
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 28px; flex-wrap: wrap;
+}
+.auto-dl-bar-icon {
+  width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%;
+  background: rgba(251,191,36,0.14);
+  border: 1.5px solid rgba(251,191,36,0.32);
   display: flex; align-items: center; justify-content: center;
-  opacity: 0; visibility: hidden;
-  transition: opacity 0.35s ease, visibility 0.35s ease;
-}
-.dl-countdown-modal.show { opacity: 1; visibility: visible; }
-.dl-countdown-overlay {
-  position: absolute; inset: 0;
-  background: rgba(2, 44, 34, 0.65);
-  backdrop-filter: blur(8px);
-}
-.dl-countdown-content {
-  position: relative; z-index: 1;
-  background: var(--grad-hero);
-  border-radius: var(--radius-xl);
-  padding: 44px 36px 36px;
-  text-align: center;
-  max-width: 380px; width: 92%;
-  box-shadow: var(--shadow-xl);
-  border: 1px solid rgba(255,255,255,0.1);
-  transform: scale(0.88) translateY(20px);
-  transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
-}
-.dl-countdown-modal.show .dl-countdown-content { transform: scale(1) translateY(0); }
-.dl-count-icon {
-  width: 64px; height: 64px; border-radius: 50%;
-  background: rgba(251,191,36,0.15);
-  border: 2px solid rgba(251,191,36,0.35);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.7rem; color: var(--gold-light);
-  margin: 0 auto 18px;
+  font-size: 1rem; color: var(--gold-light);
   animation: iconPulse 2s ease-in-out infinite;
 }
-.dl-countdown-content h3 {
+.auto-dl-bar-msg {
+  flex: 1;
+  color: rgba(255,255,255,0.82);
+  font-size: 0.9rem;
   font-family: var(--font-ar);
-  font-size: 1.1rem; font-weight: 700;
-  color: white; margin-bottom: 6px; line-height: 1.4;
+  direction: rtl; text-align: right;
+  min-width: 180px;
 }
-.dl-count-desc {
-  font-size: 0.83rem; color: rgba(255,255,255,0.65);
-  margin-bottom: 22px; font-family: var(--font-ar); line-height: 1.5;
+.auto-dl-bar-msg strong {
+  color: var(--green-light);
+  font-size: 1.25rem; font-weight: 800;
+  font-family: var(--font-body);
+  display: inline-block; min-width: 22px;
+  text-shadow: 0 0 12px rgba(52,211,153,0.5);
 }
-.dl-timer-wrap {
-  position: relative; width: 110px; height: 110px;
-  margin: 0 auto 6px;
-}
-.dl-timer-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-.dl-circle-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 7; }
-.dl-circle-prog {
-  fill: none;
-  stroke: var(--green-light);
-  stroke-width: 7;
-  stroke-linecap: round;
-  stroke-dasharray: 263.9;
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 1s linear;
-  filter: drop-shadow(0 0 6px rgba(52,211,153,0.6));
-}
-.dl-count-num {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2.4rem; font-weight: 800; color: white;
-  font-family: var(--font-body); line-height: 1;
-}
-.dl-sec-label {
-  font-size: 0.8rem; color: rgba(255,255,255,0.55);
-  margin-bottom: 26px; font-family: var(--font-ar);
-}
-.dl-count-actions { display: flex; flex-direction: column; gap: 10px; }
-.dl-btn-now {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 13px 24px; border-radius: 50px;
+.auto-dl-bar-actions { display: flex; gap: 10px; align-items: center; flex-shrink: 0; }
+.auto-dl-btn-now {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 20px; border-radius: 50px;
   background: var(--grad-gold); color: white;
-  border: none; font-size: 0.9rem; font-weight: 700;
+  border: none; font-size: 0.84rem; font-weight: 700;
   cursor: pointer; font-family: var(--font-ar);
-  box-shadow: 0 4px 18px rgba(180,83,9,0.45);
-  transition: var(--transition);
+  box-shadow: 0 4px 14px rgba(180,83,9,0.4);
+  transition: var(--transition); white-space: nowrap;
 }
-.dl-btn-now:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(180,83,9,0.6); }
-.dl-btn-cancel {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 11px 24px; border-radius: 50px;
+.auto-dl-btn-now:hover { transform: translateY(-2px); box-shadow: 0 7px 20px rgba(180,83,9,0.55); }
+.auto-dl-btn-cancel {
+  display: flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: 50px;
   background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.18);
-  color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.7); font-size: 0.82rem; font-weight: 500;
   cursor: pointer; font-family: var(--font-ar);
-  transition: var(--transition);
+  transition: var(--transition); white-space: nowrap;
 }
-.dl-btn-cancel:hover { background: rgba(255,255,255,0.15); color: white; }
+.auto-dl-btn-cancel:hover {
+  background: rgba(220,38,38,0.22);
+  border-color: rgba(220,38,38,0.38);
+  color: #fca5a5;
+}
 </style>
 </head>
 <body>
@@ -1433,10 +1433,32 @@ body.ar-mode .mol-badge { right: auto; left: 18px; }
       </div>
 
     </div>
+
+    <!-- ── Auto-download countdown bar ── -->
+    <div class="auto-dl-bar" id="autoDlBar">
+      <div class="auto-dl-bar-track"></div>
+      <div class="auto-dl-bar-inner">
+        <div class="auto-dl-bar-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="auto-dl-bar-msg">
+          <span id="autoDlMsg">سيبدأ تحميل السيرة الذاتية والشهادات تلقائياً خلال</span>
+          &nbsp;<strong id="autoDlCount">10</strong>&nbsp;
+          <span id="autoDlUnit">ثانية</span>
+        </div>
+        <div class="auto-dl-bar-actions">
+          <button class="auto-dl-btn-now" onclick="autoDlNow()">
+            <i class="fas fa-download"></i>
+            <span id="autoDlBtnNow">تحميل الآن</span>
+          </button>
+          <button class="auto-dl-btn-cancel" onclick="cancelAutoDl()">
+            <i class="fas fa-times"></i>
+            <span id="autoDlBtnCancel">إلغاء التحميل</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
-
-<!-- CERTS NOTIFICATION TOAST -->
 <div class="certs-notif-toast" id="certsNotifToast">
   <div class="certs-notif-progress"></div>
   <div class="certs-notif-body">
@@ -1471,35 +1493,6 @@ body.ar-mode .mol-badge { right: auto; left: 18px; }
 
 <!-- =================== MAIN CONTENT =================== -->
 <div class="container">
-
-  <!-- DOWNLOAD COUNTDOWN MODAL -->
-  <div class="dl-countdown-modal" id="dlCountdownModal">
-    <div class="dl-countdown-overlay" onclick="closeDownloadCountdown()"></div>
-    <div class="dl-countdown-content">
-      <div class="dl-count-icon"><i class="fas fa-file-pdf"></i></div>
-      <h3>تحميل السيرة الذاتية والشهادات</h3>
-      <p class="dl-count-desc">
-        سيتم تحميل صورة السيرة الذاتية + جميع صور الشهادات في ملف PDF واحد.<br>
-        سيبدأ التحميل تلقائياً خلال
-      </p>
-      <div class="dl-timer-wrap">
-        <svg class="dl-timer-svg" viewBox="0 0 100 100">
-          <circle class="dl-circle-bg" cx="50" cy="50" r="42"/>
-          <circle class="dl-circle-prog" id="dlCircleProg" cx="50" cy="50" r="42"/>
-        </svg>
-        <span class="dl-count-num" id="dlCountNum">10</span>
-      </div>
-      <p class="dl-sec-label">ثانية</p>
-      <div class="dl-count-actions">
-        <button class="dl-btn-now" onclick="downloadNow()">
-          <i class="fas fa-download"></i> تحميل الآن
-        </button>
-        <button class="dl-btn-cancel" onclick="closeDownloadCountdown()">
-          <i class="fas fa-times"></i> إلغاء التحميل
-        </button>
-      </div>
-    </div>
-  </div>
 
   <!-- HEADER -->
   <header>
@@ -2171,8 +2164,11 @@ document.querySelectorAll('[data-obs-stat]').forEach(el => statObs.observe(el));
 function openCerts() {
   document.getElementById('certsOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  // Start auto-download countdown after panel animation settles
+  setTimeout(_startAutoDl, 700);
 }
 function closeCerts() {
+  cancelAutoDl();
   document.getElementById('certsOverlay').classList.remove('open');
   document.body.style.overflow = '';
 }
@@ -2234,65 +2230,66 @@ function acceptCertsNotif() {
 }
 
 /* ===================================================
-   DOWNLOAD COUNTDOWN MODAL
+   AUTO-DOWNLOAD COUNTDOWN
+   Starts when the certs panel opens.
+   Clicking the Download button downloads immediately.
    =================================================== */
-let _dlTimer    = null;
-let _dlSeconds  = 10;
-const CIRCUM    = 2 * Math.PI * 42; // stroke-dasharray for r=42
+let _autoDlTimer   = null;
+let _autoDlSec     = 10;
 
-function showDownloadCountdown() {
-  const modal = document.getElementById('dlCountdownModal');
-  if (!modal) return;
+function _startAutoDl() {
+  // Don't restart if already running
+  if (_autoDlTimer) return;
 
-  // Reset state
-  _dlSeconds = 10;
-  const numEl    = document.getElementById('dlCountNum');
-  const circleEl = document.getElementById('dlCircleProg');
-  numEl.textContent = _dlSeconds;
-  circleEl.style.transition = 'none';
-  circleEl.style.strokeDashoffset = '0';
-  // Force reflow so the transition reset takes effect
-  circleEl.getBoundingClientRect();
-  circleEl.style.transition = 'stroke-dashoffset 1s linear';
+  _autoDlSec = 10;
+  _setAutoDlCount(10);
 
-  modal.classList.add('show');
-  document.body.style.overflow = 'hidden';
+  // Restart CSS progress animation by toggling the bar class
+  const bar = document.getElementById('autoDlBar');
+  if (!bar) return;
+  bar.classList.remove('show');
+  bar.getBoundingClientRect();   // force reflow so animation resets
+  bar.classList.add('show');
 
-  _dlTimer = setInterval(() => {
-    _dlSeconds--;
-    numEl.textContent = _dlSeconds;
-    circleEl.style.strokeDashoffset = String(CIRCUM * (1 - _dlSeconds / 10));
-
-    if (_dlSeconds <= 0) {
-      clearInterval(_dlTimer);
-      _closeModal();
+  _autoDlTimer = setInterval(() => {
+    _autoDlSec--;
+    _setAutoDlCount(_autoDlSec);
+    if (_autoDlSec <= 0) {
+      clearInterval(_autoDlTimer);
+      _autoDlTimer = null;
+      _hideAutoDlBar();
       _generateAndDownloadPDF();
     }
   }, 1000);
 }
 
-function closeDownloadCountdown() {
-  clearInterval(_dlTimer);
-  _closeModal();
+function cancelAutoDl() {
+  if (_autoDlTimer) { clearInterval(_autoDlTimer); _autoDlTimer = null; }
+  _hideAutoDlBar();
 }
 
-function _closeModal() {
-  const modal = document.getElementById('dlCountdownModal');
-  if (modal) modal.classList.remove('show');
-  document.body.style.overflow = '';
-}
-
-function downloadNow() {
-  clearInterval(_dlTimer);
-  _closeModal();
+function autoDlNow() {
+  cancelAutoDl();
   _generateAndDownloadPDF();
+}
+
+function _setAutoDlCount(n) {
+  const el = document.getElementById('autoDlCount');
+  if (el) el.textContent = n;
+}
+
+function _hideAutoDlBar() {
+  const bar = document.getElementById('autoDlBar');
+  if (bar) bar.classList.remove('show');
 }
 
 /* ===================================================
    DOWNLOAD PDF — CV.jpg (page 1) + Certificate images
+   Clicking Download button skips the countdown.
    =================================================== */
 async function downloadPDF() {
-  showDownloadCountdown();
+  cancelAutoDl();          // stop countdown if still running
+  _generateAndDownloadPDF();
 }
 
 async function _generateAndDownloadPDF() {
