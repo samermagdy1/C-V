@@ -2264,7 +2264,7 @@ async function downloadPDF() {
   doc.text('+20 112 972 4884   •   samirmagdy9955@gmail.com ', mar + 2, 49);
 
   // Stats
-  [['3+','Years Exp.'], ['11+','Certifications'], ['4','Companies']].forEach(([num, lbl], i) => {
+  [['Bachelor of Agriculture ',' Food Industries and Dairy.'], [' GPA: 3.2 ','Graduation Year: 2023'], ['3+','Years Exp.']].forEach(([num, lbl], i) => {
     const sx = mar + 2 + i * 56;
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(15);
@@ -2344,15 +2344,15 @@ async function downloadPDF() {
   // });
   // y += tagH + 8;
 
-  // Education
-  sectionTitle('Education');
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(10.5);
-  doc.setTextColor(...C.navy);
-  doc.text('Bachelor of Agriculture – Food Industries and Dairy', mar + 3, y);
-  y += 6;
-  dateBadge('Minia University, Egypt  |  GPA: 3.2  |  Graduation Year: 2023');
-  y += 1;
+  // // Education
+  // sectionTitle('Education');
+  // doc.setFont('helvetica', 'bold');
+  // doc.setFontSize(10.5);
+  // doc.setTextColor(...C.navy);
+  // doc.text('Bachelor of Agriculture – Food Industries and Dairy', mar + 3, y);
+  // y += 6;
+  // dateBadge('Minia University, Egypt  |  GPA: 3.2  |  Graduation Year: 2023');
+  // y += 1;
   // bodyText('Graduation Project: Integrated Quality and Food Safety Management System Using HACCP and ISO 9001', mar + 4, W - mar * 2 - 8, 5.2);
   // y += 5;
  // Experience
