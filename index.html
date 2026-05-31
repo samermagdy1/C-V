@@ -2264,7 +2264,7 @@ async function downloadPDF() {
   doc.text('+20 112 972 4884   •   samirmagdy9955@gmail.com ', mar + 2, 49);
 
   // Stats
-  [['Bachelor of Agriculture    ',' Food Industries and Dairy.        '], ['       GPA: 3.2 ','       Graduation Year: 2023 '], ['         3+','Years Exp.']].forEach(([num, lbl], i) => {
+  [['Bachelor of Agriculture  •  ',' Food Industries and Dairy.          '], ['          GPA: 3.2 ','         Graduation Year: 2023 '], ['3+','Years Exp.']].forEach(([num, lbl], i) => {
     const sx = mar + 2 + i * 56;
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(15);
@@ -2424,16 +2424,16 @@ async function downloadPDF() {
 
   y += 6;
 
-  // Skills
-  sectionTitle('Core Skills & Competencies');
-  [
-    ['Food Safety Systems: GMP, GHP, HACCP, ISO 22000:2018', 95],
-    ['Quality Management: ISO 9001:2015', 90],
-    ['Quality Control & Auditing', 92],
-    ['Occupational Health & Safety: ISO 45001, OSHA, Risk Assessment', 87],
-    ['Food Production Processes & Lab Testing', 88],
-    ['Languages: Arabic (Native), English (Good)', 80],
-  ].forEach(([lbl, pct]) => skillBar(lbl, pct));
+  // // Skills
+  // sectionTitle('Core Skills & Competencies');
+  // [
+  //   ['Food Safety Systems: GMP, GHP, HACCP, ISO 22000:2018', 95],
+  //   ['Quality Management: ISO 9001:2015', 90],
+  //   ['Quality Control & Auditing', 92],
+  //   ['Occupational Health & Safety: ISO 45001, OSHA, Risk Assessment', 87],
+  //   ['Food Production Processes & Lab Testing', 88],
+  //   ['Languages: Arabic (Native), English (Good)', 80],
+  // ].forEach(([lbl, pct]) => skillBar(lbl, pct));
 
   /* ════════════════════════════════════════════
      CERTIFICATE IMAGE PAGES
