@@ -303,6 +303,201 @@ body.ar-mode .certs-notif-toast { right: auto; left: 28px; }
 .scroll-top:hover { transform: translateY(-4px) scale(1.1); box-shadow: 0 10px 28px rgba(5,150,105,0.5); }
 body.ar-mode .scroll-top { right: auto; left: 28px; }
 
+/* ===================== PROJECTS CTRL BUTTON ===================== */
+.ctrl-btn.projects-ctrl-btn {
+  background: rgba(13,148,136,0.25);
+  border-color: rgba(94,234,212,0.45);
+}
+.ctrl-btn.projects-ctrl-btn:hover {
+  background: rgba(13,148,136,0.4);
+  box-shadow: 0 6px 20px rgba(13,148,136,0.35);
+}
+
+/* ===================== PROJECTS OVERLAY ===================== */
+.projects-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(6,78,59,0.55);
+  backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(0.23,1,0.32,1),
+              visibility 0.45s cubic-bezier(0.23,1,0.32,1);
+}
+.projects-overlay.open {
+  opacity: 1; visibility: visible; pointer-events: all;
+}
+
+.projects-panel {
+  background: var(--grad-card);
+  border-radius: var(--radius-xl);
+  width: 100%; max-width: 820px;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border);
+  transform: translateY(30px) scale(0.96);
+  transition: transform 0.45s cubic-bezier(0.23,1,0.32,1);
+  position: relative;
+  scrollbar-width: thin; scrollbar-color: var(--green-mid) transparent;
+}
+.projects-overlay.open .projects-panel {
+  transform: translateY(0) scale(1);
+}
+
+.projects-panel-head {
+  background: var(--grad-hero);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: 32px 36px 28px;
+  position: relative; overflow: hidden;
+}
+.projects-panel-head::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.projects-panel-head-inner {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.projects-panel-title-group { display: flex; align-items: center; gap: 16px; }
+.projects-panel-icon {
+  width: 54px; height: 54px; border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; color: white; flex-shrink: 0;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+.projects-panel-title {
+  font-family: var(--font-display);
+  font-size: 1.75rem; font-weight: 700;
+  color: white; line-height: 1.2;
+}
+.projects-panel-sub {
+  font-size: 0.82rem; color: rgba(255,255,255,0.65);
+  margin-top: 3px; letter-spacing: 0.04em;
+}
+.projects-close-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  color: white; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0;
+  transition: var(--transition);
+}
+.projects-close-btn:hover {
+  background: rgba(255,255,255,0.25);
+  transform: rotate(90deg) scale(1.1);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 30px 32px 36px;
+}
+
+.project-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex; flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  position: relative;
+  group: true;
+}
+.project-card::before {
+  content: '';
+  position: absolute; top:0; left:0;
+  width: 100%; height: 4px;
+  background: var(--grad-main);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
+}
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(5,150,105,0.22);
+}
+.project-card:hover::before { transform: scaleX(1); }
+
+.project-card-header {
+  padding: 24px 22px 16px;
+  background: linear-gradient(145deg, #f0fdf8, #ecfdf5);
+  display: flex; align-items: center; gap: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.project-card-icon {
+  width: 52px; height: 52px; border-radius: var(--radius-sm);
+  background: var(--grad-main);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; color: white; flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(5,150,105,0.3);
+  transition: var(--transition);
+}
+.project-card:hover .project-card-icon {
+  transform: rotate(8deg) scale(1.1);
+  box-shadow: 0 8px 22px rgba(5,150,105,0.45);
+}
+.project-card-num {
+  font-family: var(--font-display);
+  font-size: 2.2rem; font-weight: 700;
+  color: var(--green-pale);
+  line-height: 1;
+  margin-left: auto;
+  transition: var(--transition);
+}
+.project-card:hover .project-card-num { color: rgba(5,150,105,0.15); }
+
+.project-card-body { padding: 18px 22px 22px; flex: 1; }
+.project-card-title {
+  font-size: 0.97rem; font-weight: 700;
+  color: var(--green-deep); line-height: 1.45;
+  margin-bottom: 10px;
+  font-family: var(--font-display);
+}
+.project-card-desc {
+  font-size: 0.82rem; color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.project-card-footer {
+  padding: 12px 22px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px;
+}
+.project-card-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 0.8rem; font-weight: 700;
+  color: var(--green-mid);
+  transition: var(--transition);
+  letter-spacing: 0.02em;
+}
+.project-card:hover .project-card-link {
+  color: var(--green-deep);
+  gap: 10px;
+}
+.project-card-arrow {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--green-pale);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; color: var(--green-mid);
+  transition: var(--transition);
+  border: 1px solid rgba(5,150,105,0.15);
+}
+.project-card:hover .project-card-arrow {
+  background: var(--green-mid); color: white;
+  transform: translateX(3px);
+}
+
 /* ===================== CONTAINER ===================== */
 .container { max-width: 1200px; margin: 0 auto; padding: 28px 20px; }
 
@@ -1491,6 +1686,83 @@ body.ar-mode .mol-badge { right: auto; left: 18px; }
   </div>
 </div>
 
+<!-- =================== PROJECTS OVERLAY =================== -->
+<div class="projects-overlay" id="projectsOverlay" onclick="if(event.target===this)closeProjects()">
+  <div class="projects-panel">
+
+    <div class="projects-panel-head">
+      <div class="projects-panel-head-inner">
+        <div class="projects-panel-title-group">
+          <div class="projects-panel-icon"><i class="fas fa-rocket"></i></div>
+          <div>
+            <div class="projects-panel-title" id="projectsTitle">My Projects</div>
+            <div class="projects-panel-sub" id="projectsSub">Interactive systems &amp; data analytics platforms</div>
+          </div>
+        </div>
+        <button class="projects-close-btn" onclick="closeProjects()"><i class="fas fa-times"></i></button>
+      </div>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- Project 1 -->
+      <a class="project-card" href="https://samirmagsy9955.github.io/SAMIR-IMTENA/" target="_blank" rel="noopener">
+        <div class="project-card-header">
+          <div class="project-card-icon"><i class="fas fa-undo-alt"></i></div>
+          <div class="project-card-num">01</div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-card-title" id="proj1Title">Returns Management &amp; Performance Analytics</div>
+          <p class="project-card-desc" id="proj1Desc">
+            An integrated system for managing product returns, analyzing return data, evaluating employee performance, and tracking operational KPIs with detailed reporting dashboards.
+          </p>
+        </div>
+        <div class="project-card-footer">
+          <span class="project-card-link"><i class="fas fa-external-link-alt"></i> <span id="proj1Btn">Open Project</span></span>
+          <span class="project-card-arrow"><i class="fas fa-arrow-right"></i></span>
+        </div>
+      </a>
+
+      <!-- Project 2 -->
+      <a class="project-card" href="https://samermagdy1.github.io/hmf-suc/" target="_blank" rel="noopener">
+        <div class="project-card-header">
+          <div class="project-card-icon" style="background: linear-gradient(135deg,#0d9488,#059669);"><i class="fas fa-flask"></i></div>
+          <div class="project-card-num">02</div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-card-title" id="proj2Title">Lab Data Management &amp; Product Analytics</div>
+          <p class="project-card-desc" id="proj2Desc">
+            A comprehensive platform for managing and analyzing laboratory data, product quality analytics, and detailed reporting on product specifications and test results.
+          </p>
+        </div>
+        <div class="project-card-footer">
+          <span class="project-card-link"><i class="fas fa-external-link-alt"></i> <span id="proj2Btn">Open Project</span></span>
+          <span class="project-card-arrow"><i class="fas fa-arrow-right"></i></span>
+        </div>
+      </a>
+
+      <!-- Project 3 -->
+      <a class="project-card" href="https://samermagdy1.github.io/samir_magdyRisk_Assessment/" target="_blank" rel="noopener">
+        <div class="project-card-header">
+          <div class="project-card-icon" style="background: linear-gradient(135deg,#b45309,#d97706);"><i class="fas fa-shield-alt"></i></div>
+          <div class="project-card-num">03</div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-card-title" id="proj3Title">Risk Assessment &amp; Analysis System</div>
+          <p class="project-card-desc" id="proj3Desc">
+            A specialized system for workplace and process risk evaluation, hazard identification, risk scoring, and generating structured risk assessment reports aligned with safety standards.
+          </p>
+        </div>
+        <div class="project-card-footer">
+          <span class="project-card-link"><i class="fas fa-external-link-alt"></i> <span id="proj3Btn">Open Project</span></span>
+          <span class="project-card-arrow"><i class="fas fa-arrow-right"></i></span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
 <!-- =================== MAIN CONTENT =================== -->
 <div class="container">
 
@@ -1524,6 +1796,10 @@ body.ar-mode .mol-badge { right: auto; left: 18px; }
       <button class="ctrl-btn certs-btn pulse-ring" id="openCertsBtn">
         <i class="fas fa-certificate"></i>
         <span data-key="certsBtn">My Certificates</span>
+      </button>
+      <button class="ctrl-btn projects-ctrl-btn" id="openProjectsBtn" onclick="openProjects()">
+        <i class="fas fa-laptop-code"></i>
+        <span id="projectsFabText">My Projects</span>
       </button>
       <button class="ctrl-btn" id="langBtn">
         <i class="fas fa-language"></i>
@@ -1959,7 +2235,19 @@ const T = {
     stat2label: "Certifications",
     stat3num: "4",
     stat3label: "Companies",
-    footer: "© 2025 Samir Magdy Yacoub – All Rights Reserved"
+    footer: "© 2025 Samir Magdy Yacoub – All Rights Reserved",
+    projectsFabText: "My Projects",
+    projectsTitle: "My Projects",
+    projectsSub: "Interactive systems & data analytics platforms",
+    proj1Title: "Returns Management & Performance Analytics",
+    proj1Desc: "An integrated system for managing product returns, analyzing return data, evaluating employee performance, and tracking operational KPIs with detailed reporting dashboards.",
+    proj1Btn: "Open Project",
+    proj2Title: "Lab Data Management & Product Analytics",
+    proj2Desc: "A comprehensive platform for managing and analyzing laboratory data, product quality analytics, and detailed reporting on product specifications and test results.",
+    proj2Btn: "Open Project",
+    proj3Title: "Risk Assessment & Analysis System",
+    proj3Desc: "A specialized system for workplace and process risk evaluation, hazard identification, risk scoring, and generating structured risk assessment reports aligned with safety standards.",
+    proj3Btn: "Open Project"
   },
   ar: {
     name: "سمير مجدي يعقوب",
@@ -2054,7 +2342,19 @@ const T = {
     stat2label: "شهادة مهنية",
     stat3num: "4",
     stat3label: "شركات",
-    footer: "© 2025 سمير مجدي يعقوب – جميع الحقوق محفوظة"
+    footer: "© 2025 سمير مجدي يعقوب – جميع الحقوق محفوظة",
+    projectsFabText: "مشاريعي",
+    projectsTitle: "مشاريعي",
+    projectsSub: "أنظمة تفاعلية ومنصات تحليل البيانات",
+    proj1Title: "نظام إدارة المرتجعات وتحليل الأداء",
+    proj1Desc: "نظام متكامل لإدارة مرتجعات المنتجات، تحليل بيانات الإرجاع، تقييم أداء الموظفين، ومتابعة مؤشرات الأداء التشغيلية بلوحات تقارير تفصيلية.",
+    proj1Btn: "فتح المشروع",
+    proj2Title: "إدارة وتحليل بيانات المعمل والمنتجات",
+    proj2Desc: "منصة شاملة لإدارة وتحليل بيانات المختبر، تحليلات جودة المنتجات، وإعداد تقارير تفصيلية حول مواصفات المنتج ونتائج الاختبارات.",
+    proj2Btn: "فتح المشروع",
+    proj3Title: "نظام تقييم وتحليل المخاطر",
+    proj3Desc: "نظام متخصص لتقييم مخاطر بيئة العمل والعمليات، تحديد المخاطر، احتساب درجات الخطورة، وإنتاج تقارير تقييم المخاطر وفق معايير السلامة المهنية.",
+    proj3Btn: "فتح المشروع"
   }
 };
 
@@ -2086,492 +2386,4 @@ function applyLang(l) {
   }
 
   // Update all [data-key] elements (textContent)
-  document.querySelectorAll('[data-key]').forEach(el => {
-    const key = el.getAttribute('data-key');
-    if (t[key] !== undefined) el.textContent = t[key];
-  });
-
-  // Update cert view buttons (data-key-btn)
-  document.querySelectorAll('[data-key-btn]').forEach(el => {
-    const key = el.getAttribute('data-key-btn');
-    if (t[key] !== undefined) el.textContent = t[key];
-  });
-
-  // Update the loading screen role text font direction
-  const loadRole = document.querySelector('.loading-role');
-  if (loadRole) loadRole.dir = l === 'ar' ? 'rtl' : 'ltr';
-
-  // Retrigger skill bars after language switch
-  triggerSkillBars();
-
-  // Update notification toast texts
-  const notifTitle   = document.getElementById('notifTitle');
-  const notifSub     = document.getElementById('notifSub');
-  const notifBtnOpen = document.getElementById('notifBtnOpen');
-  const notifBtnLater= document.getElementById('notifBtnLater');
-  if (notifTitle && l === 'ar') {
-    notifTitle.textContent   = '🎓 شهاداتي في انتظارك!';
-    notifSub.textContent     = 'اضغط لاستعراض شهاداتي المهنية وإنجازاتي التدريبية. سيتم الفتح تلقائياً خلال 5 ثوانٍ...';
-    notifBtnOpen.textContent = 'فتح الشهادات';
-    notifBtnLater.textContent= 'لاحقاً';
-  } else if (notifTitle) {
-    notifTitle.textContent   = '🎓 My Certificates Are Here!';
-    notifSub.textContent     = 'Click to explore my professional certificates and training achievements. Auto-opening in 5 seconds...';
-    notifBtnOpen.textContent = 'Open Certificates';
-    notifBtnLater.textContent= 'Later';
-  }
-}
-
-/* ===================================================
-   SKILL BARS
-   =================================================== */
-function triggerSkillBars() {
-  setTimeout(() => {
-    document.querySelectorAll('.skill-fill').forEach(bar => {
-      bar.style.width = bar.getAttribute('data-level') + '%';
-    });
-  }, 150);
-}
-
-/* ===================================================
-   INTERSECTION OBSERVER – cards
-   =================================================== */
-const cardObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      if (e.target.id === 'skillsCard' || e.target.querySelector('.skill-fill')) {
-        triggerSkillBars();
-      }
-    }
-  });
-}, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
-
-document.querySelectorAll('[data-obs]').forEach(el => cardObs.observe(el));
-
-/* ===================================================
-   INTERSECTION OBSERVER – stats
-   =================================================== */
-const statObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('[data-obs-stat]').forEach(el => statObs.observe(el));
-
-/* ===================================================
-   CERTIFICATES MODAL
-   =================================================== */
-function openCerts() {
-  document.getElementById('certsOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  // Start auto-download countdown after panel animation settles
-  setTimeout(_startAutoDl, 700);
-}
-function closeCerts() {
-  cancelAutoDl();
-  document.getElementById('certsOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-/* ===================================================
-   ZOOM MODAL
-   =================================================== */
-function openZoom(src) {
-  document.getElementById('zoomImg').src = src;
-  document.getElementById('zoomModal').classList.add('open');
-  zoomScale = 1; updateZoom();
-}
-function closeZoom() {
-  document.getElementById('zoomModal').classList.remove('open');
-}
-function updateZoom() {
-  const img = document.getElementById('zoomImg');
-  const pct = document.getElementById('zoomPct');
-  img.style.transform = `scale(${zoomScale})`;
-  img.classList.toggle('grabbed', zoomScale > 1);
-  pct.textContent = Math.round(zoomScale * 100) + '%';
-}
-
-/* ===================================================
-   CERTS NOTIFICATION TOAST
-   =================================================== */
-function showCertsNotification() {
-  // Don't show if overlay is already open
-  if (document.getElementById('certsOverlay').classList.contains('open')) return;
-
-  const toast = document.getElementById('certsNotifToast');
-  if (!toast) return;
-
-  // Show toast
-  toast.classList.add('show');
-
-  // Auto-open after 5 seconds if not dismissed
-  const autoTimer = setTimeout(() => {
-    if (toast.classList.contains('show')) {
-      toast.classList.remove('show');
-      openCerts();
-    }
-  }, 5000);
-
-  // Store timer so dismiss can clear it
-  toast._autoTimer = autoTimer;
-}
-
-function dismissCertsNotif() {
-  const toast = document.getElementById('certsNotifToast');
-  if (!toast) return;
-  clearTimeout(toast._autoTimer);
-  toast.classList.remove('show');
-}
-
-function acceptCertsNotif() {
-  dismissCertsNotif();
-  openCerts();
-}
-
-/* ===================================================
-   AUTO-DOWNLOAD COUNTDOWN
-   Starts when the certs panel opens.
-   Clicking the Download button downloads immediately.
-   =================================================== */
-let _autoDlTimer   = null;
-let _autoDlSec     = 10;
-
-function _startAutoDl() {
-  // Don't restart if already running
-  if (_autoDlTimer) return;
-
-  _autoDlSec = 10;
-  _setAutoDlCount(10);
-
-  // Restart CSS progress animation by toggling the bar class
-  const bar = document.getElementById('autoDlBar');
-  if (!bar) return;
-  bar.classList.remove('show');
-  bar.getBoundingClientRect();   // force reflow so animation resets
-  bar.classList.add('show');
-
-  _autoDlTimer = setInterval(() => {
-    _autoDlSec--;
-    _setAutoDlCount(_autoDlSec);
-    if (_autoDlSec <= 0) {
-      clearInterval(_autoDlTimer);
-      _autoDlTimer = null;
-      _hideAutoDlBar();
-      _generateAndDownloadPDF();
-    }
-  }, 1000);
-}
-
-function cancelAutoDl() {
-  if (_autoDlTimer) { clearInterval(_autoDlTimer); _autoDlTimer = null; }
-  _hideAutoDlBar();
-}
-
-function autoDlNow() {
-  cancelAutoDl();
-  _generateAndDownloadPDF();
-}
-
-function _setAutoDlCount(n) {
-  const el = document.getElementById('autoDlCount');
-  if (el) el.textContent = n;
-}
-
-function _hideAutoDlBar() {
-  const bar = document.getElementById('autoDlBar');
-  if (bar) bar.classList.remove('show');
-}
-
-/* ===================================================
-   DOWNLOAD PDF — CV.jpg (page 1) + Certificate images
-   Clicking Download button skips the countdown.
-   =================================================== */
-async function downloadPDF() {
-  cancelAutoDl();          // stop countdown if still running
-  _generateAndDownloadPDF();
-}
-
-async function _generateAndDownloadPDF() {
-  const btn      = document.getElementById('dlPdfBtn');
-  const origHTML = btn.innerHTML;
-
-  function setStatus(msg) {
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>${msg}</span>`;
-    btn.disabled  = true;
-  }
-
-  // ── Load jsPDF ──
-  setStatus('جاري تحميل المكتبات...');
-  if (!window.jspdf) {
-    await new Promise((res, rej) => {
-      const s    = document.createElement('script');
-      s.src      = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-      s.onload   = res;
-      s.onerror  = rej;
-      document.head.appendChild(s);
-    });
-  }
-
-  // ── Helper: convert image URL → base64 dataURL + dimensions ──
-  function loadImg(src) {
-    return new Promise(resolve => {
-      const img       = new Image();
-      img.crossOrigin = 'anonymous';
-      img.onload = () => {
-        try {
-          const c   = document.createElement('canvas');
-          c.width   = img.naturalWidth  || img.width;
-          c.height  = img.naturalHeight || img.height;
-          c.getContext('2d').drawImage(img, 0, 0);
-          resolve({ data: c.toDataURL('image/jpeg', 0.88), w: c.width, h: c.height });
-        } catch(e) { resolve(null); }
-      };
-      img.onerror = () => resolve(null);
-      img.src     = src;
-    });
-  }
-
-  // ── Load CV image ──
-  setStatus('جاري تحميل صورة السيرة الذاتية...');
-  const cvImgData = await loadImg('CV.jpg');
-
-  // ── Certificate image filenames ──
-  const certFiles = [
-    'شهاده التخرج.jpg',
-    'شهاده أخصائى السلامه و الصحه المهنيه.jpg',
-    'دبلومه اليسون.jpg',
-    'شهاده اليسون.jpg',
-    'زويل.jpg',
-    'haccp.jpg',
-    '22000.jpg',
-    'gmp.jpg',
-    'ghp.jpg',
-    'الفخامه.jpg',
-    'اكسيل.jpg',
-  ];
-
-  setStatus('جاري تحميل صور الشهادات...');
-  const certImgs = await Promise.all(certFiles.map(loadImg));
-
-  setStatus('جاري إنشاء الـ PDF...');
-
-  const { jsPDF } = window.jspdf;
-
-  // All pages: CV first, then certificates
-  const allPages = [cvImgData, ...certImgs];
-
-  // Determine orientation of first page to initialise jsPDF correctly
-  const firstImg = allPages.find(Boolean);
-  const firstIsLandscape = firstImg && firstImg.w > firstImg.h;
-
-  const doc = new jsPDF({
-    unit:        'mm',
-    format:      firstIsLandscape ? [297, 210] : [210, 297],
-    orientation: firstIsLandscape ? 'landscape' : 'portrait',
-  });
-
-  // ── Render each image as a full-bleed page ──
-  allPages.forEach((imgData, idx) => {
-    if (idx > 0) {
-      const isLand = imgData && imgData.w > imgData.h;
-      doc.addPage(isLand ? [297, 210] : [210, 297]);
-    }
-
-    const PW = doc.internal.pageSize.getWidth();
-    const PH = doc.internal.pageSize.getHeight();
-
-    if (imgData) {
-      const imgAspect  = imgData.w / imgData.h;
-      const pageAspect = PW / PH;
-      let drawW, drawH;
-
-      if (imgAspect > pageAspect) {
-        // Wider image → fit width
-        drawW = PW;
-        drawH = PW / imgAspect;
-      } else {
-        // Taller image → fit height
-        drawH = PH;
-        drawW = PH * imgAspect;
-      }
-
-      doc.addImage(
-        imgData.data, 'JPEG',
-        (PW - drawW) / 2,
-        (PH - drawH) / 2,
-        drawW, drawH
-      );
-    } else {
-      // Placeholder for missing image
-      doc.setFillColor(243, 244, 246);
-      doc.rect(0, 0, PW, PH, 'F');
-      doc.setFont('helvetica', 'italic');
-      doc.setFontSize(10);
-      doc.setTextColor(107, 114, 128);
-      doc.text(
-        idx === 0
-          ? '[ CV.jpg not found – place the file next to index.html ]'
-          : `[ Image not found: ${certFiles[idx - 1]} ]`,
-        PW / 2, PH / 2, { align: 'center' }
-      );
-    }
-  });
-
-  doc.save('Samir_Magdy_Yacoub_CV.pdf');
-
-  btn.innerHTML = origHTML;
-  btn.disabled  = false;
-}
-
-/* ===================================================
-   SCROLL TOP
-   =================================================== */
-const scrollTopBtn = document.getElementById('scrollTop');
-window.addEventListener('scroll', () => {
-  scrollTopBtn.classList.toggle('visible', window.scrollY > 280);
-});
-scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-/* ===================================================
-   EVENT LISTENERS
-   =================================================== */
-document.getElementById('langBtn').addEventListener('click', () => applyLang(lang === 'en' ? 'ar' : 'en'));
-document.getElementById('openCertsBtn').addEventListener('click', openCerts);
-document.getElementById('closeCertsBtn').addEventListener('click', closeCerts);
-document.getElementById('dlPdfBtn').addEventListener('click', downloadPDF);
-
-document.getElementById('certsOverlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('certsOverlay')) closeCerts();
-});
-
-document.querySelectorAll('.cert-view-btn').forEach(btn => {
-  btn.addEventListener('click', () => openZoom(btn.getAttribute('data-img')));
-});
-
-document.getElementById('zoomClose').addEventListener('click', closeZoom);
-document.getElementById('zoomModal').addEventListener('click', e => {
-  if (e.target === document.getElementById('zoomModal')) closeZoom();
-});
-document.getElementById('zoomIn').addEventListener('click', () => {
-  if (zoomScale < MAX_Z) { zoomScale = Math.min(MAX_Z, +(zoomScale + STEP_Z).toFixed(2)); updateZoom(); }
-});
-document.getElementById('zoomOut').addEventListener('click', () => {
-  if (zoomScale > MIN_Z) { zoomScale = Math.max(MIN_Z, +(zoomScale - STEP_Z).toFixed(2)); updateZoom(); }
-});
-document.getElementById('zoomReset').addEventListener('click', () => { zoomScale = 1; updateZoom(); });
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeZoom(); closeCerts(); }
-});
-
-/* ===================================================
-   PARTICLE SYSTEM (subtle floating molecules)
-   =================================================== */
-(function initParticles() {
-  const canvas = document.getElementById('particleCanvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
-  const COLORS = ['rgba(5,150,105,', 'rgba(13,148,136,', 'rgba(52,211,153,', 'rgba(180,83,9,'];
-
-  function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-
-  class Particle {
-    constructor() { this.reset(true); }
-    reset(init) {
-      this.x  = Math.random() * W;
-      this.y  = init ? Math.random() * H : H + 20;
-      this.r  = 1 + Math.random() * 2.5;
-      this.vx = (Math.random() - 0.5) * 0.4;
-      this.vy = -(0.2 + Math.random() * 0.5);
-      this.col = COLORS[Math.floor(Math.random() * COLORS.length)];
-      this.a  = 0.04 + Math.random() * 0.1;
-      this.life = 0;
-      this.maxLife = 300 + Math.random() * 400;
-    }
-    update() {
-      this.x += this.vx; this.y += this.vy;
-      this.life++;
-      if (this.y < -20 || this.life > this.maxLife) this.reset(false);
-    }
-    draw() {
-      const fade = Math.min(1, Math.min(this.life / 60, (this.maxLife - this.life) / 60));
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = this.col + (this.a * fade) + ')';
-      ctx.fill();
-    }
-  }
-
-  function init() {
-    resize();
-    particles = Array.from({ length: 55 }, () => new Particle());
-    window.addEventListener('resize', resize);
-    requestAnimationFrame(loop);
-  }
-
-  function loop() {
-    ctx.clearRect(0, 0, W, H);
-    // draw connection lines between close particles
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const d  = Math.sqrt(dx*dx + dy*dy);
-        if (d < 100) {
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(5,150,105,${0.04 * (1 - d/100)})`;
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
-        }
-      }
-    }
-    particles.forEach(p => { p.update(); p.draw(); });
-    requestAnimationFrame(loop);
-  }
-  init();
-})();
-
-/* ===================================================
-   LOADING SCREEN HIDE
-   =================================================== */
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('loadingScreen').classList.add('hidden');
-
-    // Trigger visible elements with staggered delay
-    document.querySelectorAll('[data-obs]').forEach((el, i) => {
-      if (el.getBoundingClientRect().top < window.innerHeight + 50) {
-        setTimeout(() => {
-          el.classList.add('visible');
-          if (el.id === 'skillsCard' || el.querySelector('.skill-fill')) triggerSkillBars();
-        }, 100 + i * 80);
-      }
-    });
-
-    // Trigger stats
-    document.querySelectorAll('[data-obs-stat]').forEach((el, i) => {
-      if (el.getBoundingClientRect().top < window.innerHeight + 50) {
-        setTimeout(() => el.classList.add('visible'), 200 + i * 80);
-      }
-    });
-
-    // Force OHS strip
-    const ohs = document.getElementById('ohsStrip');
-    if (ohs) setTimeout(() => ohs.classList.add('visible'), 350);
-
-    triggerSkillBars();
-
-    // ── Show certs notification after 10 seconds ──
-    setTimeout(showCertsNotification, 10000);
-
-  }, 1500);
-});
-</script>
-</body>
-</html>
+  document.querySelectorAll('[data-key]').forEach(el => 
